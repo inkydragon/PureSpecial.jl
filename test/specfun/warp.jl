@@ -78,3 +78,22 @@ function _klvna(x::Float64)
         
     ber[], bei[], ger[], gei[], der[], dei[], her[], hei[]
 end
+
+"""
+Warp fortran `specfun.KLVNZO`.
+
+- Input: `nt`, `kd`
+- Output: `zo::Vector{Float64}`
+"""
+function _klvnzo(nt::Int64, kd::Int64)
+    zo = zeros(Float64, nt)
+    # KLVNZO(NT,KD,ZO)
+    # void specfun_klvnzo(int nt, int kd, double *zo);
+    ret = ccall(f77func(:klvnzo), Cvoid,
+        (Ref{Int64}, Ref{Int64},
+         Ptr{Float64}),
+        nt, kd,
+        zo)
+
+    zo
+end

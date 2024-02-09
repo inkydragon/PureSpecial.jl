@@ -2,7 +2,6 @@
 
 @testset "Kelvin functions" begin
     special_inputs = Float64[
-    #= if xa == 0.0 =#
         -0.0, 0.0,
         1:100...,
     ] # special_inputs
@@ -44,6 +43,22 @@
             @test isequal(r_dei, dei)
             @test isequal(r_her, her)
             @test isequal(r_hei, hei)
+        end
+    end
+end
+
+@testset "klvnzo" begin
+    test_nt = Int64[
+        0:20...,
+    ]
+
+    for nt in test_nt,
+        kd in 1:8
+        @testset "_klvnzo(nt=$nt, kd=$kd)" begin
+            ref = _klvnzo(nt, kd)
+            res = Specfun.klvnzo(nt, kd)
+            
+            @test isapprox(ref, res)
         end
     end
 end

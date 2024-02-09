@@ -203,3 +203,65 @@ function klvna(x::Float64)
 
     return ber, bei, ger, gei, der, dei, her, hei
 end
+
+"""
+    klvnzo(nt::Int, kd::Int)
+
+Compute the zeros of Kelvin functions.
+
+## Input
+- NT  --- Total number of zeros
+- KD  --- Function code
+    - KD=1 to 8 for ber x, bei x, ker x, kei x,
+                    ber'x, bei'x, ker'x and kei'x,
+                    respectively.
+
+## Output
+- ZO(M) --- the M-th zero of Kelvin function for code KD.
+
+## Routine called
+KLVNA for computing Kelvin functions and their derivatives.
+"""
+function klvnzo(nt::Int, kd::Int)
+    @assert kd in 1:8
+    EPS = 5e-10
+    _rt0 = Float64[
+        2.84891, 5.02622, 1.71854, 3.91467,
+        6.03871, 3.77268, 2.66584, 4.93181,
+    ]
+    rt = _rt0[kd]
+
+    zo = zeros(Float64, nt)
+    for m in 1:nt
+        while true
+            ber, bei, ger, gei, der, dei, her, hei = klvna(rt)
+            if kd == 1
+                rt -= ber / der
+            elseif kd == 2
+                rt -= bei / dei
+            elseif kd == 3
+                rt -= ger / her
+            elseif kd == 4
+                rt -= gei / hei
+            elseif kd == 5
+                rt -= der / (-bei - der / rt)
+            elseif kd == 6
+                rt -= dei / (ber - dei / rt)
+            elseif kd == 7
+                rt -= her / (-gei - her / rt)
+            else
+                rt -= hei / (ger - hei / rt)
+            end
+
+            if abs(rt - _rt0[kd]) <= EPS
+                break
+            else
+                _rt0[kd] = rt
+            end
+        end
+        zo[m] = rt
+        rt += 4.44
+    end
+
+    return zo
+end
