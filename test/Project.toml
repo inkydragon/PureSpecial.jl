@@ -1,3 +1,4 @@
 [deps]
+Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 Scipy4j = "cc8e170f-fe75-428c-9780-191f24e086a4"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

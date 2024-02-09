@@ -1,1 +1,73 @@
 # SPDX-License-Identifier: MIT
+
+@testset "airyb" begin
+    special_inputs = Float64[
+    #= if xa == 0.0 =#
+        -0.0, 0.0,
+
+    #= if xa <= xm  && xa != 0.0 =#
+    #   T1: `xa <= xm`
+    #   T11: x > 0, abs(x) <= 5.0
+    #   T12: x < 0, abs(x) <= 8.0
+    #   [T1]: x in [-8, 0) ∪ (0, 5]
+        -8.0, -eps(-1.0), -eps(0.0),
+        eps(0.0), eps(1.0), 5.0,
+    #   F1: `xa <= xm` ==> `xa > xm`
+    #   F11: x > 0, abs(x) > 5.0
+    #   F12: x < 0, abs(x) > 8.0
+    #   [F1]: x in (, -8) ∪ (5, )
+        -9.0, prevfloat(-8.0),
+        nextfloat(5.0), 6.0, 8.0,
+
+    #= if xa < 6.0  && [F1] =#
+    #   x in ∅ ∪ (5.0, 6.0)
+        nextfloat(5.0), 5.5, prevfloat(6.0),
+
+    #= if xa > 15.0  && [F1] =#
+    #   x in (, -15.0) ∪ (15.0, )
+        -16.0, prevfloat(-15.0),
+        nextfloat(15.0), 16.0,
+
+    #= if x > 0.0  && [F1] =#
+    #   T2: x > 0.0
+    #   [T2]: x in (5, )
+        nextfloat(5.0), 5.1,
+    #   F2: x <= 0.0
+    #   [F2]: x in (, -8)
+        prevfloat(-8.0), -8.1, -70.0,
+
+    #= if xa > 70.0  && [F2] =#
+    #   x in (, -70)
+        prevfloat(-70.0),
+        -500.0,
+    #= if xa > 500.0  && [F2] =#
+    #   x in (, -500)
+        prevfloat(-500.0),
+        -1000.0,
+    #= if xa > 1000.0  && [F2] =#
+    #   x in (, -1000)
+        prevfloat(-1000.0),
+        -1001.0,
+
+        -150.0,
+    #= if xa > 150.0  && [F2] =#
+    #   x in (, -150)
+        prevfloat(-150.0),
+        -3000,
+    #= if xa > 3000.0  && [F2] =#
+    #   x in (, -3000)
+        prevfloat(-3000.0),
+        -3001.0,
+    ] # special_inputs
+
+    for x in special_inputs
+        @testset "_airyb($x)" begin
+            ref_ai, ref_bi, ref_ad, ref_bd = _airyb(x)
+            ai, bi, ad, bd = Specfun.airyb(x)
+            @test isapprox(ref_ai, ai)
+            @test isapprox(ref_bi, bi)
+            @test isapprox(ref_ad, ad)
+            @test isapprox(ref_bd, bd)
+        end
+    end
+end
