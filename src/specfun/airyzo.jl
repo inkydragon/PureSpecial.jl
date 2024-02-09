@@ -17,9 +17,7 @@ Compute Airy functions and their derivatives.
 """
 function airyb(x::Float64)
     eps = 1.0e-15
-    # TODO: replace by pi
-    pi64 = 3.141592653589793
-    @assert Float64(pi) === pi64
+    @assert Float64(pi) === 3.141592653589793
     c1 = 0.355028053887817
     c2 = 0.258819403792807
     sr3 = 1.732050807568877
@@ -180,8 +178,8 @@ function airyb(x::Float64)
         else
             @assert x <= 0.0
 
-            xcs = cos(xe + pi64 / 4.0)
-            xss = sin(xe + pi64 / 4.0)
+            xcs = cos(xe + pi / 4.0)
+            xss = sin(xe + pi / 4.0)
 
             ssa = 1.0
             sda = 1.0
