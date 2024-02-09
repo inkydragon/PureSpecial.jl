@@ -3,5 +3,6 @@
 module Specfun
 
 include("airyzo.jl")
+include("kelvin.jl")
 
 end # Scipy4j

@@ -53,3 +53,28 @@ function _airyzo!(
         nt, kf,
         xa, xb, xc, xd)
 end
+
+"""
+Warp fortran `specfun.KLVNA`.
+
+- Input: `x`
+- Output: `ber, bei, ger, gei, der, dei, her, hei`
+"""
+function _klvna(x::Float64)
+    ber, bei, ger, gei, der, dei, her, hei = 
+        Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN),
+        Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN) 
+    # KLVNA(X,BER,BEI,GER,GEI,DER,DEI,HER,HEI)
+    # void specfun_klvna(double x, 
+    #     double *ber, double *bei, double *ger, double *gei,
+    #     double *der, double *dei, double *her, double *hei);
+    ret = ccall(f77func(:klvna), Cvoid,
+        (Ref{Float64},
+         Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64},
+         Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        x,
+        ber, bei, ger, gei,
+        der, dei, her, hei)
+        
+    ber[], bei[], ger[], gei[], der[], dei[], her[], hei[]
+end
