@@ -68,6 +68,20 @@
             @test isapprox(ref_bi, bi)
             @test isapprox(ref_ad, ad)
             @test isapprox(ref_bd, bd)
+
+            broken_list = [
+                -8.0, 5.0, 5.1,
+                -500.0
+            ]
+            if x in broken_list
+                @test_broken false
+                continue
+            end
+
+            @test isequal(ref_ai, ai)
+            @test isequal(ref_bi, bi)
+            @test isequal(ref_ad, ad)
+            @test isequal(ref_bd, bd)
         end
     end
 end
