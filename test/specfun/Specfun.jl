@@ -5,4 +5,5 @@ using Scipy4j.Specfun
 include("warp.jl")
 
 include("airyzo.jl")
+include("bessel_zeros.jl")
 include("kelvin.jl")

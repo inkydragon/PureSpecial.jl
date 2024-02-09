@@ -16,6 +16,8 @@ const libspecfun = Libdl.dlopen("libspecfun.so")
 "Loading symbols from libspecfun."
 f77func(s::Symbol) = Libdl.dlsym(libspecfun, Symbol("$(s)_")) 
 
+
+#= ## Airy functions =#
 """
 Warp fortran `specfun.AIRYB`.
 
@@ -54,6 +56,33 @@ function _airyzo!(
         xa, xb, xc, xd)
 end
 
+
+#= ## Zeros of Bessel functions =#
+"""
+Warp fortran `specfun.BJNDD`.
+
+- Input: `x`, `n`
+- Output: `bj[], dj[], fj[]`
+
+!!! note
+    Fortran code uses fixed-size array.
+"""
+function _bjndd(x::Float64, n::Int)
+    # Pass fixed-size array.
+    bj, dj, fj = zeros(Float64, 101), zeros(Float64, 101), zeros(Float64, 101)
+    # BJNDD(N,X,BJ,DJ,FJ)
+    # void specfun_bjndd(double x, int n, double *bj, double *dj, double *fj);
+    ret = ccall(f77func(:bjndd), Cvoid,
+        (Ref{Int64}, Ref{Float64},
+         Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
+        n, x,
+        bj, dj, fj)
+
+    bj, dj, fj
+end
+
+
+#= ## Kelvin functions =#
 """
 Warp fortran `specfun.KLVNA`.
 
