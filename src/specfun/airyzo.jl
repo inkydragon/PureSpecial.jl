@@ -50,9 +50,7 @@ function airyb(x::Float64)
         for k = 1:40
             r *= x / (3.0 * k) * x / (3.0 * k - 1.0) * x
             fx += r
-            if abs(r) < (abs(fx) * eps)
-                break
-            end
+            abs(r) < (abs(fx) * eps) && break
         end #= 10 =#
 
         #= 15 =#
@@ -61,9 +59,7 @@ function airyb(x::Float64)
         for k = 1:40
             r *= x / (3.0 * k) * x / (3.0 * k + 1.0) * x
             gx += r
-            if abs(r) < (abs(gx) * eps)
-                break
-            end
+            abs(r) < (abs(gx) * eps) && break
         end #= 20 =#
         #= 25 =#
         ai = c1 * fx - c2 * gx
@@ -74,9 +70,7 @@ function airyb(x::Float64)
         for k = 1:40
             r *= x / (3.0 * k) * x / (3.0 * k + 2.0) * x
             df += r
-            if abs(r) < (abs(df) * eps)
-                break
-            end
+            abs(r) < (abs(df) * eps) && break
         end #= 30 =#
 
         #= 35 =#
@@ -85,9 +79,7 @@ function airyb(x::Float64)
         for k = 1:40
             r *= x / (3.0 * k) * x / (3.0 * k - 2.0) * x
             dg += r
-            if abs(r) < (abs(dg) * eps)
-                break
-            end
+            abs(r) < (abs(dg) * eps) && break
         end #= 40 =#
 
         #= 45 =#
