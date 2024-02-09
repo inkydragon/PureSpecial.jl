@@ -4,7 +4,7 @@
     special_inputs = Float64[
     #= if xa == 0.0 =#
         -0.0, 0.0,
-        1:20...,
+        1:100...,
     ] # special_inputs
 
     for x in special_inputs
@@ -20,6 +20,30 @@
             @test isapprox(r_dei, dei)
             @test isapprox(r_her, her)
             @test isapprox(r_hei, hei)
+
+            broken_list = [
+                4:9...,
+                30, 33, 35,
+                42, 45,
+                57, 59,
+                60,
+                71,
+                80, 82, 86,
+                91,
+            ]
+            if x in broken_list
+                @test_broken false
+                continue
+            end
+
+            @test isequal(r_ber, ber)
+            @test isequal(r_bei, bei)
+            @test isequal(r_ger, ger)
+            @test isequal(r_gei, gei)
+            @test isequal(r_der, der)
+            @test isequal(r_dei, dei)
+            @test isequal(r_her, her)
+            @test isequal(r_hei, hei)
         end
     end
 end
