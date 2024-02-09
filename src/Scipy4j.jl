@@ -1,5 +1,6 @@
+# SPDX-License-Identifier: MIT
 module Scipy4j
 
-# Write your package code here.
+include("specfun/Specfun.jl")
 
 end
