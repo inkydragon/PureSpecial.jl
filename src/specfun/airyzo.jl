@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: MIT OR BSD-3-Clause
-#   See also: src/specfun/LICENSE.md 
+#   See also: src/specfun/LICENSE.md
+
+
 """
     airyb(x::Float64)
 
@@ -200,4 +202,180 @@ function airyb(x::Float64)
     end # xa <=> xm
 
     return ai, bi, ad, bd
+end
+
+"""
+    airyzo!(
+        nt::Int, kf::Int, 
+        xa::Vector{Float64}, xb::Vector{Float64}, xc::Vector{Float64}, xd::Vector{Float64}
+    )
+
+Compute the first NT zeros of Airy functions
+Ai(x) and Ai'(x), a and a', and the associated
+values of Ai(a') and Ai'(a); and the first NT
+zeros of Airy functions Bi(x) and Bi'(x), b and
+b', and the associated values of Bi(b') and
+Bi'(b).
+
+## Example
+```jl
+nt = 4;
+a,b,c,d = zeros(nt),zeros(nt),zeros(nt),zeros(nt)
+airyzo!(nt, 1, a,b,c,d)
+@show a b c d;
+```
+
+## Input
+- NT --- Total number of zeros
+- KF --- Function code
+    - KF=1 for Ai(x) and Ai'(x)
+    - KF=2 for Bi(x) and Bi'(x)
+
+## Output
+- XA(m) --- a, the m-th zero of Ai(x) or
+            b, the m-th zero of Bi(x)
+- XB(m) --- a', the m-th zero of Ai'(x) or
+            b', the m-th zero of Bi'(x)
+- XC(m) --- Ai(a') or Bi(b')
+- XD(m) --- Ai'(a) or Bi'(b)
+            ( m --- Serial number of zeros )
+
+## Routine called
+AIRYB for computing Airy functions and their derivatives
+"""
+function airyzo!(
+    nt::Int, kf::Int, 
+    xa::Vector{Float64}, xb::Vector{Float64},
+    xc::Vector{Float64}, xd::Vector{Float64})
+    @assert Float64(pi) === 3.141592653589793
+    
+    # TODO: check params
+
+    # move local var
+    u = 0.0
+    u1 = 0.0
+    ai = 0.0
+    bi = 0.0
+    ad = 0.0
+    bd = 0.0
+    err = 0.0
+
+    rt = 0.0
+    for i = 1:nt
+        rt0 = 0.0
+        if kf == 1
+            u = 3.0 * pi * (4.0 * i - 1) / 8.0
+            u1 = 1 / (u * u)
+        elseif kf == 2
+            if i == 1
+                rt0 = -1.17371
+            else
+                u = 3.0 * pi * (4.0 * i - 3.0) / 8.0
+                u1 = 1 / (u * u)
+            end
+        end
+
+        if rt0 == 0
+            #
+            # DLMF 9.9.18
+            #
+            rt0 = -(u*u)^(1.0/3.0) * (
+                    1.0
+                    + u1 * (5.0 / 48.0
+                    + u1 * (-5.0 / 36.0
+                    + u1 * (77125.0 / 82944.0
+                    + u1 * (-108056875.0 / 6967296.0)))))
+        end
+
+        while true
+            #= 10 =#
+            x = rt0
+            ai, bi, ad, bd = airyb(x)
+
+            if kf == 1
+                rt = rt0 - ai / ad
+            elseif kf == 2
+                rt = rt0 - bi / bd
+            end
+
+            err = abs((rt - rt0) / rt)
+            if err <= 1.0e-12
+                break
+            else
+                rt0 = rt
+            end
+        end
+
+        xa[i] = rt
+        if err > 1.0e-14
+            ai, bi, ad, bd = airyb(rt)
+        end
+
+        if kf == 1
+            xd[i] = ad
+        elseif kf == 2
+            xd[i] = bd
+        end
+    end #= 15 =## for i = 1:nt
+
+    for i = 1:nt
+        rt0 = 0.0
+        if kf == 1
+            if i == 1
+                rt0 = -1.01879
+            else
+                u = 3.0 * pi * (4.0 * i - 3.0) / 8.0
+                u1 = 1 / (u * u)
+            end
+        elseif kf == 2
+            if i == 1
+                rt0 = -2.29444
+            else
+                u = 3.0 * pi * (4.0 * i - 1.0) / 8.0
+                u1 = 1 / (u * u)
+            end
+        end
+
+        if rt0 == 0
+            #
+            # DLMF 9.9.19
+            #
+            rt0 = -(u*u)^(1.0/3.0) * (
+                    1.0
+                    + u1 * (-7.0 / 48.0
+                    + u1 * (35.0 / 288.0
+                    + u1 * (-181223.0 / 207360.0
+                    + u1 * (18683371.0 / 1244160.0)))))
+        end
+
+        while true
+            #= 20 =#
+            x = rt0
+            ai, bi, ad, bd = airyb(x)
+
+            if kf == 1
+                rt = rt0 - ad / (ai * x)
+            elseif kf == 2
+                rt = rt0 - bd / (bi * x)
+            end
+
+            err = abs((rt - rt0) / rt)
+            if err <= 1.0e-12
+                break
+            else
+                rt0 = rt
+            end
+        end
+        xb[i] = rt
+
+        if err > 1.0e-14
+            ai, bi, ad, bd = airyb(rt)
+        end
+
+        if kf == 1
+            xc[i] = ai
+        elseif kf == 2
+            xc[i] = bi
+        end
+    end #= 25 =## for i = 1:nt
 end

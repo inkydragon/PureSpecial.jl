@@ -34,3 +34,22 @@ function _airyb(z::Float64)
 
     ai[], bi[], ad[], bd[]
 end
+
+"""
+Warp fortran `specfun.AIRYZO`.
+
+- Input: `nt`, `kf`
+- Output: `xa, xb, xc, xd`
+"""
+function _airyzo!(
+    nt::Int, kf::Int, 
+    xa::Vector{Float64}, xb::Vector{Float64},
+    xc::Vector{Float64}, xd::Vector{Float64})
+    # AIRYZO(NT,KF,XA,XB,XC,XD)
+    # void specfun_airyzo(int nt, int kf, double *xa, double *xb, double *xc, double *xd);
+    ret = ccall(f77func(:airyzo), Cvoid,
+        (Ref{Int64}, Ref{Int64},
+         Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
+        nt, kf,
+        xa, xb, xc, xd)
+end
