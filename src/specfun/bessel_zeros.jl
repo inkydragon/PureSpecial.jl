@@ -60,7 +60,7 @@ function bjndd(x::Float64, n::Int)
     m = 1
     for nt in 1:900
         # TODO: use a table?
-        mt = trunc(Int64, 0.5 * log10(6.28 * nt) - nt * log10(1.36 * abs(x) / nt))
+        mt = 0.5 * log10(6.28 * nt) - nt * log10(1.36 * abs(x) / nt)
         if mt > 20
             m = nt
             break
