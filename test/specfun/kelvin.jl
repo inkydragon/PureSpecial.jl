@@ -49,16 +49,23 @@ end
 
 @testset "klvnzo" begin
     test_nt = Int64[
-        0:20...,
+        0:100...,
     ]
 
     for nt in test_nt,
         kd in 1:8
+        ref = _klvnzo(nt, kd)
+        res = Specfun.klvnzo(nt, kd)
         @testset "_klvnzo(nt=$nt, kd=$kd)" begin
-            ref = _klvnzo(nt, kd)
-            res = Specfun.klvnzo(nt, kd)
-            
             @test isapprox(ref, res)
+
+            if (nt,kd)==(1,8) ||
+                (nt >= 2 && kd in [3, 4, 7, 8])
+                @test_broken false
+                continue
+            end
+
+            @test isequal(ref, res)
         end
     end
 end
