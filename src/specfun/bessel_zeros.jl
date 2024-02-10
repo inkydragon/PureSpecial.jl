@@ -153,13 +153,9 @@ function jdzo!(nt::Int, zo::Vector{Float64}, n::Vector{Int}, m::Vector{Int}, p::
 
     #= Initialize arrays =#
     p1 = zeros(Int64, P1_size)
-
-    # Compared to specfun.f we use a single array instead of separate
-    # three arrays and use pointer arithmetic to access. Their usage
-    # is pretty much one-shot hence does not complicate the code.
-
-    # m1, n1, zoc -> 70 + 70 + 71
-    mnzoc = zeros(Float64, M1_szie + N1_szie + ZOC_szie)
+    n1 = zeros(Float64, N1_szie)
+    m1 = zeros(Float64, M1_szie)
+    zoc = zeros(Float64, ZOC_szie)
 
     xm = 0.0
     nm, mm = 0, 0
@@ -198,16 +194,13 @@ function jdzo!(nt::Int, zo::Vector{Float64}, n::Vector{Int}, m::Vector{Int}, p::
 
             #= 15 =#
             L1 += 1
-            #= N1(L1) =#
-            mnzoc[70 + L1] = i - 1
-            #= M1(L1) =#
-            mnzoc[L1] = j
+            n1[L1] = i - 1
+            m1[L1] = j
             if i == 1
-                mnzoc[L1] = j - 1
+                m1[L1] = j - 1
             end
             p1[L1] = 1
-            #= ZOC[L1] =#
-            mnzoc[141 + L1] = x
+            zoc[L1+1] = x
             if i <= 15
                 x1 = x + 3.057 + 0.0122*(i-1) + (1.555 + 0.41575*(i-1))/(j+1)^2.0
             else
@@ -231,13 +224,10 @@ function jdzo!(nt::Int, zo::Vector{Float64}, n::Vector{Int}, m::Vector{Int}, p::
                 end
             end
             L1 += 1
-            #= N1(L1) =#
-            mnzoc[70 + L1] = i - 1
-            #= M1(L1) =#
-            mnzoc[L1] = j
+            n1[L1] = i - 1
+            m1[L1] = j
             p1[L1] = 0
-            #= ZOC[L1] =#
-            mnzoc[141 + L1] = x
+            zoc[L1+1] = x
             if i <= 15
                 x2 = x + 3.11 + 0.0138*(i-1) + (0.04832 + 0.2804*(i-1))/(j+1)^2
             else
@@ -254,14 +244,14 @@ function jdzo!(nt::Int, zo::Vector{Float64}, n::Vector{Int}, m::Vector{Int}, p::
             if L0 == 0
                 for k in 1:L
                     p[k] = p1[k]
-                    m[k] = trunc(Int64, mnzoc[k])
-                    n[k] = trunc(Int64, mnzoc[70+k])
+                    m[k] = m1[k]
+                    n[k] = n1[k]
                     # NOTE: zo[] is 0-indexed
-                    zo[k+1] = mnzoc[141+k]
+                    zo[k+1] = zoc[k+1]
                 end #= 40 =#
                 L1 = 0
             elseif L0 != 0
-                if zo[L0+1] >= mnzoc[141+L1]
+                if zo[L0+1] >= zoc[L1+1]
                     p[L0+L1] = p[L0]
                     m[L0+L1] = m[L0]
                     n[L0+L1] = n[L0]
@@ -269,13 +259,11 @@ function jdzo!(nt::Int, zo::Vector{Float64}, n::Vector{Int}, m::Vector{Int}, p::
                     L0 -= 1
                 else
                     p[L0+L1] = p1[L1]
-                    m[L0+L1] = trunc(Int64, mnzoc[L1])
-                    n[L0+L1] = trunc(Int64, mnzoc[70+L1])
-                    zo[L0+L1+1] = mnzoc[141+L1]
+                    m[L0+L1] = m1[L1]
+                    n[L0+L1] = n1[L1]
+                    zo[L0+L1+1] = zoc[L1+1]
                     L1 -= 1
                 end
-                
-                
             end
             if L1 == 0
                 break
