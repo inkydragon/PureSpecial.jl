@@ -318,7 +318,9 @@ function msta1(x::Float64, mp::Int)
 
     nn = 0
     for _ = 1:20
-        nn = trunc(Int64, n1 - (n1 - n0) / (1.0 - f0 / f1))
+        # NOTE: Sometimes `_nn` may be NaN.
+        _nn = n1 - (n1 - n0) / (1.0 - f0 / f1)
+        nn = trunc(Int64, _nn)
         f = envj(nn, a0) - mp
         if abs(nn - n1) < 1
             break
