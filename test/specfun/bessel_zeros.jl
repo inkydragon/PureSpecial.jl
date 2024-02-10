@@ -142,3 +142,29 @@ end
         end
     end
 end
+
+
+@testset "jyndd" begin
+    test_x = Float64[
+        # rand(10)...,
+        # -10:-1...,
+        1:5...,
+        # 295:305...,
+        # rand(1:1000, 10)...,
+    ]
+
+    for x in test_x,
+        n in 1:2
+        @testset "_jyndd(x=$x, n=$n)" begin
+            r_bjn, r_djn, r_fjn, r_byn, r_dyn, r_fyn = _jyndd(x, n)
+            bjn, djn, fjn, byn, dyn, fyn = Specfun.jyndd(x, n)
+
+            @test isapprox(r_bjn, bjn)
+            @test isapprox(r_djn, djn)
+            @test isapprox(r_fjn, fjn)
+            @test isapprox(r_byn, byn)
+            @test isapprox(r_dyn, dyn)
+            @test isapprox(r_fyn, fyn)
+        end
+    end
+end

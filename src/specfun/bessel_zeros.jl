@@ -563,3 +563,41 @@ function jynbh!(
     
     nm
 end
+
+"""
+jyndd(n::Int, x::Float64)
+
+compute bessel functions jn(x) and yn(x), and
+their first and second derivatives
+
+input
+x   ---  argument of jn(x) and yn(x) ( x > 0 )
+n   ---  order of jn(x) and yn(x)
+
+output
+bjn ---  jn(x)
+djn ---  jn'(x)
+fjn ---  jn"(x)
+byn ---  yn(x)
+dyn ---  yn'(x)
+fyn ---  yn"(x)
+
+routines called
+jynbh to compute jn and yn
+"""
+function jyndd(x::Float64, n::Int)
+    @assert x > 0.0
+    bj, by = zeros(Float64, 2), zeros(Float64, 2)
+
+    jynbh!(x, n + 1, n, bj, by)
+
+    # Compute derivatives by differentiation formulas
+    bjn = bj[1]
+    byn = by[1]
+    djn = -bj[2] + n * bj[1] / x
+    dyn = -by[2] + n * by[1] / x
+    fjn = (n * n / (x * x) - 1.0) * bjn - djn / x
+    fyn = (n * n / (x * x) - 1.0) * byn - dyn / x
+    
+    return bjn, djn, fjn, byn, dyn, fyn
+end

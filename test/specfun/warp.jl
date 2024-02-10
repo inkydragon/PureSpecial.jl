@@ -153,6 +153,33 @@ end
 _jynbh!(x, n::Int64, nmin::Int64, bj, by) =
     _jynbh!(x, Int32(n), Int32(nmin), bj, by)
 
+"""
+Warp fortran `specfun.JYNDD`.
+
+- Return: `bjn, djn, fjn, byn, dyn, fyn`
+"""
+function _jyndd(x::Float64, n::Int32)
+    @assert x > 0.0
+
+    bjn, djn, fjn, byn, dyn, fyn =
+        Ref{Float64}(0), Ref{Float64}(0), Ref{Float64}(0),
+        Ref{Float64}(0), Ref{Float64}(0), Ref{Float64}(0)
+    # SUBROUTINE JYNDD(N,X,BJN,DJN,FJN,BYN,DYN,FYN)
+    # void specfun_jyndd(int n, double x,
+    #   double *bjn, double *djn, double *fjn,
+    #   double *byn, double *dyn, double *fyn);
+    ccall(f77func(:jyndd), Cvoid,
+        (Ref{Float64}, Ref{Int32},
+         Ref{Float64}, Ref{Float64}, Ref{Float64},
+         Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        n, x,
+        bjn, djn, fjn,
+        byn, dyn, fyn)
+
+    bjn[], djn[], fjn[], byn[], dyn[], fyn[]
+end
+_jyndd(x, n::Int64) = _jyndd(x, Int32(n))
+
 
 #= ## Kelvin functions =#
 """
