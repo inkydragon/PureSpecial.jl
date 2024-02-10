@@ -85,3 +85,24 @@ end
         end
     end
 end
+
+@testset "msta2" begin
+    test_x = Float64[
+        rand(10)...,
+        -10:-1...,
+        1:10...,
+        rand(1:1000, 5)...,
+    ]
+
+    for x in test_x,
+        n in 1:10,
+        mp in 1:16
+        @testset "_msta2(x=$x, n=$n, mp=$mp)" begin
+            r_nn = _msta2(x, n, mp)
+            nn = Specfun.msta2(x, n, mp)
+
+            @test isapprox(r_nn, nn)
+            @test isequal(r_nn, nn)
+        end
+    end
+end

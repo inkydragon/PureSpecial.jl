@@ -117,6 +117,18 @@ function _msta1(x::Float64, mp::Int32)
 end
 _msta1(x::Float64, mp::Int64) = _msta1(x, Int32(mp))
 
+"""
+Warp fortran `specfun.MSTA2`.
+"""
+function _msta2(x::Float64, n::Int32, mp::Int32)
+    # INTEGER FUNCTION MSTA2(X,N,MP)
+    # int specfun_msta2(double x, int n, int mp);
+    ccall(f77func(:msta2), Cint,
+        (Ref{Float64}, Ref{Int32}, Ref{Int32}),
+        x, n, mp)
+end
+_msta2(x::Float64, n::Int64, mp::Int64) = _msta2(x, Int32(n), Int32(mp))
+
 
 #= ## Kelvin functions =#
 """

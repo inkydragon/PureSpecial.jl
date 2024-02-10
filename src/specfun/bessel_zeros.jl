@@ -334,3 +334,54 @@ function msta1(x::Float64, mp::Int)
 
     nn
 end
+
+"""
+    msta2(x::Float64, n::Int64, mp::Int64)
+
+Determine the starting point for backward
+recurrence such that all Jn(x) has MP
+significant digits
+
+Input
+x  --- Argument of Jn(x)
+n  --- Order of Jn(x)
+MP --- Significant digit
+
+Output
+MSTA2 --- Starting point
+"""
+function msta2(x::Float64, n::Int64, mp::Int64)
+    a0 = abs(x)
+    hmp = 0.5 * mp
+    ejn = envj(n, a0)
+
+    obj = 0.0
+    n0 = 0
+    if ejn <= hmp
+        obj = mp
+        n0 = trunc(Int64, 1.1 * a0) + 1
+    else
+        obj = hmp + ejn
+        n0 = n
+    end
+
+    f0 = envj(n0, a0) - obj
+    n1 = n0 + 5
+    f1 = envj(n1, a0) - obj
+    nn = 0
+    for _ = 1:20
+        _nn = n1 - (n1 - n0) / (1.0 - f0 / f1)
+        nn = trunc(Int64, _nn)
+        f = envj(nn, a0) - obj
+        if abs(nn - n1) < 1
+            break
+        end
+
+        n0 = n1
+        f0 = f1
+        n1 = nn
+        f1 = f
+    end
+
+    nn + 10
+end
