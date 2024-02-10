@@ -286,3 +286,49 @@ function jdzo(nt::Int64)
     
     zo[1:nt], n[1:nt], m[1:nt], p[1:nt]
 end
+
+"""
+Helper function used in `msta1`, `msta2`
+"""
+function envj(n, x)
+    0.5 * log10(6.28 * n) - n * log10(1.36 * x / n)
+end
+
+"""
+    msta1(x::Float64, mp::Int)
+
+Determine the starting point for backward
+recurrence such that the magnitude of
+Jn(x) at that point is about 10^(-MP)
+
+Input
+x     --- Argument of Jn(x)
+MP    --- Value of magnitude
+
+Output
+MSTA1 --- Starting point
+"""
+function msta1(x::Float64, mp::Int)
+    a0 = abs(x)
+    n0 = trunc(Int64, 1.1 * a0) + 1
+    f0 = envj(n0, a0) - mp
+
+    n1 = n0 + 5
+    f1 = envj(n1, a0) - mp
+
+    nn = 0
+    for _ = 1:20
+        nn = trunc(Int64, n1 - (n1 - n0) / (1.0 - f0 / f1))
+        f = envj(nn, a0) - mp
+        if abs(nn - n1) < 1
+            break
+        end
+
+        n0 = n1
+        f0 = f1
+        n1 = nn
+        f1 = f
+    end
+
+    nn
+end

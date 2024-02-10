@@ -105,6 +105,18 @@ function _jdzo(nt::Int)
     zo[1:nt], n[1:nt], m[1:nt], p[1:nt]
 end
 
+"""
+Warp fortran `specfun.MSTA1`.
+"""
+function _msta1(x::Float64, mp::Int32)
+    # INTEGER FUNCTION MSTA1(X,MP)
+    # int specfun_msta1(double x, int mp);
+    ccall(f77func(:msta1), Cint,
+        (Ref{Float64}, Ref{Int32}),
+        x, mp)
+end
+_msta1(x::Float64, mp::Int64) = _msta1(x, Int32(mp))
+
 
 #= ## Kelvin functions =#
 """
