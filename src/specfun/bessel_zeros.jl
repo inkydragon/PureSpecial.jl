@@ -161,9 +161,6 @@ function jdzo!(nt::Int, zo::Vector{Float64}, n::Vector{Int}, m::Vector{Int}, p::
     # m1, n1, zoc -> 70 + 70 + 71
     mnzoc = zeros(Float64, M1_szie + N1_szie + ZOC_szie)
 
-    # bj, dj, fj -> 101 + 101 + 101
-    bdfj = zeros(Float64, BJ_size + DJ_size + FJ_size)
-
     xm = 0.0
     nm, mm = 0, 0
     x = 0.0
@@ -187,9 +184,9 @@ function jdzo!(nt::Int, zo::Vector{Float64}, n::Vector{Int}, m::Vector{Int}, p::
                 x = x1
                 while true
                     #= 10 =#
-                    bdfj[1:101], bdfj[102:202], bdfj[203:303] = bjndd(x, i)
+                    bj, dj, fj = bjndd(x, i)
                     x0 = x
-                    x -= bdfj[101+i] / bdfj[202+i]
+                    x -= dj[i] / fj[i]
                     if x1 > xm
                         @goto _line15
                     end
@@ -222,10 +219,9 @@ function jdzo!(nt::Int, zo::Vector{Float64}, n::Vector{Int}, m::Vector{Int}, p::
             x = x2
             while true
                 #= 25 =#
-                bdfj[1:101], bdfj[102:202], bdfj[203:303] = bjndd(x, i)
+                bj, dj, fj = bjndd(x, i)
                 x0 = x
-                #= X -= DJ(I) / FJ(I) =#
-                x -= bdfj[i] / bdfj[101+i]
+                x -= bj[i] / dj[i]
                 if x > xm
                     # Need to "continue;" twice hence goto is simpler
                     @goto _line30
