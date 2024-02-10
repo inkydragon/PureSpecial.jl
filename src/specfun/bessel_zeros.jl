@@ -508,7 +508,7 @@ function jynbh!(
 
         for k = 1:4
             p0 += a[k] * x^(-2*k)
-            q0 += b[k] * x^(-2*k + 1)
+            q0 += b[k] * x^(-2*k - 1)
         end
 
         cu = sqrt(r2p / x)
@@ -526,7 +526,7 @@ function jynbh!(
 
         for k = 1:4
             p1 += a1[k] * x^(-2*k)
-            q1 += b1[k] * x^(-2*k + 1)
+            q1 += b1[k] * x^(-2*k - 1)
         end
 
         bj1 = cu * (p1 * cos(t2) - q1 * sin(t2))

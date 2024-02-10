@@ -113,7 +113,7 @@ end
         -10:-1...,
         1:10...,
         295:305...,
-        rand(1:1000, 5)...,
+        rand(1:1000, 10)...,
     ]
 
     for x in test_x,
@@ -137,12 +137,6 @@ end
             nm = Specfun.jynbh!(x, n, nmin, bj, by)
 
             @test isequal(r_nm, nm)
-            
-            if x >= 300 && nmin <= n
-                @test_broken false
-                continue
-            end
-            
             @test isapprox(r_bj, bj)
             @test isapprox(r_by, by)
         end
