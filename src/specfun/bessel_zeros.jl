@@ -385,3 +385,181 @@ function msta2(x::Float64, n::Int64, mp::Int64)
 
     nn + 10
 end
+
+"""
+    jynbh!(
+        x::Float64, n::Int, nmin::Int,
+        bj::Vector{Float64}, by::Vector{Float64}
+    )
+
+Compute Bessel functions Jn(x), Yn(x)
+
+Input
+x --- Argument of Jn(x) and Yn(x) ( x ≥ 0 )
+n --- Highest order of Jn(x) and Yn(x) computed  ( n ≥ 0 )
+nmin -- Lowest order computed  ( nmin ≥ 0 )
+
+Output
+BJ(n-NMIN) --- Jn(x)   ; if indexing starts at 0
+BY(n-NMIN) --- Yn(x)   ; if indexing starts at 0
+
+Return:
+NM --- Highest order computed
+
+Routines called
+MSTA1 and MSTA2 to calculate the starting
+point for backward recurrence
+"""
+function jynbh!(
+    x::Float64, n::Int, nmin::Int,
+    bj::Vector{Float64}, by::Vector{Float64})
+    out_len = length(nmin:n)
+    @assert length(bj) >= out_len
+    @assert length(by) >= out_len
+
+    r2p = 0.63661977236758
+    # Hankel expansion
+    a = [-0.0703125, 0.112152099609375, -0.5725014209747314, 0.6074042001273483e+01]
+    b = [0.0732421875, -0.2271080017089844, 0.1727727502584457e+01, -0.2438052969955606e+02]
+    a1 = [0.1171875, -0.144195556640625, 0.6765925884246826, -0.6883914268109947e+01]
+    b1 = [-0.1025390625, 0.2775764465332031, -0.1993531733751297e+01, 0.2724882731126854e+02]
+
+    nm = n
+    if x < 1.0e-100
+        # TODO: use fill!
+        for k = nmin:n
+            # NOTE: in Fortran `bj,by` index start from 0
+            bj[k - nmin + 1] = 0.0
+            by[k - nmin + 1] = -1.0e+300
+        end
+        if nmin == 0
+            bj[1] = 1.0
+        end
+
+        return nm
+    end
+
+    by0 = 0.0
+    by1 = 0.0
+    ky = 0
+    if (x <= 300.0) || (n > trunc(Int64, 0.9 * x))
+        #
+        # Backward recurrence for Jn
+        #
+        if n == 0
+            nm = 1
+        end
+        m = msta1(x, 200)
+        if m < nm
+            nm = m
+        else
+            m = msta2(x, nm, 15)
+        end
+    
+        bs = 0.0
+        su = 0.0
+        sv = 0.0
+        f2 = 0.0
+        f1 = 1.0e-100
+        f = 0.0
+        for k = m:-1:0
+            f = 2.0 * (k + 1.0) / x * f1 - f2
+            if (k <= nm) && (k >= nmin)
+                bj[k - nmin + 1] = f
+            end
+            if k == 2 * div(k, 2) && k != 0
+                bs += 2.0 * f
+                su += (-1)^(div(k, 2)) * f / k
+            elseif k > 1
+                sv += (-1)^(div(k, 2)) * k / (k * k - 1.0) * f
+            end
+            f2 = f1
+            f1 = f
+        end
+        s0 = bs + f
+
+        for k = nmin:nm
+            bj[k - nmin + 1] /= s0
+        end
+
+        #
+        # Estimates for Yn at start of recurrence
+        #
+        bj0 = f1 / s0
+        bj1 = f2 / s0
+        ec = log(x / 2.0) + 0.5772156649015329
+        by0 = r2p * (ec * bj0 - 4.0 * su / s0)
+        by1 = r2p * ((ec - 1.0) * bj1 - bj0 / x - 4.0 * sv / s0)
+
+        if 0 >= nmin
+            by[0 - nmin + 1] = by0
+        end
+        if 1 >= nmin
+            by[1 - nmin + 1] = by1
+        end
+        ky = 2
+    else
+        #
+        # Hankel expansion
+        #
+        t1 = x - 0.25 * pi
+        p0 = 1.0
+        q0 = -0.125 / x
+
+        for k = 1:4
+            p0 += a[k] * x^(-2*k)
+            q0 += b[k] * x^(-2*k + 1)
+        end
+
+        cu = sqrt(r2p / x)
+        bj0 = cu * (p0 * cos(t1) - q0 * sin(t1))
+        by0 = cu * (p0 * sin(t1) + q0 * cos(t1))
+
+        if 0 >= nmin
+            bj[0 - nmin + 1] = bj0
+            by[0 - nmin + 1] = by0
+        end
+
+        t2 = x - 0.75 * pi
+        p1 = 1.0
+        q1 = 0.375 / x
+
+        for k = 1:4
+            p1 += a1[k] * x^(-2*k)
+            q1 += b1[k] * x^(-2*k + 1)
+        end
+
+        bj1 = cu * (p1 * cos(t2) - q1 * sin(t2))
+        by1 = cu * (p1 * sin(t2) + q1 * cos(t2))
+
+        if 1 >= nmin
+            bj[1 - nmin + 1] = bj1
+            by[1 - nmin + 1] = by1
+        end
+
+        for k = 2:nm
+            bjk = 2.0 * (k - 1.0) / x * bj1 - bj0
+            if k >= nmin
+                bj[k - nmin + 1] = bjk
+            end
+            bj0 = bj1
+            bj1 = bjk
+        end
+        ky = 2
+    end
+
+    #
+    # Forward recurrence for Yn
+    #
+    for k = ky:nm
+        byk = 2.0 * (k - 1.0) * by1 / x - by0
+
+        if k >= nmin
+            by[k - nmin + 1] = byk
+        end
+        by0 = by1
+        by1 = byk
+    end
+    
+    nm
+end

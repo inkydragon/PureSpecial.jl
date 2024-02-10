@@ -129,6 +129,30 @@ function _msta2(x::Float64, n::Int32, mp::Int32)
 end
 _msta2(x::Float64, n::Int64, mp::Int64) = _msta2(x, Int32(n), Int32(mp))
 
+"""
+Warp fortran `specfun.JYNBH`.
+
+- Output: `bj ,by`
+- Return: `nm`
+"""
+function _jynbh!(
+    x::Float64, n::Int32, nmin::Int32,
+    bj::Vector{Float64}, by::Vector{Float64})
+    nm = Ref{Int32}(0)
+    # SUBROUTINE JYNBH(N,NMIN,X, NM,BJ,BY)
+    # void specfun_jynbh(int n, int nmin, double x, 
+    #   int *nm, double *bj, double *by);
+    ccall(f77func(:jynbh), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{Float64},
+         Ref{Int32}, Ptr{Float64}, Ptr{Float64}),
+        n, nmin, x,
+        nm, bj, by)
+
+    nm[]
+end
+_jynbh!(x, n::Int64, nmin::Int64, bj, by) =
+    _jynbh!(x, Int32(n), Int32(nmin), bj, by)
+
 
 #= ## Kelvin functions =#
 """

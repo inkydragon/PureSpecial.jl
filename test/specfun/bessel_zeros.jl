@@ -106,3 +106,38 @@ end
         end
     end
 end
+
+@testset "jynbh" begin
+    test_x = Float64[
+        rand(10)...,
+        -10:-1...,
+        1:10...,
+        rand(1:1000, 5)...,
+    ]
+
+    for x in test_x,
+        n in 1:10,
+        nmin in 0:16
+        out_len = length(nmin:n)
+        if out_len < 0
+            continue 
+        end
+
+        r_bj, r_by = zeros(out_len), zeros(out_len)
+        bj, by = zeros(out_len), zeros(out_len)
+
+        @testset "_jynbh(x=$x, n=$n, nmin=$nmin)" begin
+            fill!(r_bj, 0.0)
+            fill!(r_by, 0.0)
+            fill!(bj, 0.0)
+            fill!(by, 0.0)
+            
+            r_nm = _jynbh!(x, n, nmin, r_bj, r_by)
+            nm = Specfun.jynbh!(x, n, nmin, bj, by)
+
+            @test isequal(r_nm, nm)
+            @test isapprox(r_bj, bj)
+            @test isapprox(r_by, by)
+        end
+    end
+end
