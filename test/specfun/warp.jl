@@ -81,6 +81,30 @@ function _bjndd(x::Float64, n::Int)
     bj, dj, fj
 end
 
+"""
+Warp fortran `specfun.JDZO`.
+
+- Input: `nt`
+- Output: `zo, n, m, p`
+"""
+function _jdzo(nt::Int)
+    @assert nt in 1:1200
+    zo = zeros(Float64, 1401)
+    n = zeros(Int32, 1400)
+    m = zeros(Int32, 1400)
+    p = zeros(Int32, 1400)
+    # NOTE: different params orders.
+    #   JDZO(NT,N,M,P,ZO)
+    #   void specfun_jdzo(int nt, double *zo, int *n, int *m, int *p);
+    ccall(f77func(:jdzo), Cvoid,
+        (Ref{Int64},
+         Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}),
+        nt,
+        n, m, p, zo)
+
+    zo[1:nt], n[1:nt], m[1:nt], p[1:nt]
+end
+
 
 #= ## Kelvin functions =#
 """

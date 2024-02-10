@@ -27,3 +27,21 @@
         end
     end
 end
+
+@testset "jdzo" begin
+    test_nt = Int64[
+        1:10...,
+    ]
+
+    for nt in test_nt
+        @testset "_jdzo(nt=$nt)" begin
+            r_zo, r_n, r_m, r_p = _jdzo(nt)
+            zo, n, m, p = Specfun.jdzo(nt)
+            
+            @test isapprox(r_zo, zo)
+            @test isequal(r_n, n)
+            @test isequal(r_m, m)
+            @test isequal(r_p, p)
+        end
+    end
+end
