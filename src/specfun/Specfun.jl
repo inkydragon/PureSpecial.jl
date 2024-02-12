@@ -5,5 +5,6 @@ module Specfun
 include("airyzo.jl")
 include("bessel_zeros.jl")
 include("kelvin.jl")
+include("hyper.jl")
 
 end # Scipy4j
