@@ -8,8 +8,13 @@ gfortran -I. -shared -fPIC -g -O3 specfun.f -o libspecfun.so
 ```
 """
 # where to find: `specfun.so`
-push!(DL_LOAD_PATH, "/mnt/d/jl/JuliaMath/Scipy4j.jl")
-push!(DL_LOAD_PATH, pwd())
+ref_impl_lib = get(ENV, "SCIPY_F77_REF_IMPL_PATH", nothing)
+if isnothing(ref_impl_lib)
+    @warn """Cannot find f77 ref impl lib!  You may want to set `ENV["SCIPY_F77_REF_IMPL_PATH"]`"""
+else
+    @info "Load ref impl for: '$(ref_impl_lib)'"
+    push!(DL_LOAD_PATH, ref_impl_lib)
+end
 const libspecfun = Libdl.dlopen("libspecfun.so")
 
 
