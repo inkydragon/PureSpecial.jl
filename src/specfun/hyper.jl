@@ -127,3 +127,162 @@ function cgama(z::Complex{Float64}, kf::Int)
         return complex(gr, gi)
     end
 end
+cgama(f::Float64, kf) = cgama(complex(f), kf)
+
+"""
+    cchg(a::Float64, b::Float64, z::Complex{Float64})
+
+Compute confluent hypergeometric function
+M(a,b,z) with real parameters a, b and a
+complex argument z
+
+Input
+a --- Parameter
+b --- Parameter
+z --- Complex argument
+
+Output
+CHG --- M(a,b,z)
+
+Routine called
+CGAMA for computing complex ln[Г(x)]
+"""
+function cchg(a::Float64, b::Float64, z::Complex{Float64})
+    ci = 0.0 + 1.0im
+
+    # Variables initialization
+    a0 = a
+    a1 = a
+    z0 = z
+
+    # Check for special cases
+    if b == 0.0 || b == -abs(b)
+        return complex(1e300)
+    end
+    if a == 0.0 || z == complex(0.0)
+        return complex(1.0)
+    end
+    if a == -1.0
+        return 1.0 - z / b
+    end
+    if a == b
+        return exp(z)
+    end
+    if (a - b) == 1.0
+        return (1.0 + z / b) * exp(z)
+    end
+    if a == 1.0 && b == 2.0
+        return (exp(z) - 1.0) / z
+    end
+
+    if isinteger(a) && a < 0.0
+        m = trunc(Int64, -a)
+        cr = complex(1.0)
+        chg = complex(1.0)
+        for k in 1:m
+            cr *= (a + k - 1.0) / k / (b + k - 1.0) * z
+            chg += cr
+        end
+        return chg
+    end
+
+    x0 = real(z)
+    if x0 < 0.0
+        a = b - a
+        a0 = a
+        z = -z
+    end
+    nl = 0
+    la = 0
+    if a >= 2.0
+        nl = 1
+        la = trunc(Int64, a)
+        a -= la + 1
+    end
+
+    cy0 = 0.0
+    cy1 = 0.0
+    ns = 0
+    for n in 0:nl
+        if a0 >= 2.0
+            a += 1.0
+        end
+        if (abs(z) < 20.0 + abs(b)) || (a < 0.0)
+            chw = complex(0.0)
+            chg = complex(1.0)
+            crg = complex(1.0)
+            for j in 1:500
+                crg *= (a + j - 1.0) / (j * (b + j - 1.0)) * z
+                if abs((chg - chw) / chg) < 1e-15
+                    break
+                end
+                
+                chw = chg
+            end
+        else
+            y = 0.0
+            cg1 = cgama(a, 0)
+            cg2 = cgama(b, 0)
+            cg3 = cgama(b - a, 0)
+            
+            cs1 = complex(1.0)
+            cs2 = complex(1.0)
+            cr1 = complex(1.0)
+            cr2 =complex(1.0)
+            for i in 1:8
+                cr1 *= -(a + i - 1.0) * (a - b + i) / (z * i)
+                cr2 *= (b - a + i - 1.0) * (i - a) / (z * i)
+                cs1 += cr1
+                cs2 += cr2
+            end
+            
+            x = real(z)
+            y = imag(z)
+            phi= 0.0
+            if x == 0.0 && y >= 0.0
+                phi = 0.5 * pi
+            elseif x == 0.0 && y <= 0.0
+                phi = -0.5 * pi
+            else
+                phi = atan(y / x)
+            end
+
+            if (phi > -0.5*pi) && (phi < 1.5*pi)
+                ns = 1
+            end
+            if (phi > -1.5*pi) && (phi <= -0.5*pi)
+                ns = -1
+            end
+
+            cfac = exp(ns * ci * pi * a)
+            if y == 0.0
+                cfac = cos(pi * a)
+            end
+            chg1 = exp(cg2 - cg3) * z ^ (-a) * cfac * cs1
+            chg2 = exp(cg2 - cg1 + z) * z ^ (a - b) * cs2
+            chg = chg1 + chg2
+        end
+        if n == 0
+            cy0 = chg
+        end
+        if n == 1
+            cy1 = chg
+        end
+    end
+    if a0 >= 2.0
+        for i in 1:la
+            chg = ((2.0 * a - b + z) * cy1 + (b - a) * cy0) / a
+            cy0 = cy1
+            cy1 = chg
+            a += 1.0
+        end
+    end
+    if x0 < 0.0
+        chg *= exp(-z)
+    end
+
+    # TODO: remove this
+    a = a1
+    z = z0
+    return chg
+end

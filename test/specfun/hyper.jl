@@ -27,5 +27,48 @@ end
 end
 
 @testset "hyp1f1/cchg" begin
+    test_abz = [
+        #= if b == 0.0 || b == -abs(b) =#
+        (1.0, 0.0, complex(1.0)),
+        (1.0, -0.0, complex(1.0)),
+        
+        #= if a == 0.0 || z == 0.0 =#
+        (0.0, 1.0, complex(0.0)),
+        
+        #= if a == -1.0 =#
+        (-1.0, 1.0, complex(1.0)),
+        (-1.0, -1000.0, complex(1.0)),
+        (-1.0, 1.0, -complex(1000.0)),
+        
+        #= if a == b =#
+        (1.0, 1.0, complex(3.14, 2.7)),
+        
+        #= if (a - b) == 1.0 =#
+        (13.0, 12.0, complex(1.0)),
+        (-12.0, -13.0, complex(-1.0)),
+        
+        #= if a == b =#
+        (1.0, 2.0, complex(1.0)),
+        
+        #= if isinteger(a) && a < 0.0 =#
+        # T1: 
+        (-23.0, 1.0, complex(1.0)),
+        
+        # F1: !isinteger(a) || a >= 0.0
+        (-3.14, 1.0, complex(1.0)),
+        (3.14, 1.0, complex(1.0)),
+        (23.0, 1.0, complex(1.0)),
+        
+        #= if (abs(z) < 20.0 + abs(b)) || (a < 0.0) =#
+        (314.1, 1.0, complex(31.0, 27.0)),
+    ]
 
+    for (a,b,z) in test_abz
+        @testset "cchg($a, $b, $z)" begin
+            ref = _cchg(a, b, z)
+            res = Specfun.cchg(a, b, z)
+
+            @test isapprox(ref, res)
+        end
+    end
 end

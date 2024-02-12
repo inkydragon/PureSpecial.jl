@@ -252,3 +252,22 @@ function _cgama(z::Complex{Float64}, kf::Int)
 
     complex(gr[], gi[])
 end
+
+"""
+Warp fortran `specfun.CCHG`.
+
+- Input: `A,B,Z`
+- Output: `CHG`
+"""
+function _cchg(a::Float64, b::Float64, z::Complex{Float64})
+    chg = Ref{Complex{Float64}}(NaN + NaN*im)
+    # SUBROUTINE CCHG(A,B,Z,CHG)
+    # double complex specfun_cchg(double a, double b, double complex z);
+    ccall(f77func(:cchg), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Complex{Float64}},
+         Ref{Complex{Float64}}),
+        a, b, z,
+        chg)
+
+    chg[]
+end
