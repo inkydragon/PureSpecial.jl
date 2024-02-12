@@ -225,3 +225,24 @@ function _klvnzo(nt::Int64, kd::Int64)
 
     zo
 end
+
+
+"""
+Warp fortran `specfun.CGAMA`.
+
+- Input: `X,Y, KF`
+- Output: `GR,GI`
+"""
+function _cgama(z::Complex{Float64}, kf::Int)
+    gr = Ref{Float64}(NaN)
+    gi = Ref{Float64}(NaN)
+    # SUBROUTINE CGAMA(X,Y,KF,GR,GI)
+    # double complex specfun_cgama(double complex z, int kf);
+    ccall(f77func(:cgama), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Int32},
+         Ref{Float64}, Ref{Float64}),
+        real(z), imag(z), Int32(kf),
+        gr, gi)
+
+    complex(gr[], gi[])
+end
