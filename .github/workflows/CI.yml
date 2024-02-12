@@ -7,9 +7,6 @@ on:
   pull_request:
   workflow_dispatch:
 
-env:
-  SCIPY_F77_REF_IMPL_PATH: ${{ env.GITHUB_WORKSPACE }}/test/f77/
-
 concurrency:
   # Skip intermediate builds: always.
   # Cancel intermediate builds: only if it is a pull request build.
