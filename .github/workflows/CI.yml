@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  SCIPY_F77_REF_IMPL_PATH: Scipy4j.jl/test/f77/
+  SCIPY_F77_REF_IMPL_PATH: ${{ GITHUB_WORKSPACE }}/test/f77/
 
 concurrency:
   # Skip intermediate builds: always.
@@ -51,7 +51,7 @@ jobs:
       - name: Build F77 ref lib
         run: |
           pwd
-          make -C Scipy4j.jl/test/f77
+          make -C test/f77/
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
       - uses: julia-actions/julia-processcoverage@v1
