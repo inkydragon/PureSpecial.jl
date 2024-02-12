@@ -8,12 +8,13 @@ gfortran -I. -shared -fPIC -g -O3 specfun.f -o libspecfun.so
 ```
 """
 # where to find: `specfun.so`
-ref_impl_lib = get(ENV, "SCIPY_F77_REF_IMPL_PATH", nothing)
-if isnothing(ref_impl_lib)
+github_workspace = get(ENV, "GITHUB_WORKSPACE", nothing)
+if isnothing(github_workspace)
     @warn """Cannot find f77 ref impl lib!  You may want to set `ENV["SCIPY_F77_REF_IMPL_PATH"]`"""
 else
-    @info "Load ref impl for: '$(ref_impl_lib)'"
-    push!(DL_LOAD_PATH, ref_impl_lib)
+    github_workspace = joinpath(github_workspace, "test/f77/")
+    @info "Load ref impl for: '$(github_workspace)'"
+    push!(DL_LOAD_PATH, github_workspace)
 end
 const libspecfun = Libdl.dlopen("libspecfun.so")
 
