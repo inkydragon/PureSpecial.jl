@@ -4,7 +4,7 @@ using Libdl
 """
 ## Compile fortran lib
 ```sh
-gfortran -I. -shared -fPIC -g -O3 specfun.f -o libspecfun.so
+make -C test/f77/
 ```
 """
 # where to find: `specfun.so`
