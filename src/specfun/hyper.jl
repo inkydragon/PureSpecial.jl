@@ -133,19 +133,23 @@ cgama(f::Float64, kf) = cgama(complex(f), kf)
     cchg(a::Float64, b::Float64, z::Complex{Float64})
 
 Compute confluent hypergeometric function
-M(a,b,z) with real parameters a, b and a
-complex argument z
+`M(a,b,z)` with real parameters `a`, `b` and
+a complex argument `z`.
 
-Input
+## Input
 a --- Parameter
 b --- Parameter
 z --- Complex argument
 
-Output
+## Output
 CHG --- M(a,b,z)
 
-Routine called
+## Routine called
 CGAMA for computing complex ln[Г(x)]
+
+## Reference
+- [DLMF C13: Confluent Hypergeometric Functions](https://dlmf.nist.gov/13)
+- Zhang, S.J., & Jin, J.M. (1996). Computation of Special Functions. Wiley.
 """
 function cchg(a::Float64, b::Float64, z::Complex{Float64})
     ci = 0.0 + 1.0im
@@ -155,19 +159,26 @@ function cchg(a::Float64, b::Float64, z::Complex{Float64})
     a1 = a
     z0 = z
 
-    # Check for special cases
-    if b == 0.0 || b == -abs(b)
+    #= Check for special cases =#
+    # b = 0, -1, -2, ...
+    if isinteger(b) && b <= 0.0
+        # TODO: warp and ret Inf
         return complex(1e300)
     end
+    # a = 0 OR z = 0
     if a == 0.0 || z == complex(0.0)
+        # DLMF 13.6.3:  M(0,b,z) = ... = 1
+        # CoSF 12.8.5:  M(a,b,0) = M(0,b,z) = 1
         return complex(1.0)
     end
     if a == -1.0
         return 1.0 - z / b
     end
     if a == b
+        # DLMF 13.6.1:  M(a,a,z) = e^z
         return exp(z)
     end
+    # a = b + 1
     if (a - b) == 1.0
         return (1.0 + z / b) * exp(z)
     end
@@ -175,20 +186,26 @@ function cchg(a::Float64, b::Float64, z::Complex{Float64})
         return (exp(z) - 1.0) / z
     end
 
+    # a is negative integer
     if isinteger(a) && a < 0.0
+        # CoSF 12.8.7:  Degenerating Form.
+        #   M(-m,b,z), m > 0
         m = trunc(Int64, -a)
+        @assert m > 0
         cr = complex(1.0)
         chg = complex(1.0)
         for k in 1:m
+            #      (-m)_k       / k! / (b)_k        * z^k      
             cr *= (a + k - 1.0) / k / (b + k - 1.0) * z
             chg += cr
         end
         return chg
     end
 
-    # DLMF 13.2.39:  M(a,b,z) = exp(z)*M(b-a,b,-z)
     x0 = real(z)
     if x0 < 0.0
+        # Preparing DLMF 13.2.39:  Kummer’s Transformations
+        #   M(a,b,z) = exp(z)*M(b-a,b,-z)
         a = b - a
         a0 = a
         z = -z
@@ -197,7 +214,8 @@ function cchg(a::Float64, b::Float64, z::Complex{Float64})
     nl = 0
     la = 0
     if a >= 2.0
-        # preparing terms for DLMF 13.3.1
+        # Preparing terms for DLMF 13.3.1
+        # xref: "Applying DLMF 13.3.1"
         nl = 1
         la = trunc(Int64, a)
         a -= la + 1
@@ -211,18 +229,22 @@ function cchg(a::Float64, b::Float64, z::Complex{Float64})
             a += 1.0
         end
         if (abs(z) < 20.0 + abs(b)) || (a < 0.0)
+            # CoSF 12.7.7
             chw = complex(0.0)
             chg = complex(1.0)
             crg = complex(1.0)
             for j in 1:500
                 crg *= (a + j - 1.0) / (j * (b + j - 1.0)) * z
+                # XXX: missing chg += crg
                 if abs((chg - chw) / chg) < 1e-15
                     break
                 end
-                
+
                 chw = chg
             end
         else
+            # When |z| --> Inf
+            # CoSF 12.8.11:  Asymptotic Formulas
             y = 0.0
             cg1 = cgama(a, 0)
             cg2 = cgama(b, 0)
@@ -250,9 +272,11 @@ function cchg(a::Float64, b::Float64, z::Complex{Float64})
                 phi = atan(y / x)
             end
 
+            # -π/2 < arg(Z) < 3π/2
             if (phi > -0.5*pi) && (phi < 1.5*pi)
                 ns = 1
             end
+            # -3π/2 < arg(Z) <= -π/2
             if (phi > -1.5*pi) && (phi <= -0.5*pi)
                 ns = -1
             end
@@ -274,7 +298,7 @@ function cchg(a::Float64, b::Float64, z::Complex{Float64})
     end
 
     if a0 >= 2.0
-        # DLMF 13.3.1:
+        # Applying DLMF 13.3.1:
         #   (b-a)*M(a-1,b,z) + (2a-b+z)*M(a,b,z) - a*M(a+1,b,z) = 0
         #
         #   M(a+1,b,z) = ( (2a-b+z)*cy1 + (b-a)*cy0 ) / a
@@ -289,9 +313,11 @@ function cchg(a::Float64, b::Float64, z::Complex{Float64})
         end
     end
 
-    # DLMF 13.2.39:  M(a,b,z) = exp(z)*M(b-a,b,-z)
-    #   (cf. begin)
     if x0 < 0.0
+        # DLMF 13.2.39:  Kummer’s Transformations
+        #   M(a,b,z) = exp(z)*M(b-a,b,-z)
+        #
+        # xref: "Preparing DLMF 13.2.39"
         chg *= exp(-z)
     end
 
