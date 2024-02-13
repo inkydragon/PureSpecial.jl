@@ -271,3 +271,22 @@ function _cchg(a::Float64, b::Float64, z::Complex{Float64})
 
     chg[]
 end
+
+"""
+Warp fortran `specfun.CHGM`.
+
+- Input: `A,B,X`
+- Output: `HG`
+"""
+function _chgm(a::Float64, b::Float64, x::Float64)
+    hg = Ref{Float64}(NaN)
+    # SUBROUTINE CHGM(A,B,X,HG)
+    # double specfun_chgm(double x, double a, double b);
+    ccall(f77func(:chgm), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64},
+         Ref{Float64}),
+        a, b, x,
+        hg)
+
+    hg[]
+end

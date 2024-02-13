@@ -286,3 +286,121 @@ function cchg(a::Float64, b::Float64, z::Complex{Float64})
     z = z0
     return chg
 end
+
+"""
+    chgm(a::Float64, b::Float64, x::Float64)
+
+Compute confluent hypergeometric function M(a,b,x)
+
+Input
+a  --- Parameter
+b  --- Parameter ( b <> 0,-1,-2,... )
+x  --- Argument
+         
+Output
+HG --- M(a,b,x)
+
+Routine called
+CGAMA for computing complex ln[Г(x)]
+"""
+function chgm(a::Float64, b::Float64, x::Float64)
+    a0 = a
+    x0 = x
+    hg = 0.0
+
+    #
+    # DLMF 13.2.39
+    #
+    if x < 0.0
+        a = b - a
+        a0 = a
+        x = abs(x)
+    end
+
+    nl = 0
+    la = 0
+    if a >= 2.0
+        #
+        # preparing terms for DLMF 13.3.1
+        #
+        nl = 1
+        la = trunc(Int64, a)
+        a -= la + 1
+    end
+
+    y0 = 0.0
+    y1 = 0.0
+    for n = 0:nl
+        if a0 >= 2.0
+            a += 1.0
+        end
+
+        if x <= (30.0 + abs(b)) || (a < 0.0)
+            hg = 1.0
+            rg = 1.0
+            for j = 1:500
+                rg *= (a + j - 1.0) / (j * (b + j - 1.0)) * x
+                hg += rg
+                if hg != 0.0 && abs(rg / hg) < 1e-15
+                    #
+                    # DLMF 13.2.39 (cf. above)
+                    #
+                    if x0 < 0.0
+                        hg *= exp(x0)
+                    end
+                    break
+                end
+            end
+        else
+            #
+            # DLMF 13.7.2 & 13.2.4, SUM2 corresponds to first sum
+            #
+            cta = cgama(a, 0)
+            ctb = cgama(b, 0)
+            xg = b - a
+            ctba = cgama(xg, 0)
+            sum1 = 1.0
+            sum2 = 1.0
+            r1 = 1.0
+            r2 = 1.0
+            for i = 1:8
+                r1 *= -(a + i - 1.0) * (a - b + i) / (x * i)
+                r2 *= -(b - a + i - 1.0) * (a - i) / (x * i)
+                sum1 += r1
+                sum2 += r2
+            end
+            if x0 >= 0.0
+                hg1 = real(exp(ctb - ctba) * x^(-a) * cos(pi*a) * sum1)
+                hg2 = real(exp(ctb - cta + x) * x^(a - b) * sum2)
+            else
+                # 
+                # DLMF 13.2.39 (cf. above)
+                #
+                hg1 = real(exp(ctb - ctba + x0) * x^(-a) * cos(pi*a) * sum1)
+                hg2 = real(exp(ctb - cta) * x^(a - b) * sum2)
+            end
+            hg = hg1 + hg2
+        end
+
+        if n == 0
+            y0 = hg
+        end
+        if n == 1
+            y1 = hg
+        end
+    end
+
+    if a0 >= 2.0
+        # 
+        # DLMF 13.3.1
+        #
+        for _ = 1:(la-1)
+            hg = ((2.0 * a - b + x) * y1 + (b - a) * y0) / a
+            y0 = y1
+            y1 = hg
+            a += 1.0
+        end
+    end
+
+    return hg
+end
