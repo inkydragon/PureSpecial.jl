@@ -186,15 +186,18 @@ function cchg(a::Float64, b::Float64, z::Complex{Float64})
         return chg
     end
 
+    # DLMF 13.2.39:  M(a,b,z) = exp(z)*M(b-a,b,-z)
     x0 = real(z)
     if x0 < 0.0
         a = b - a
         a0 = a
         z = -z
     end
+
     nl = 0
     la = 0
     if a >= 2.0
+        # preparing terms for DLMF 13.3.1
         nl = 1
         la = trunc(Int64, a)
         a -= la + 1
@@ -269,14 +272,26 @@ function cchg(a::Float64, b::Float64, z::Complex{Float64})
             cy1 = chg
         end
     end
+
     if a0 >= 2.0
-        for i in 1:la
+        # DLMF 13.3.1:
+        #   (b-a)*M(a-1,b,z) + (2a-b+z)*M(a,b,z) - a*M(a+1,b,z) = 0
+        #
+        #   M(a+1,b,z) = ( (2a-b+z)*cy1 + (b-a)*cy0 ) / a
+        #       cy1 = M(a-1,b,z)
+        #       cy0 = M(a,b,z)
+        #
+        # XXX: `1:la`` OR `1:(la-1)` ?  See also: `chgm``
+        for _ in 1:la
             chg = ((2.0 * a - b + z) * cy1 + (b - a) * cy0) / a
             cy0 = cy1
             cy1 = chg
             a += 1.0
         end
     end
+
+    # DLMF 13.2.39:  M(a,b,z) = exp(z)*M(b-a,b,-z)
+    #   (cf. begin)
     if x0 < 0.0
         chg *= exp(-z)
     end
@@ -308,28 +323,27 @@ function chgm(a::Float64, b::Float64, x::Float64)
     x0 = x
     hg = 0.0
 
-    #
-    # DLMF 13.2.39
-    #
+    # DLMF 13.2.39:  M(a,b,x) = exp(x)*M(b-a,b,-x)
     if x < 0.0
         a = b - a
         a0 = a
-        x = abs(x)
+        x = -x
     end
 
     nl = 0
     la = 0
     if a >= 2.0
-        #
         # preparing terms for DLMF 13.3.1
-        #
         nl = 1
+        "(la-1): Number of iterations"
         la = trunc(Int64, a)
         a -= la + 1
+        @assert -1.0 <= a < 0.0
     end
 
     y0 = 0.0
     y1 = 0.0
+    @assert nl in 0:1
     for n = 0:nl
         if a0 >= 2.0
             a += 1.0
@@ -342,9 +356,8 @@ function chgm(a::Float64, b::Float64, x::Float64)
                 rg *= (a + j - 1.0) / (j * (b + j - 1.0)) * x
                 hg += rg
                 if hg != 0.0 && abs(rg / hg) < 1e-15
-                    #
-                    # DLMF 13.2.39 (cf. above)
-                    #
+                    # DLMF 13.2.39:  M(a,b,z) = exp(z)*M(b-a,b,-z)
+                    #   (cf. above)
                     if x0 < 0.0
                         hg *= exp(x0)
                     end
@@ -391,8 +404,12 @@ function chgm(a::Float64, b::Float64, x::Float64)
     end
 
     if a0 >= 2.0
-        # 
-        # DLMF 13.3.1
+        # DLMF 13.3.1:
+        #   (b-a)*M(a-1,b,z) + (2a-b+z)*M(a,b,z) - a*M(a+1,b,z) = 0
+        #
+        #   M(a+1,b,z) = ( (2a-b+z)*y1 + (b-a)*y0 ) / a
+        #       y0 = M(a-1,b,z)
+        #       y1 = M(a,b,z)
         #
         for _ = 1:(la-1)
             hg = ((2.0 * a - b + x) * y1 + (b - a) * y0) / a
