@@ -334,7 +334,7 @@ function chgm(a::Float64, b::Float64, x::Float64)
     if a >= 2.0
         # preparing terms for DLMF 13.3.1
         nl = 1
-        "(la-1): Number of iterations"
+        # (la-1): Number of iterations
         la = trunc(Int64, a)
         a -= la + 1
         @assert -1.0 <= a < 0.0
