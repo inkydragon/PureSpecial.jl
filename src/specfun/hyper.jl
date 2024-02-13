@@ -281,8 +281,7 @@ function cchg(a::Float64, b::Float64, z::Complex{Float64})
         #       cy1 = M(a-1,b,z)
         #       cy0 = M(a,b,z)
         #
-        # XXX: `1:la`` OR `1:(la-1)` ?  See also: `chgm``
-        for _ in 1:la
+        for _ in 1:(la-1)
             chg = ((2.0 * a - b + z) * cy1 + (b - a) * cy0) / a
             cy0 = cy1
             cy1 = chg
