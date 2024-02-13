@@ -110,13 +110,12 @@ end
         @testset "cchg($a, $b, $z)" begin
             ref = _cchg(a, b, z)
             res = Specfun.cchg(a, b, z)
-            
-            if broken_b == b
-                @test_broken false
-                continue
-            end
 
-            @test isapprox(ref, res)
+            if isnan(ref)
+                @test isequal(ref, res)
+            else
+                @test isapprox(ref, res)
+            end
         end
     end
 end

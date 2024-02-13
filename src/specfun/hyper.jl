@@ -235,7 +235,7 @@ function cchg(a::Float64, b::Float64, z::Complex{Float64})
             crg = complex(1.0)
             for j in 1:500
                 crg *= (a + j - 1.0) / (j * (b + j - 1.0)) * z
-                # XXX: missing chg += crg
+                chg += crg
                 if abs((chg - chw) / chg) < 1e-15
                     break
                 end
