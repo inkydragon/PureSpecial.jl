@@ -22,6 +22,52 @@
     end
 end
 
+
+@testset "hyp1f1/special" begin
+    function hyp1f1_test(chg, a, b, z::ComplexF64)
+        chg = complex(chg)
+        @testset "cchg($a, $b, $z)" begin
+            if isinf(chg)
+                chg = 1.0e300 + 0.0im
+                @test_broken chg == (Inf + 0.0im)
+                @test isequal(chg, Specfun.cchg(a, b, z))
+                @test isequal(chg, _cchg(a, b, z))
+            else
+                @test isapprox(chg, Specfun.cchg(a, b, z))
+                @test isapprox(chg, _cchg(a, b, z))
+            end
+        end
+    end
+    function hyp1f1_test(hg, a, b, x::Float64)
+        @testset "chgm($a, $b, $x)" begin
+            @test isapprox(hg, Specfun.chgm(a, b, x))
+            @test isapprox(hg, _chgm(a, b, x))
+        end
+        z = complex(x)
+        chg = complex(hg)
+        hyp1f1_test(chg, a, b, z)
+    end
+
+    for _ in 1:1
+        let a=rand(), b=rand(), x=rand(), z=rand(ComplexF64)
+            # HG = Inf  for b = negative int
+            hyp1f1_test(-Inf, a, -1.0, x)
+            hyp1f1_test(1.0e300 + 0.0im, a, -1.0, z)
+            # HG = 1    for a = 0 OR x = 0
+            hyp1f1_test(1, 0.0, b, x)
+            # hyp1f1_test(1, 0.0, b, z)
+            hyp1f1_test(1, a, b, 0.0)
+            
+            # # HG = 1 - x/b  for a = -1
+            # hyp1f1_test(1-x/b, -1.0, b, x)
+            # # HG = exp(x)   for a = b
+            # hyp1f1_test(exp(x), -1.0, b, x)
+            # # HG = [exp(x)-1]/x     for a = b + 1
+            # hyp1f1_test((exp(x)-1)/x, b+1, b, x)
+        end
+    end
+end
+
 @testset "hyp1f1/cchg" begin
     broken_b = Float64(0xBAD)
     test_abz = [
