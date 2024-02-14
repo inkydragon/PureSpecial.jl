@@ -49,24 +49,29 @@ end
         hyp1f1_test(chg, a, b, z)
     end
 
-    for _ in 1:1
+    for _ in 1:5
         let a=rand(), b=rand(), x=rand(), z=rand(ComplexF64)
             # HG = Inf  for b = negative int
             hyp1f1_test(1.0e300, a, -1.0, x)
-            hyp1f1_test(1.0e300 + 0.0im, a, -1.0, z)
-
+            hyp1f1_test(1.0e300, a, -1.0, z)
             # HG = 1    for M(0,b,x)
             hyp1f1_test(1, 0.0, b, x)
+            hyp1f1_test(1, 0.0, b, z)
             # HG = 1    for M(a,b,0)
             hyp1f1_test(1, a, b, 0.0)
+            hyp1f1_test(1, a, b, -0.0-0.0im)
             # HG = 1 - x/b  for M(-1,b,x)
             hyp1f1_test(1-x/b, -1.0, b, x)
+            hyp1f1_test(1-z/b, -1.0, b, z)
             # HG = e^x      for M(a,a,x)
             hyp1f1_test(exp(x), a, a, x)
+            hyp1f1_test(exp(z), a, a, z)
             # HG = (1 + x/b)*e^x    for M(b+1,b,x)
             hyp1f1_test((1 + x/b)*exp(x), b+1, b, x)
+            hyp1f1_test((1 + z/b)*exp(z), b+1, b, z)
             # HG = [exp(x)-1]/x     for M(1,2,x)
             hyp1f1_test((exp(x)-1)/x, 1.0, 2.0, x)
+            hyp1f1_test((exp(z)-1)/z, 1.0, 2.0, z)
         end
     end
 end
