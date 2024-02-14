@@ -187,6 +187,23 @@ end
 _jyndd(x, n::Int64) = _jyndd(x, Int32(n))
 
 
+"""Parabolic Cylinder functions
+
+- [ ] _pbwa
+    - [x] _cgama
+
+- [ ] _pbvv
+    - [ ] _gamma2
+    - [ ] _vvla
+    - [ ] _vvsa
+
+- [ ] _pbdv
+    - [ ] _dvsa
+    - [ ] _dvla
+
+"""
+
+
 #= ## Kelvin functions =#
 """
 Warp fortran `specfun.KLVNA`.
