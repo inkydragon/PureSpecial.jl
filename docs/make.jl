@@ -3,6 +3,12 @@ using Documenter
 
 DocMeta.setdocmeta!(Scipy4j, :DocTestSetup, :(using Scipy4j); recursive=true)
 
+
+pages = Any[
+    "Home" => "index.md",
+    "Special functions" => "special.md",
+]
+
 makedocs(;
     modules=[Scipy4j],
     authors="Chengyu HAN <git@wo-class.cn> and contributors",
@@ -12,9 +18,7 @@ makedocs(;
         edit_link="main",
         assets=String[],
     ),
-    pages=[
-        "Home" => "index.md",
-    ],
+    pages=pages,
     checkdocs=:exports,
 )
 
