@@ -344,6 +344,60 @@ Routine called
 CGAMA for computing complex ln[Г(x)]
 """
 function chgm(a::Float64, b::Float64, x::Float64)
+    # TODO: merge chgm && chgm_kernel, when removeing specfun.f tests.
+
+    #= Check for special cases =#
+    # b = 0, -1, -2, ...
+    if isinteger(b) && b <= 0.0
+        return Inf
+    end
+    # M(0,b,x) OR M(a,b,0)
+    if a == 0.0 || x == 0.0
+        # DLMF 13.6.3:  M(0,b,x) = ... = 1
+        # CoSF 12.8.5:  M(a,b,0) = M(0,b,x) = 1
+        return 1.0
+    end
+    # M(-1,b,x)
+    if a == -1.0
+        return 1.0 - x / b
+    end
+    # M(a,a,x)
+    if a == b
+        # DLMF 13.6.1:  M(a,a,x) = e^x
+        return exp(x)
+    end
+    # M(b+1,b,x)
+    if (a - b) == 1.0
+        return (1.0 + x / b) * exp(x)
+    end
+    # M(1,2,x)
+    if a == 1.0 && b == 2.0
+        return (exp(x) - 1.0) / x
+    end
+    # M(-m,b,x)
+    # a is negative integer
+    if isinteger(a) && a < 0.0
+        # CoSF 12.8.7:  Degenerating Form.
+        #   M(-m,b,z), m > 0
+        m = trunc(Int64, -a)
+        @assert m > 0
+        r = 1.0
+        hg = 1.0
+        for k in 1:m
+            #      (-m)_k       / k! / (b)_k        * z^k      
+            r *= (a + k - 1.0) / k / (b + k - 1.0) * z
+            hg += r
+        end
+        return hg
+    end
+
+    chgm_kernel(a, b, x)
+end
+
+"""
+F77 impl in scipy, without input check.
+"""
+function chgm_kernel(a::Float64, b::Float64, x::Float64)
     a0 = a
     x0 = x
     hg = 0.0

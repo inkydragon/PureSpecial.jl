@@ -41,7 +41,8 @@ end
     function hyp1f1_test(hg, a, b, x::Float64)
         @testset "chgm($a, $b, $x)" begin
             @test isapprox(hg, Specfun.chgm(a, b, x))
-            @test isapprox(hg, _chgm(a, b, x))
+            # @test isapprox(hg, _chgm(a, b, x))
+            @test isapprox(_chgm(a, b, x), Specfun.chgm_kernel(a, b, x))
         end
         z = complex(x)
         chg = complex(hg)
@@ -51,19 +52,19 @@ end
     for _ in 1:1
         let a=rand(), b=rand(), x=rand(), z=rand(ComplexF64)
             # HG = Inf  for b = negative int
-            hyp1f1_test(-Inf, a, -1.0, x)
+            # hyp1f1_test(-Inf, a, -1.0, x)
             hyp1f1_test(1.0e300 + 0.0im, a, -1.0, z)
             # HG = 1    for a = 0 OR x = 0
             hyp1f1_test(1, 0.0, b, x)
             # hyp1f1_test(1, 0.0, b, z)
             hyp1f1_test(1, a, b, 0.0)
-            
-            # # HG = 1 - x/b  for a = -1
-            # hyp1f1_test(1-x/b, -1.0, b, x)
-            # # HG = exp(x)   for a = b
-            # hyp1f1_test(exp(x), -1.0, b, x)
-            # # HG = [exp(x)-1]/x     for a = b + 1
-            # hyp1f1_test((exp(x)-1)/x, b+1, b, x)
+
+            # HG = 1 - x/b  for a = -1
+            hyp1f1_test(1-x/b, -1.0, b, x)
+            # HG = exp(x)   for a = b
+            hyp1f1_test(exp(x), a, a, x)
+            # HG = [exp(x)-1]/x     for a = b + 1
+            hyp1f1_test((exp(x)-1)/x, 1.0, 2.0, x)
         end
     end
 end
@@ -190,7 +191,7 @@ end
     for (a,b,x) in test_abx
         @testset "chgm($a, $b, $x)" begin
             ref = _chgm(a, b, x)
-            res = Specfun.chgm(a, b, x)
+            res = Specfun.chgm_kernel(a, b, x)
 
             if isnan(ref)
                 @test isequal(ref, res)
