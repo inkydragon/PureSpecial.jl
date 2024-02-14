@@ -54,16 +54,17 @@ end
             # HG = Inf  for b = negative int
             # hyp1f1_test(-Inf, a, -1.0, x)
             hyp1f1_test(1.0e300 + 0.0im, a, -1.0, z)
-            # HG = 1    for a = 0 OR x = 0
+            # HG = 1    for M(0,b,x)
             hyp1f1_test(1, 0.0, b, x)
-            # hyp1f1_test(1, 0.0, b, z)
+            # HG = 1    for M(a,b,0)
             hyp1f1_test(1, a, b, 0.0)
-
-            # HG = 1 - x/b  for a = -1
+            # HG = 1 - x/b  for M(-1,b,x)
             hyp1f1_test(1-x/b, -1.0, b, x)
-            # HG = exp(x)   for a = b
+            # HG = e^x      for M(a,a,x)
             hyp1f1_test(exp(x), a, a, x)
-            # HG = [exp(x)-1]/x     for a = b + 1
+            # HG = (1 + x/b)*e^x    for M(b+1,b,x)
+            hyp1f1_test((1 + x/b)*exp(x), b+1, b, x)
+            # HG = [exp(x)-1]/x     for M(1,2,x)
             hyp1f1_test((exp(x)-1)/x, 1.0, 2.0, x)
         end
     end
