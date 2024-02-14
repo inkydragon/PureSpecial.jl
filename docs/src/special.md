@@ -23,3 +23,7 @@
 - [ ] `elliprg(x, y, z)`: fellint_RG,cellint_RG
 - [ ] `elliprj(x, y, z, p)`: fellint_RJ,cellint_RJ
 
+
+## Bessel functions
+> NO Specfun!
+
