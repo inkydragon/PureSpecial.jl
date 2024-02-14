@@ -27,20 +27,14 @@ end
     function hyp1f1_test(chg, a, b, z::ComplexF64)
         chg = complex(chg)
         @testset "cchg($a, $b, $z)" begin
-            if isinf(chg)
-                chg = 1.0e300 + 0.0im
-                @test_broken chg == (Inf + 0.0im)
-                @test isequal(chg, Specfun.cchg(a, b, z))
-                @test isequal(chg, _cchg(a, b, z))
-            else
-                @test isapprox(chg, Specfun.cchg(a, b, z))
-                @test isapprox(chg, _cchg(a, b, z))
-            end
+            @test isapprox(chg, Specfun.cchg(a, b, z))
+            @test isapprox(chg, _cchg(a, b, z))
         end
     end
     function hyp1f1_test(hg, a, b, x::Float64)
         @testset "chgm($a, $b, $x)" begin
             @test isapprox(hg, Specfun.chgm(a, b, x))
+            # NOTE: _chgm donot handle spcial inputs
             # @test isapprox(hg, _chgm(a, b, x))
             @test isapprox(_chgm(a, b, x), Specfun.chgm_kernel(a, b, x))
         end
