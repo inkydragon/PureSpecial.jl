@@ -52,8 +52,9 @@ end
     for _ in 1:1
         let a=rand(), b=rand(), x=rand(), z=rand(ComplexF64)
             # HG = Inf  for b = negative int
-            # hyp1f1_test(-Inf, a, -1.0, x)
+            hyp1f1_test(1.0e300, a, -1.0, x)
             hyp1f1_test(1.0e300 + 0.0im, a, -1.0, z)
+
             # HG = 1    for M(0,b,x)
             hyp1f1_test(1, 0.0, b, x)
             # HG = 1    for M(a,b,0)

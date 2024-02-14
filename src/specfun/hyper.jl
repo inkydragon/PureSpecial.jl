@@ -349,7 +349,8 @@ function chgm(a::Float64, b::Float64, x::Float64)
     #= Check for special cases =#
     # b = 0, -1, -2, ...
     if isinteger(b) && b <= 0.0
-        return Inf
+        # TODO: return Inf
+        return 1.0e300
     end
     # M(0,b,x) OR M(a,b,0)
     if a == 0.0 || x == 0.0
