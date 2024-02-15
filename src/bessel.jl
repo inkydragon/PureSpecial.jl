@@ -243,3 +243,13 @@ Modified spherical Bessel function of the second kind or its derivative.
     + spherical_yn_d_real -> spherical_yn_real
     + spherical_yn_d_complex -> spherical_yn_complex -> cbesy
 """
+
+"""Riccati-Bessel functions
+riccati_jn(n, x)
+Compute Ricatti-Bessel function of the first kind and its derivative.
++ _specfun.rctj -> specfun_rctj
+
+riccati_yn(n, x)
+Compute Ricatti-Bessel function of the second kind and its derivative.
++ _specfun.rcty -> specfun_rcty
+"""

@@ -58,3 +58,5 @@
 > AMOS or pure cython.
 
 ### Riccati-Bessel functions
+- [ ] `riccati_jn`: specfun_rctj
+- [ ] `riccati_yn`: specfun_rcty
