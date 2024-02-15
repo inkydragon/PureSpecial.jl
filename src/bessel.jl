@@ -116,3 +116,55 @@ y1p_zeros(nt)
     Compute nt zeros of Bessel derivative Y1'(z), and value at each zero.
     + _specfun.cyzo(nt, 2, kc) -> ...
 """
+
+
+"""Faster Common Bessel functions
+
+j0(x)
+    Bessel function of the first kind of order 0.
+    + cephes_j0
+
+j1(x)
+    Bessel function of the first kind of order 1.
+    + cephes_j1
+
+y0(x)
+    Bessel function of the second kind of order 0.
+    + cephes_y0
+
+y1(x)
+    Bessel function of the second kind of order 1.
+    + cephes_y1
+
+i0(x)
+    Modified Bessel function of order 0.
+    + cephes_i0
+
+i0e(x)
+    Exponentially scaled modified Bessel function of order 0.
+    + cephes_i0e
+
+i1(x)
+    Modified Bessel function of order 1.
+    + cephes_i1
+
+i1e(x)
+    Exponentially scaled modified Bessel function of order 1.
+    + cephes_i1e
+
+k0(x)
+    Modified Bessel function of the second kind of order 0, K0(x)
+    + cephes_k0
+
+k0e(x)
+    Exponentially scaled modified Bessel function K of order 0
+    + cephes_k0e
+
+k1(x)
+    Modified Bessel function of the second kind of order 1, K1(x)
+    + cephes_k1
+    
+k1e(x)
+    Exponentially scaled modified Bessel function K of order 1
+    + cephes_k1e
+"""

@@ -41,3 +41,6 @@
 - [ ] `y1p_zeros(nt)`: specfun_cyzo
 
 ### Faster Common Bessel functions
+> Use `cephes`
+
+### Integrals of Bessel functions
