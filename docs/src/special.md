@@ -25,5 +25,6 @@
 
 
 ## Bessel functions
-> NO Specfun!
+
+### Zeros of Bessel functions
 

@@ -1,45 +1,6 @@
 # SPDX-License-Identifier: MIT OR BSD-3-Clause
 #   See also: src/specfun/LICENSE.md
 
-"""Scipy: scipy.special: Zeros of Bessel functions
-
-## jdzo
-jnjnp_zeros(nt)
-    Compute zeros of integer-order Bessel functions Jn and Jn'.
-    _specfun.jdzo -> specfun_jdzo -> bjndd
-
-## jyzo
-jnyn_zeros(n, nt)
-    Compute nt zeros of Bessel functions Jn(x), Jn'(x), Yn(x), and Yn'(x).
-    _specfun.jyzo -> specfun_jyzo -> jyndd -> jynbh -> msta1,msta2
-
-    jn_zeros(n, nt) -> jnyn_zeros(n, nt)[0]
-        Compute zeros of integer-order Bessel functions Jn.
-
-    jnp_zeros(n, nt) -> jnyn_zeros(n, nt)[1]
-        Compute zeros of integer-order Bessel function derivatives Jn'.
-
-    yn_zeros(n, nt) -> jnyn_zeros(n, nt)[2]
-        Compute zeros of integer-order Bessel function Yn(x).
-
-    ynp_zeros(n, nt) -> jnyn_zeros(n, nt)[3]
-        Compute zeros of integer-order Bessel function derivatives Yn'(x).
-
-## cyzo
-y0_zeros(nt[, complex])
-    Compute nt zeros of Bessel function Y0(z), and derivative at each zero.
-    _specfun.cyzo(nt, 0, kc) -> specfun_cyzo -> cy01
-
-y1_zeros(nt[, complex])
-    Compute nt zeros of Bessel function Y1(z), and derivative at each zero.
-    _specfun.cyzo(nt, 1, kc) -> ...
-
-y1p_zeros(nt[, complex])
-    Compute nt zeros of Bessel derivative Y1'(z), and value at each zero.
-    _specfun.cyzo(nt, 2, kc) -> ...
-"""
-
-
 """
     bjndd(x::Float64, n::Int)
 
