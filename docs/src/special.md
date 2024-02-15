@@ -55,3 +55,6 @@
 > No 3rd deps.
 
 ### Spherical Bessel functions
+> AMOS or pure cython.
+
+### Riccati-Bessel functions

@@ -217,3 +217,29 @@ h2vp(v, z)
 Compute derivatives of Hankel function H2v(z) with respect to z.
 + hankel2(v, z),_bessel_diff_formula
 """
+
+"""Spherical Bessel functions
+
+spherical_jn(n, z)
+Spherical Bessel function of the first kind or its derivative.
++ _spherical_jn,_spherical_jn_d
+    + spherical_jn_real,spherical_jn_complex -> cbesj
+
+spherical_yn(n, z)
+Spherical Bessel function of the second kind or its derivative.
++ _spherical_yn,_spherical_yn_d
+    + spherical_yn_d_real -> spherical_yn_real
+    + spherical_yn_d_complex -> spherical_yn_complex -> cbesy
+    
+spherical_in(n, z)
+Modified spherical Bessel function of the first kind or its derivative.
++ _spherical_in,_spherical_in_d
+    + spherical_in_real -> iv
+    + spherical_in_complex -> cbesi_wrap
+
+spherical_kn(n, z)
+Modified spherical Bessel function of the second kind or its derivative.
++ _spherical_kn,_spherical_kn_d
+    + spherical_yn_d_real -> spherical_yn_real
+    + spherical_yn_d_complex -> spherical_yn_complex -> cbesy
+"""
