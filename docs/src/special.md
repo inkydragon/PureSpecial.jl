@@ -44,3 +44,11 @@
 > Use `cephes`
 
 ### Integrals of Bessel functions
+- [ ] `itj0y0(x)`: specfun_itjya
+- [ ] `it2j0y0`: specfun_ittjya
+- [ ] `iti0k0`: specfun_itika
+- [ ] `it2i0k0`: specfun_ittika
+
+- [ ] `besselpoly`: cephes_besselpoly
+
+### Derivatives of Bessel functions

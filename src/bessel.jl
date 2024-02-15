@@ -168,3 +168,25 @@ k1e(x)
     Exponentially scaled modified Bessel function K of order 1
     + cephes_k1e
 """
+
+"""Integrals of Bessel functions
+itj0y0(x)
+    Integrals of Bessel functions of the first kind of order 0.
+    + it1j0y0_wrap -> specfun_itjya
+
+it2j0y0(x)
+    Integrals related to Bessel functions of the first kind of order 0.
+    + it2j0y0_wrap -> specfun_ittjya
+
+iti0k0(x)
+    Integrals of modified Bessel functions of order 0.
+    + it1i0k0_wrap -> specfun_itika
+
+it2i0k0(x)
+    Integrals related to modified Bessel functions of order 0.
+    + it2i0k0_wrap -> specfun_ittika
+
+besselpoly(a, lmb, nu)
+    Weighted integral of the Bessel function of the first kind.
+    + cephes_besselpoly
+"""
