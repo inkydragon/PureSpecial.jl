@@ -28,4 +28,16 @@
 - [ ] `lmbda(v, x)`: specfun_lamv
 
 ### Zeros of Bessel functions
+- [ ] `jnjnp_zeros(nt)`: specfun_jdzo
 
+- [ ] `jnyn_zeros(n, nt)`: specfun_jyzo
+- [ ] `jn_zeros(n, nt)`: specfun_jyzo
+- [ ] `jnp_zeros(n, nt)`: specfun_jyzo
+- [ ] `yn_zeros(n, nt)`: specfun_jyzo
+- [ ] `ynp_zeros(n, nt)`: specfun_jyzo
+
+- [ ] `y0_zeros(nt)`: specfun_cyzo
+- [ ] `y1_zeros(nt)`: specfun_cyzo
+- [ ] `y1p_zeros(nt)`: specfun_cyzo
+
+### Faster Common Bessel functions

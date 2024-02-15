@@ -104,15 +104,15 @@ jnyn_zeros(n, nt)
         Compute zeros of integer-order Bessel function derivatives Yn'(x).
 
 ## cyzo
-y0_zeros(nt[, complex])
+y0_zeros(nt)
     Compute nt zeros of Bessel function Y0(z), and derivative at each zero.
     + _specfun.cyzo(nt, 0, kc) -> specfun_cyzo -> cy01
 
-y1_zeros(nt[, complex])
+y1_zeros(nt)
     Compute nt zeros of Bessel function Y1(z), and derivative at each zero.
     + _specfun.cyzo(nt, 1, kc) -> ...
 
-y1p_zeros(nt[, complex])
+y1p_zeros(nt)
     Compute nt zeros of Bessel derivative Y1'(z), and value at each zero.
     + _specfun.cyzo(nt, 2, kc) -> ...
 """
