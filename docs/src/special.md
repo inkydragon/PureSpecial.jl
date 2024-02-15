@@ -52,3 +52,6 @@
 - [ ] `besselpoly`: cephes_besselpoly
 
 ### Derivatives of Bessel functions
+> No 3rd deps.
+
+### Spherical Bessel functions

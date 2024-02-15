@@ -190,3 +190,30 @@ besselpoly(a, lmb, nu)
     Weighted integral of the Bessel function of the first kind.
     + cephes_besselpoly
 """
+
+"""Derivatives of Bessel functions
+
+jvp(v, z)
+Compute derivatives of Bessel functions of the first kind.
++ jv(v, z),_bessel_diff_formula
+
+yvp(v, z)
+Compute derivatives of Bessel functions of the second kind.
++ yv(v, z),_bessel_diff_formula
+
+kvp(v, z)
+Compute derivatives of real-order modified Bessel function Kv(z)
++ kv(v, z),_bessel_diff_formula
+
+ivp(v, z)
+Compute derivatives of modified Bessel functions of the first kind.
++ iv(v, z),_bessel_diff_formula
+
+h1vp(v, z)
+Compute derivatives of Hankel function H1v(z) with respect to z.
++ hankel1(v, z),_bessel_diff_formula
+
+h2vp(v, z)
+Compute derivatives of Hankel function H2v(z) with respect to z.
++ hankel2(v, z),_bessel_diff_formula
+"""
