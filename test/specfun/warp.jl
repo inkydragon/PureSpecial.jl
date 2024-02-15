@@ -103,7 +103,7 @@ function _jdzo(nt::Int)
     #   JDZO(NT,N,M,P,ZO)
     #   void specfun_jdzo(int nt, double *zo, int *n, int *m, int *p);
     ccall(f77func(:jdzo), Cvoid,
-        (Ref{Int64},
+        (Ref{Int32},
          Ptr{Int32}, Ptr{Int32}, Ptr{Int32}, Ptr{Float64}),
         nt,
         n, m, p, zo)
@@ -185,6 +185,30 @@ function _jyndd(x::Float64, n::Int32)
     bjn[], djn[], fjn[], byn[], dyn[], fyn[]
 end
 _jyndd(x, n::Int64) = _jyndd(x, Int32(n))
+
+"""
+Warp fortran `specfun.JYZO`.
+
+- Input: `n, nt`
+- Output: `rj0, rj1, ry0, ry1`
+"""
+function _jyzo!(n::Int64, nt::Int64,
+    rj0::Vector{Float64}, rj1::Vector{Float64},
+    ry0::Vector{Float64}, ry1::Vector{Float64})
+    @assert n >= 0
+    @assert length(rj0) >= nt
+    @assert length(rj1) >= nt
+    @assert length(ry0) >= nt
+    @assert length(ry1) >= nt
+    #   SUBROUTINE JYZO(N,NT,RJ0,RJ1,RY0,RY1)
+    #   void specfun_jyzo(int n, int nt,
+    #       double *rj0, double *rj1, double *ry0, double *ry1);
+    ccall(f77func(:_jyzo), Cvoid,
+        (Ref{Int32}, Ref{Int32},
+         Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
+        n, nt,
+        rj0, rj1, ry0, ry1)
+end
 
 
 """Parabolic Cylinder functions

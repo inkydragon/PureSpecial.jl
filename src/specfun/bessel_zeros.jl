@@ -567,3 +567,294 @@ function jyndd(x::Float64, n::Int)
     
     return bjn, djn, fjn, byn, dyn, fyn
 end
+
+"""
+    jn_zeros!(rj0::Vector{Float64}, n::Int64, nt::Int64)
+
+Compute zeros of integer-order Bessel functions Jn.
+
+## Input
+n  --- Order of Bessel functions  (n >= 0)
+NT --- Number of zeros (roots)
+
+## Output
+RJ0(L) --- L-th zero of Jn(x),  L=1,2,...,NT
+
+## Routine called
+JYNDD for computing Jn(x), and
+its first and second derivatives
+"""
+function jn_zeros!(rj0::Vector{Float64}, n::Int64, nt::Int64)
+    @assert n >= 0
+    @assert length(rj0) >= nt
+
+    #= Newton method for j_{N,L} =#
+    # initial guess for j_{N,1}
+    x = 0.0
+    if n == 0
+        x = 2.4
+    else
+        # DLMF 10.21.40:  j_{v,1}
+        x = n + 1.85576 * n^(1/3) + 1.03315 / n^(1/3)
+    end
+
+    # begin iterate
+    L = 0
+    while true
+        #= L10 =#
+        x0 = x
+        bjn, djn, _, _, _, _ = jyndd(x, n)
+        x -= bjn / djn
+        if abs(x - x0) > 1e-11
+            # GOTO L10
+            continue
+        end
+
+        L += 1
+        rj0[L] = x
+        # initial guess for j_{N,L+1}
+        if L == 1
+            if n == 0
+                x = 5.52
+            else
+                # Expansion from DLMF 10.21.32 and
+                #   coefficients from Olver 1951
+                x = n + 3.24460 * n^(1/3) + 3.15824 / n^(1/3)
+            end
+        else
+            # DLMF 10.21.19:  growth of roots is approximately linear
+            x = rj0[L] + (rj0[L] - rj0[L - 1])
+        end
+
+        if L <= (n + 10)
+            bjn, djn, fjn, _, _, _ = jyndd(x, n)
+            h = atan(abs(djn) / sqrt(abs(fjn * bjn)))
+            b = -djn / (bjn * atan(h))
+            x -= (h - pi / 2) / b
+        end
+
+        if L >= nt
+            break
+        end
+        # GOTO L10
+    end
+end
+
+"""
+    djn_zeros!(rj1::Vector{Float64}, n::Int64, nt::Int64)
+
+Compute zeros of integer-order Bessel function Jn(x)
+and its derivatives Jn'(x)
+
+## Input
+n  --- Order of Bessel functions  (n >= 0)
+NT --- Number of zeros (roots)
+
+## Output
+RJ0(L) --- L-th zero of Jn(x), L=1,2,...,NT
+RJ1(L) --- L-th zero of Jn'(x), L=1,2,...,NT
+
+## Routine called
+JYNDD for computing Jn(x), and
+its first and second derivatives
+"""
+function djn_zeros!(rj0::Vector{Float64}, rj1::Vector{Float64}, n::Int64, nt::Int64)
+    @assert n >= 0
+    @assert length(rj1) >= nt
+
+    jn_zeros!(rj0, n, nt)
+
+    #= Newton method for j_{N,L+1}' =#
+    # initial guess
+    x = 0.0
+    if n == 0
+        x = 3.8317
+    else
+        # DLMF 10.21.40:  j'_{v,1}
+        x = n + 0.80861 * n^(1/3) + 0.07249 / n^(1/3)
+    end
+
+    # begin iterate
+    L = 0
+    while true
+        #= L15 =#
+        x0 = x
+        _, djn, fjn, _, _, _ = jyndd(x, n)
+        x -= djn / fjn
+        if abs(x - x0) > 1e-11
+            # GOTO L15
+            continue
+        end
+
+        L += 1
+        rj1[L] = x
+
+        if L < nt
+            # DLMF 10.21.20
+            x = rj1[L] + (rj0[L + 1] - rj0[L])
+        else
+            break
+        end
+        # GOTO L15
+    end
+end
+
+"""
+    yn_zeros!(ry0::Vector{Float64}, n::Int64, nt::Int64)
+
+Compute zeros of integer-order Bessel function Yn(x).
+
+## Input
+n  --- Order of Bessel functions  (n >= 0)
+NT --- Number of zeros (roots)
+
+## Output
+RY0(L) --- L-th zero of Yn(x),  L=1,2,...,NT
+
+## Routine called
+JYNDD for computing Yn(x), and
+its first and second derivatives
+"""
+function yn_zeros!(ry0::Vector{Float64}, n::Int64, nt::Int64)
+    @assert n >= 0
+    @assert length(ry0) >= nt
+
+    #= Newton method for y_{N,L} =#
+    # initial guess for y_{N,1}
+    x = 0.0
+    if n == 0
+        x = 0.89357697
+    else
+        # DLMF 10.21.40:  y_{v,1}
+        x = n + 0.93158 * n^(1/3) + 0.26035 / n^(1/3)
+    end
+
+    # begin iterate
+    L = 0
+    while true
+        #= L20 =#
+        x0 = x
+        _, _, _, byn, dyn, _ = jyndd(x, n)
+        x -= byn / dyn
+        if abs(x - x0) > 1.0e-11
+            # GOTO L20
+            continue
+        end
+
+        L += 1
+        ry0[L] = x
+
+        # initial guess for y_{N,L+1}
+        if L == 1
+            if n == 0
+                x = 3.957678419314858
+            else
+                # Expansion from DLMF 10.21.33 and
+                #   coefficients from Olver 1951
+                x = n + 2.59626 * n^(1/3) + 2.022183 / n^(1/3)
+            end
+        else
+            # DLMF 10.21.19: growth of roots is approximately linear
+            x = ry0[L] + (ry0[L] - ry0[L - 1])
+        end
+
+        if L <= (n + 10)
+            _, _, _, byn, dyn, fyn = jyndd(x, n)
+            h = atan(abs(dyn) / sqrt(abs(fyn * byn)))
+            b = -dyn / (byn * tan(h))
+            x -= (h - pi / 2) / b
+        end
+
+        if L >= nt
+            break
+        end
+        # GOTO L20
+    end
+end
+
+"""
+    dyn_zeros!(ry1::Vector{Float64}, n::Int64, nt::Int64)
+
+Compute zeros of integer-order Bessel function Yn(x)
+and its derivatives Yn'(x)
+
+## Input
+n  --- Order of Bessel functions  (n >= 0)
+NT --- Number of zeros (roots)
+
+## Output
+RY0(L) --- L-th zero of Yn(x), L=1,2,...,NT
+RY1(L) --- L-th zero of Yn'(x), L=1,2,...,NT
+
+## Routine called
+JYNDD for computing Yn(x), and
+its first and second derivatives
+"""
+function dyn_zeros!(ry0::Vector{Float64}, ry1::Vector{Float64}, n::Int64, nt::Int64)
+    @assert n >= 0
+    @assert length(ry1) >= nt
+    
+    yn_zeros!(ry0, n, nt)
+
+    #= Newton method for y_{N,L+1}' =#
+    x = 0.0
+    if n == 0
+        x = 2.67257
+    else
+        # DLMF 10.21.40:  y'_{v,1}
+        x = n + 1.8211 * n^(1/3) + 0.94001 / n^(1/3)
+    end
+
+    L = 0
+    while true
+        #= L25 =#
+        x0 = x
+        _, _, _, _, dyn, fyn = jyndd(x, n)
+        x -= dyn / fyn
+        if abs(x - x0) > 1.0e-11
+            # GOTO L25
+            continue
+        end
+
+        L += 1
+        ry1[L] = x
+
+        if L < nt
+            # DLMF 10.21.20
+            x = ry1[L] + (ry0[L + 1] - ry0[L])
+        else
+            break
+        end
+        # GOTO L25
+    end
+end
+
+"""
+
+Compute the zeros of Bessel functions Jn(x),
+Yn(x), and their derivatives
+
+## Input
+n  --- Order of Bessel functions  (n >= 0)
+NT --- Number of zeros (roots)
+
+## Output
+RJ0(L) --- L-th zero of Jn(x),  L=1,2,...,NT
+RJ1(L) --- L-th zero of Jn'(x), L=1,2,...,NT
+RY0(L) --- L-th zero of Yn(x),  L=1,2,...,NT
+RY1(L) --- L-th zero of Yn'(x), L=1,2,...,NT
+
+## Routine called
+JYNDD for computing Jn(x), Yn(x), and
+their first and second derivatives
+"""
+function jyzo!(n::Int64, nt::Int64,
+    rj0::Vector{Float64}, rj1::Vector{Float64},
+    ry0::Vector{Float64}, ry1::Vector{Float64})
+
+    # j_{N,1} and j_{N,L+1}'
+    djn_zeros!(rj0, rj1, n, nt)
+
+    # y_{N,L} and y_{N,L+1}'
+    dyn_zeros!(ry0, ry1, n, nt)
+end
