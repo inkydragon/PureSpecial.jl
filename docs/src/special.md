@@ -25,6 +25,7 @@
 
 
 ## Bessel functions
+- [ ] `lmbda(v, x)`: specfun_lamv
 
 ### Zeros of Bessel functions
 
