@@ -60,3 +60,14 @@
 ### Riccati-Bessel functions
 - [ ] `riccati_jn`: specfun_rctj
 - [ ] `riccati_yn`: specfun_rcty
+
+## Struve functions
+> Use `cephes`, `specfun`
+
+- [ ] `struve`: cephes_struve_h
+- [ ] `modstruve`: cephes_struve_l
+
+- [ ] `itstruve0`: specfun_itsh0
+- [ ] `it2struve0`: specfun_itth0
+- [ ] `itmodstruve0`: specfun_itsl0
+
