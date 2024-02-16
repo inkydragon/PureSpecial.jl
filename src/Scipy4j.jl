@@ -36,6 +36,11 @@
 
 module Scipy4j
 
+# Submod
 include("specfun/Specfun.jl")
+import .Specfun
+
+# APIs
+include("airy.jl")
 
 end
