@@ -3,7 +3,7 @@
 
 """Special functions in pure julia.
 
-+ specfun_airyzo
++ ✅ specfun_airyzo
 + specfun_bernob
 + specfun_cerzo
 + specfun_clpmn
@@ -15,9 +15,9 @@
 + specfun_eulerb
 + specfun_fcoef
 + specfun_fcszo
-+ specfun_jdzo
-+ specfun_jyzo
-+ specfun_klvnzo
++ ✅ specfun_jdzo
++ ✅ specfun_jyzo
++ ✅ specfun_klvnzo
 + specfun_lamn
 + specfun_lamv
 + specfun_lpmn
