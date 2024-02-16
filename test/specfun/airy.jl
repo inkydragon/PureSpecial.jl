@@ -1,4 +1,9 @@
 # SPDX-License-Identifier: MIT
+"""
+- _airyb
+- airyzo
+- itairy
+"""
 
 @testset "airyb" begin
     special_inputs = Float64[
