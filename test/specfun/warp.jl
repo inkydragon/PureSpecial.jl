@@ -175,7 +175,7 @@ function _jyndd(x::Float64, n::Int32)
     #   double *bjn, double *djn, double *fjn,
     #   double *byn, double *dyn, double *fyn);
     ccall(f77func(:jyndd), Cvoid,
-        (Ref{Float64}, Ref{Int32},
+        (Ref{Int32}, Ref{Float64},
          Ref{Float64}, Ref{Float64}, Ref{Float64},
          Ref{Float64}, Ref{Float64}, Ref{Float64}),
         n, x,
