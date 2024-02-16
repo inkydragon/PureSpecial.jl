@@ -11,6 +11,7 @@ pages = Any[
 
 makedocs(;
     modules=[Scipy4j],
+    repo=Remotes.GitHub("inkydragon", "Scipy4j.jl"),
     authors="Chengyu HAN <git@wo-class.cn> and contributors",
     sitename="Scipy4j.jl",
     format=Documenter.HTML(;
