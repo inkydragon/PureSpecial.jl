@@ -851,6 +851,7 @@ their first and second derivatives
 function jyzo!(n::Int64, nt::Int64,
     rj0::Vector{Float64}, rj1::Vector{Float64},
     ry0::Vector{Float64}, ry1::Vector{Float64})
+    @assert nt >= 1
 
     # j_{N,1} and j_{N,L+1}'
     djn_zeros!(rj0, rj1, n, nt)

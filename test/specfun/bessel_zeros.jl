@@ -169,3 +169,24 @@ end
         end
     end
 end
+
+@testset "jyzo" begin
+    test_n = Int64[
+        0:42...,
+    ]
+
+    for n in test_n,
+        nt in 1:10
+        r_j0, r_j1, r_y0, r_y1 = zeros(nt), zeros(nt), zeros(nt), zeros(nt)
+        j0, j1, y0, y1 = zeros(nt), zeros(nt), zeros(nt), zeros(nt)
+        @testset "jyzo!(n=$n, nt=$nt)" begin
+            _jyzo!(n, nt, r_j0, r_j1, r_y0, r_y1)
+            Specfun.jyzo!(n, nt, j0, j1, y0, y1)
+
+            @test isapprox(r_j0, j0)
+            @test isapprox(r_j1, j1)
+            @test isapprox(r_y0, y0)
+            @test isapprox(r_y1, y1)
+        end
+    end
+end

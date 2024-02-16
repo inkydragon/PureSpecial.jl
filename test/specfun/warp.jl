@@ -203,7 +203,7 @@ function _jyzo!(n::Int64, nt::Int64,
     #   SUBROUTINE JYZO(N,NT,RJ0,RJ1,RY0,RY1)
     #   void specfun_jyzo(int n, int nt,
     #       double *rj0, double *rj1, double *ry0, double *ry1);
-    ccall(f77func(:_jyzo), Cvoid,
+    ccall(f77func(:jyzo), Cvoid,
         (Ref{Int32}, Ref{Int32},
          Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
         n, nt,
