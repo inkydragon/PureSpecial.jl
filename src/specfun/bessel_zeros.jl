@@ -531,7 +531,7 @@ function jynbh!(
 end
 
 """
-jyndd(n::Int, x::Float64)
+    jyndd(x::Float64, n::Int)
 
 compute bessel functions jn(x) and yn(x), and
 their first and second derivatives

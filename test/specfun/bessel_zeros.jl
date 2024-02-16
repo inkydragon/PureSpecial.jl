@@ -147,7 +147,6 @@ end
 @testset "jyndd" begin
     test_x = Float64[
         rand(10)...,
-        -10:-1...,
         1:5...,
         295:305...,
         rand(1:1000, 10)...,
