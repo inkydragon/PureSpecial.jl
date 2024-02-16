@@ -383,3 +383,124 @@ function airyzo!(
         end
     end #= 25 =## for i = 1:nt
 end
+
+"""
+    itairy(x::Float64)
+
+Compute the integrals of Airy fnctions with
+respect to t from 0 and x ( x ≥ 0 )
+
+## Input
+x   --- Upper limit of the integral
+
+## Output
+apt --- Integration of Ai(t) from 0 and x
+bpt --- Integration of Bi(t) from 0 and x
+ant --- Integration of Ai(-t) from 0 and x
+bnt --- Integration of Bi(-t) from 0 and x
+"""
+function itairy(x::Float64)
+    @assert x >= 0
+
+    # Constants
+    EPS = 1e-15
+    C1 = 0.355028053887817
+    C2 = 0.258819403792807
+    SR3 = 1.732050807568877
+
+    # 1/3
+    Q0 = 0.3333333333333333
+    # 2/3
+    Q1 = 0.6666666666666667
+    # sqrt(2)
+    Q2 = 1.414213562373095
+    _A = [
+        0.569444444444444e+00, 0.891300154320988e+00,
+        0.226624344493027e+01, 0.798950124766861e+01,
+        0.360688546785343e+02, 0.198670292131169e+03,
+        0.129223456582211e+04, 0.969483869669600e+04,
+        0.824184704952483e+05, 0.783031092490225e+06,
+        0.822210493622814e+07, 0.945557399360556e+08,
+        0.118195595640730e+10, 0.159564653040121e+11,
+        0.231369166433050e+12, 0.358622522796969e+13,
+    ]
+
+    apt, bpt, ant, bnt = 0.0, 0.0, 0.0, 0.0
+    if x == 0.0
+        return apt, bpt, ant, bnt
+    else
+        if abs(x) <= 9.25
+            ant = 0.0
+            bnt = 0.0
+            for l = 0:1
+                x *= (-1)^l
+                fx = x
+                r = x
+                for k = 1:40
+                    r *= (3.0 * k - 2.0) / (3.0 * k + 1.0) * x / (3.0 * k) * x / (3.0 * k - 1.0) * x
+                    fx += r
+                    if abs(r) < (abs(fx) * EPS)
+                        break
+                    end
+                end
+                gx = 0.5 * x * x
+                r = gx
+                for k = 1:40
+                    r *= (3.0 * k - 1.0) / (3.0 * k + 2.0) * x / (3.0 * k) * x / (3.0 * k + 1.0) * x
+                    gx += r
+                    if abs(r) < (abs(gx) * EPS)
+                        break
+                    end
+                end
+
+                ant = C1*fx - C2*gx
+                bnt = SR3 * (C1*fx + C2*gx)
+                if l == 0
+                    apt = ant
+                    bpt = bnt
+                else
+                    ant = -ant
+                    bnt = -bnt
+                    x = -x
+                end
+            end
+        else
+            xe = x * sqrt(x) / 1.5
+            xp6 = 1.0 / sqrt(6.0 * pi * xe)
+            su1 = 1.0
+            r = 1.0
+            xr1 = 1.0 / xe
+            for k = 1:16
+                r *= -xr1
+                su1 += _A[k] * r
+            end
+            su2 = 1.0
+            r = 1.0
+            for k = 1:16
+                r *= xr1
+                su2 += _A[k] * r
+            end
+            apt = Q0 - exp(-xe) * xp6 * su1
+            bpt = 2.0 * exp(xe) * xp6 * su2
+            su3 = 1.0
+            r = 1.0
+            xr2 = 1.0 / (xe * xe)
+            for k = 1:8
+                r *= -xr2
+                su3 += _A[2 * k] * r
+            end
+            su4 = _A[1] * xr1
+            r = xr1
+            for k = 1:7
+                r *= -xr2
+                su4 += _A[2 * k + 1] * r
+            end
+            su5 = su3 + su4
+            su6 = su3 - su4
+            ant = Q1 - Q2 * xp6 * (su5 * cos(xe) - su6 * sin(xe))
+            bnt = Q2 * xp6 * (su5 * sin(xe) + su6 * cos(xe))
+        end
+    end
+
+    return apt, bpt, ant, bnt
+end

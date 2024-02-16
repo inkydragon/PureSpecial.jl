@@ -113,3 +113,24 @@ end
         end
     end
 end
+
+@testset "itairy" begin
+    special_inputs = Float64[
+        rand(10)...,
+        rand(0.0:eps():9.25, 10)...,
+        0:42...,
+        rand(1:10^6, 10)...,
+    ]
+
+    for x in special_inputs
+        @testset "itairy($x)" begin
+            ref_apt, ref_bpt, ref_ant, ref_bnt = _itairy(x)
+            apt, bpt, ant, bnt = Specfun.itairy(x)
+
+            @test isapprox(ref_apt, apt)
+            @test isapprox(ref_bpt, bpt)
+            @test isapprox(ref_ant, ant)
+            @test isapprox(ref_bnt, bnt)
+        end
+    end
+end

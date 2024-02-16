@@ -62,6 +62,27 @@ function _airyzo!(
         xa, xb, xc, xd)
 end
 
+"""
+Warp fortran `specfun.ITAIRY`.
+
+- Input: `x`
+- Output: `apt, bpt, ant, bnt`
+"""
+function _itairy(x::Float64)
+    @assert x >= 0
+    apt, bpt, ant, bnt =
+        Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN)
+    # SUBROUTINE ITAIRY(X,APT,BPT,ANT,BNT)
+    # void specfun_itairy(double x,
+    #   double *apt, double *bpt, double *ant, double *bnt);
+    ccall(f77func(:itairy), Cvoid,
+        (Ref{Float64},
+         Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
+        x,
+        apt, bpt, ant, bnt)
+    apt[], bpt[], ant[], bnt[]
+end
+
 
 #= ## Zeros of Bessel functions =#
 """
