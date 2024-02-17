@@ -38,6 +38,9 @@
 
 module Specfun
 
+# SUBROUTINE
+include("gamma.jl")
+
 include("airy.jl")
 include("bessel_zeros.jl")
 include("parabolic.jl")

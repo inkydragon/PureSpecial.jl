@@ -35,6 +35,9 @@ using Scipy4j.Specfun
 # for Test
 include("warp.jl")
 
+# SUBROUTINE
+include("gamma.jl")
+
 include("airy.jl")
 include("bessel_zeros.jl")
 include("parabolic.jl")

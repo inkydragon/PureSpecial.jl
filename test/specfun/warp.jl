@@ -84,6 +84,24 @@ function _itairy(x::Float64)
 end
 
 
+#= ## Bessel functions =#
+"""
+Warp fortran `specfun.GAM0`.
+- Input: `x`
+- Output: `ga`
+"""
+function _gam0(x::Float64)
+    ga = Ref{Float64}(NaN)
+    # SUBROUTINE GAM0 (X,GA)
+    # double specfun_gam0(double x);
+    ccall(f77func(:gam0), Cvoid,
+        (Ref{Float64}, Ref{Float64}),
+        x, ga)
+
+    ga[]
+end
+
+
 #= ## Zeros of Bessel functions =#
 """
 Warp fortran `specfun.BJNDD`.
