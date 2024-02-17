@@ -29,6 +29,11 @@
 + specfun_rcty
 + specfun_sdmn
 + specfun_segv
+
+## Airy functions
+- `ai_zeros(nt)`: specfun_airyzo
+- `bi_zeros(nt)`: specfun_airyzo
+- `itairy(x)`: specfun_itairy
 """
 
 module Specfun

@@ -4,9 +4,9 @@
 ## Airy functions
 - [ ] `airy(z)`: cephes_airy; amos_airy,amos_biry
 - [ ] `airye(z)`: amos_airy,amos_biry
-- [ ] `itairy(x)`: specfun_itairy
-- [x] `ai_zeros(nt)`: specfun_airyzo
-- [x] `bi_zeros(nt)`: specfun_airyzo
+- `itairy(x)`: specfun_itairy
+- `ai_zeros(nt)`: specfun_airyzo
+- `bi_zeros(nt)`: specfun_airyzo
 
 
 ## Elliptic functions
@@ -70,4 +70,3 @@
 - [ ] `itstruve0`: specfun_itsh0
 - [ ] `it2struve0`: specfun_itth0
 - [ ] `itmodstruve0`: specfun_itsl0
-
