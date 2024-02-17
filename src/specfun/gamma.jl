@@ -40,3 +40,63 @@ function gam0(x::Float64)
 
     return 1.0 / (gr * x)
 end
+
+const _GAMMA2_G = Float64[
+    _GAM0_G...,
+    0.1e-15,
+]
+
+"""
+    gamma2(x::Float64)
+
+Compute gamma function Г(x)
+
+Input
+x  --- Argument of Г(x)
+        ( x is not equal to 0,-1,-2,…)
+
+Output
+ga --- Г(x)
+"""
+function gamma2(x::Float64)
+    ga = NaN
+    if isinteger(x)
+        if x > 0.0
+            ga = 1.0
+            m1 = trunc(Int64, x) - 1
+            for k = 2:m1
+                ga *= k
+            end
+        else
+            # Inf
+            ga = 1e300
+        end
+    else
+        r = 1.0
+        if abs(x) > 1.0
+            z = abs(x)
+            m = trunc(Int64, z)
+            for k = 1:m
+                r *= (z - k)
+            end
+            z -= m
+        else
+            z = x
+        end
+
+        gr = _GAMMA2_G[26]
+        for k = 25:-1:1
+            gr = gr*z + _GAMMA2_G[k]
+        end
+        ga = 1.0 / (gr * z)
+
+        if abs(x) > 1.0
+            ga *= r
+            if x < 0.0
+                ga = -pi / (x * ga * sin(pi * x))
+            end
+        end
+    end
+
+    return ga
+end

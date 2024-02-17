@@ -101,6 +101,22 @@ function _gam0(x::Float64)
     ga[]
 end
 
+"""
+Warp fortran `specfun.GAMMA2`.
+- Input: `x`
+- Output: `ga`
+"""
+function _gamma2(x::Float64)
+    ga = Ref{Float64}(NaN)
+    # SUBROUTINE GAMMA2(X,GA)
+    # double specfun_gamma2(double x);
+    ccall(f77func(:gamma2), Cvoid,
+        (Ref{Float64}, Ref{Float64}),
+        x, ga)
+
+    ga[]
+end
+
 
 #= ## Zeros of Bessel functions =#
 """
