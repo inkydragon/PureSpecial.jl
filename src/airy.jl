@@ -19,11 +19,10 @@ bi_zeros(nt)
 	+ _specfun.airyzo(nt, 2) -> specfun_airyzo
 
 itairy(x)
-    Integrals of Airy functions
     + itairy_wrap -> specfun_itairy
 """
 
-export ai_zeros, bi_zeros
+export ai_zeros, bi_zeros, itairy
 
 
 """
@@ -64,4 +63,17 @@ function bi_zeros(nt)
 	Specfun.airyzo!(nt, kf, a, b, c, d)
 
 	a, b, c, d
+end
+
+"""
+    itairy(x)
+
+Compute the integrals of Airy functions with respect to t from 0 and x ( x ≥ 0 )
+"""
+function itairy(x)
+    if x < 0
+		throw(DomainError(x, "`x` must be a positive number (x >= 0)"))
+	end
+
+    Specfun.itairy(x)
 end
