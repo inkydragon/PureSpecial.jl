@@ -135,7 +135,7 @@ const COSF_TABLE_10_2 = Float32[
 ]
 
 @testset "itairy" begin
-    @test_throws DomainError bi_zeros(-1)
+    @test_throws DomainError itairy(-1)
 
     @test isequal(itairy(0.0), (0.0, 0.0, 0.0, 0.0))
 
