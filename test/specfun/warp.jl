@@ -23,7 +23,44 @@ const libspecfun = Libdl.dlopen("libspecfun.so")
 f77func(s::Symbol) = Libdl.dlsym(libspecfun, Symbol("$(s)_")) 
 
 
-#= gamma.jl =#
+#= gamma.jl 
+    + gam0
+    + gamma2
+    + gaih
+    + cgama
+=#
+"""
+Warp fortran `specfun.GAM0`.
+- Input: `x`
+- Output: `ga`
+"""
+function _gam0(x::Float64)
+    ga = Ref{Float64}(NaN)
+    # SUBROUTINE GAM0 (X,GA)
+    # double specfun_gam0(double x);
+    ccall(f77func(:gam0), Cvoid,
+        (Ref{Float64}, Ref{Float64}),
+        x, ga)
+
+    ga[]
+end
+
+"""
+Warp fortran `specfun.GAMMA2`.
+- Input: `x`
+- Output: `ga`
+"""
+function _gamma2(x::Float64)
+    ga = Ref{Float64}(NaN)
+    # SUBROUTINE GAMMA2(X,GA)
+    # double specfun_gamma2(double x);
+    ccall(f77func(:gamma2), Cvoid,
+        (Ref{Float64}, Ref{Float64}),
+        x, ga)
+
+    ga[]
+end
+
 """
 Warp fortran `specfun.GAIH`.
 - Input: `x`
@@ -38,6 +75,25 @@ function _gaih(x::Float64)
         x, ga)
 
     ga[]
+end
+
+"""
+Warp fortran `specfun.CGAMA`.
+- Input: `z, kf`
+- Output: `GR,GI`
+"""
+function _cgama(z::Complex{Float64}, kf::Int)
+    gr = Ref{Float64}(NaN)
+    gi = Ref{Float64}(NaN)
+    # SUBROUTINE CGAMA(X,Y,KF,GR,GI)
+    # double complex specfun_cgama(double complex z, int kf);
+    ccall(f77func(:cgama), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Int32},
+         Ref{Float64}, Ref{Float64}),
+        real(z), imag(z), Int32(kf),
+        gr, gi)
+
+    complex(gr[], gi[])
 end
 
 
@@ -103,37 +159,6 @@ end
 
 
 #= ## Bessel functions =#
-"""
-Warp fortran `specfun.GAM0`.
-- Input: `x`
-- Output: `ga`
-"""
-function _gam0(x::Float64)
-    ga = Ref{Float64}(NaN)
-    # SUBROUTINE GAM0 (X,GA)
-    # double specfun_gam0(double x);
-    ccall(f77func(:gam0), Cvoid,
-        (Ref{Float64}, Ref{Float64}),
-        x, ga)
-
-    ga[]
-end
-
-"""
-Warp fortran `specfun.GAMMA2`.
-- Input: `x`
-- Output: `ga`
-"""
-function _gamma2(x::Float64)
-    ga = Ref{Float64}(NaN)
-    # SUBROUTINE GAMMA2(X,GA)
-    # double specfun_gamma2(double x);
-    ccall(f77func(:gamma2), Cvoid,
-        (Ref{Float64}, Ref{Float64}),
-        x, ga)
-
-    ga[]
-end
 
 
 #= ## Zeros of Bessel functions =#
@@ -287,7 +312,7 @@ end
 """Parabolic Cylinder functions
 
 - [ ] _pbwa
-    - [x] _cgama
+    - _cgama
 
 - [ ] _pbvv
     - [ ] _gamma2
@@ -344,27 +369,6 @@ function _klvnzo(nt::Int64, kd::Int64)
         zo)
 
     zo
-end
-
-
-"""
-Warp fortran `specfun.CGAMA`.
-
-- Input: `X,Y, KF`
-- Output: `GR,GI`
-"""
-function _cgama(z::Complex{Float64}, kf::Int)
-    gr = Ref{Float64}(NaN)
-    gi = Ref{Float64}(NaN)
-    # SUBROUTINE CGAMA(X,Y,KF,GR,GI)
-    # double complex specfun_cgama(double complex z, int kf);
-    ccall(f77func(:cgama), Cvoid,
-        (Ref{Float64}, Ref{Float64}, Ref{Int32},
-         Ref{Float64}, Ref{Float64}),
-        real(z), imag(z), Int32(kf),
-        gr, gi)
-
-    complex(gr[], gi[])
 end
 
 """
