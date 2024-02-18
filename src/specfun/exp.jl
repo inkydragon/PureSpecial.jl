@@ -135,7 +135,7 @@ end
 
 
 """
-eix(x::Float64)
+    eix(x::Float64)
 
 Compute exponential integral Ei(x)
 
@@ -153,6 +153,7 @@ function eix(x::Float64)
         # -Inf
         return -1.0e+300
     elseif x < 0
+        # DLMF 6.2.6:  Ei(-x) = -E1(x)
         return -e1xb(-x)
     elseif abs(x) <= 40.0
         # DLMF 6.6.1:  x > 0, Power series around x=0
