@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MIT OR BSD-3-Clause
 #   See also: src/specfun/LICENSE.md
+# TODO: use gamma in AMOS?
 
 
 const _GAM0_G = Float64[
