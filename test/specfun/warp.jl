@@ -408,3 +408,14 @@ function _chgm(a::Float64, b::Float64, x::Float64)
 
     hg[]
 end
+
+
+#= math.jl =#
+
+function _e1xb(x::Float64)
+    e1 = Ref{Float64}(NaN)
+    # SUBROUTINE E1XB(X,E1)
+    # double specfun_e1xb(double x);
+    ccall(f77func(:e1xb), Cvoid, (Ref{Float64}, Ref{Float64}), x, e1)
+    e1[]
+end

@@ -46,5 +46,6 @@ include("bessel_zeros.jl")
 include("parabolic.jl")
 include("kelvin.jl")
 include("hyper.jl")
+include("exp.jl")
 
 end # Scipy4j
