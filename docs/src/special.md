@@ -125,3 +125,7 @@
 + [ ]: specfun_mtu12
 + [ ]: specfun_fcoef
 
+
+## Spheroidal Wave functions
+> specfun
+
