@@ -133,3 +133,8 @@
 - `kelvin`: specfun_klvna
 - `kelvin_zeros`: specfun_klvnzo
 
+## Combinatorics
+
+## Lambert W functions
+> in cpp
+
