@@ -119,3 +119,9 @@
 - [ ] `pbvv`: specfun_pbvv
 - [ ] `pbwa`: specfun_pbwa
 
+## Mathieu functions
++ [ ]: specfun_cva2
++ [ ]: specfun_mtu0
++ [ ]: specfun_mtu12
++ [ ]: specfun_fcoef
+
