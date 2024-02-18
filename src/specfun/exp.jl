@@ -181,3 +181,36 @@ function eix(x::Float64)
 
     return ei
 end
+
+"""
+    eixz(z::Complex{Float64})
+
+Compute exponential integral Ei(x)
+
+Input
+x  --- Complex argument of Ei(x)
+
+Output
+EI --- Ei(x)
+"""
+function eixz(z::Complex{Float64})
+    cei = -e1z(-z)
+
+    if imag(z) > 0.0
+        cei += 0.0 + pi*im
+    elseif imag(z) < 0.0
+        cei -= 0.0 + pi*im
+    else
+        if real(z) > 0.0
+            cei += 0.0 + copysign(pi, imag(z))*im
+        end
+    end
+
+    #= TODO: maybe opt to
+        if 0 == imag(z) && real(z) <= 0
+            return cei 
+        end
+        cei += 0.0 + copysign(pi, imag(z))*im
+    =#
+    return cei
+end

@@ -435,3 +435,11 @@ function _eix(x::Float64)
     ccall(f77func(:eix), Cvoid, (Ref{Float64}, Ref{Float64}), x, ei)
     ei[]
 end
+
+function _eixz(z::ComplexF64)
+    cei = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE EIXZ(Z,CEI)
+    # double complex specfun_eixz(double complex z);
+    ccall(f77func(:eixz), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, cei)
+    cei[]
+end

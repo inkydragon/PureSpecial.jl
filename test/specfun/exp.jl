@@ -13,18 +13,21 @@ const E1XB_TEST_X = Float64[
     end
 end
 
-@testset "_e1z" begin
+const E1Z_TEST_Z = let test_z = E1XB_TEST_X
     test_z = ComplexF64[
-        E1XB_TEST_X...,
+        test_z...,
         -50:1:50...,
     ]
-    test_z = ComplexF64[
+    
+    ComplexF64[
         test_z...,
         (x*im for x in test_z)...,
         (x + rand(-100:100) * im for x in test_z)...,
     ]
+end
 
-    for z in test_z
+@testset "_e1z" begin
+    for z in E1Z_TEST_Z
         @testset "e1z($z)" begin
             @test isapprox(_e1z(z), Specfun.e1z(z))
         end
@@ -45,6 +48,15 @@ end
     for x in test_x
         @testset "eix($x)" begin
             @test isapprox(_eix(x), Specfun.eix(x))
+        end
+    end
+end
+
+
+@testset "eixz" begin
+    for z in E1Z_TEST_Z
+        @testset "eixz($z)" begin
+            @test isapprox(_eixz(z), Specfun.eixz(z))
         end
     end
 end
