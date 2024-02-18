@@ -2,7 +2,18 @@
 #   See also: src/specfun/LICENSE.md
 #=exp.jl
     + e1xb
+    + e1z
+    + eix
+    + eixz
+
+Maybe todo:
+    - ENXA(N,X,EN)
+        Compute exponential integral En(x), x ≤ 20
+    - ENXB(N,X,EN)
+        Compute exponential integral En(x)
+    - Use impl from: https://netlib.org/math/docpdf/ch02-10.pdf
 =#
+
 
 """
 Base.MathConstants.eulergamma
