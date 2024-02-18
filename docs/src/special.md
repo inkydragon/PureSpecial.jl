@@ -138,3 +138,8 @@
 ## Lambert W functions
 > in cpp
 
+## Other Special functions
+
+## Convenience functions
+- [ ] `exp1(z)`: specfun_e1xb,specfun_e1z
+- [ ] `expi(x)`: specfun_eix,specfun_eixz
