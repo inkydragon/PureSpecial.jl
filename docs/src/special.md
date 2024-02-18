@@ -114,3 +114,8 @@
 - [ ] `hyperu`: cephes_poch,specfun_chgu
 - [ ] `hyp0f1`: cbesi_wrap,cbesj_wrap,_hyp0f1_asy
 
+## Parabolic Cylinder functions
+- [ ] `pbdv`: specfun_pbdv
+- [ ] `pbvv`: specfun_pbvv
+- [ ] `pbwa`: specfun_pbwa
+
