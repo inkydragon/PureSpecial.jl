@@ -129,3 +129,7 @@
 ## Spheroidal Wave functions
 > specfun
 
+## Kelvin functions
+- `kelvin`: specfun_klvna
+- `kelvin_zeros`: specfun_klvnzo
+
