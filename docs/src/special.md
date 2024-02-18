@@ -80,3 +80,15 @@
 ## Gamma functions
 > Use `cephes`
 
+## Error function
+> faddeeva,cephes,boost_special
+
+- [ ] `fresnel`: specfun_cfs,specfun_cfc
+- [ ] `modfresnelp`: specfun_ffk
+- [ ] `modfresnelm`: specfun_ffk
+
+- [ ] `erf_zeros`: specfun_cerzo
+- [ ] `fresnel_zeros`: specfun_fcszo
+    - `fresnelc_zeros`: fresnel_zeros
+    - `fresnels_zeros`: fresnel_zeros
+
