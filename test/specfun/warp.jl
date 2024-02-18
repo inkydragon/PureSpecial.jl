@@ -419,3 +419,11 @@ function _e1xb(x::Float64)
     ccall(f77func(:e1xb), Cvoid, (Ref{Float64}, Ref{Float64}), x, e1)
     e1[]
 end
+
+function _e1z(z::ComplexF64)
+    ce1 = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE E1Z(Z,CE1)
+    # double complex specfun_e1z(double complex z);
+    ccall(f77func(:e1z), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, ce1)
+    ce1[]
+end

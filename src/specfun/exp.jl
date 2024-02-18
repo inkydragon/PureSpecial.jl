@@ -4,6 +4,13 @@
     + e1xb
 =#
 
+"""
+Base.MathConstants.eulergamma
+
+note: imprecise
+"""
+const EULER_GAMMA_28 = 0.57721566490153_28
+
 
 """
     e1xb(x::Float64)
@@ -18,9 +25,7 @@ e1 --- E1(x)  ( x > 0 )
 """
 function e1xb(x::Float64)
     @assert x >= 0
-
     EPS = 1e-15
-    ga = 0.5772156649015328
 
     e1 = NaN
     if x == 0.0
@@ -36,7 +41,7 @@ function e1xb(x::Float64)
                 break
             end
         end
-        e1 = -ga - log(x) + x*e1
+        e1 = -EULER_GAMMA_28 - log(x) + x*e1
     else
         m = 20 + trunc(Int64, 80.0 / x)
         t0 = 0.0
@@ -48,4 +53,82 @@ function e1xb(x::Float64)
     end
 
     return e1
+end
+
+
+"""
+    e1z(z::Complex{Float64})
+
+Compute complex exponential integral E1(z)
+
+Input
+z   --- Argument of E1(z)
+
+Output
+CE1 --- E1(z)
+"""
+function e1z(z::Complex{Float64})
+    @assert isapprox(Base.MathConstants.eulergamma, EULER_GAMMA_28)
+    EPS = 1e-15
+
+    # Continued fraction converges slowly near negative real axis,
+    #   so use power series in a wedge around it until radius 40.0
+    a0 = abs(z)
+    if a0 == 0.0
+        return complex(1e300)
+    end
+
+    x = real(z)
+    xt = -2.0 * abs(imag(z))
+    if (a0 < 5.0) || ((x < xt) && (a0 < 40.0))
+        # DLMF 6.6.2:  Power series
+        ce1 = complex(1.0)
+        cr = complex(1.0)
+        for k = 1:500
+            cr *= -z * (k / (k+1)^2)
+            ce1 += cr
+            if abs(cr) < (abs(ce1) * EPS)
+                break
+            end
+        end
+
+        if (x <= 0.0) && (imag(z) == 0.0)
+            # Careful on the branch cut -- use the sign of the imaginary part
+            #   to get the right sign on the factor if pi.
+            ce1 = -EULER_GAMMA_28 - log(-z) + z * ce1 - copysign(pi, imag(z)) * im
+        else
+            ce1 = -EULER_GAMMA_28 - log(z) + z * ce1
+        end
+    else
+        # DLMF 6.9.1:  Continued Fraction
+        #
+        #                       1     1     1     2     2     3     3
+        #   E1(z) = exp(-z) * ----- ----- ----- ----- ----- ----- ----- ...
+        #                     Z +   1 +   Z +   1 +   Z +   1 +   Z +
+        #
+        zc = complex(0.0)
+
+        zd = 1 / z
+        zdc = zd
+        zc += zdc
+        for k = 1:500
+            zd = 1.0 / (zd * k + 1.0)
+            zdc *= (1.0 * zd - 1.0)
+            zc += zdc
+
+            zd = 1.0 / (zd * k + z)
+            zdc *= (z * zd - 1.0)
+            zc += zdc
+            if (abs(zdc) <= (abs(zc)*EPS)) && (k > 20)
+                break
+            end
+        end
+
+        ce1 = exp(-z) * zc
+        if (x <= 0.0) && (imag(z) == 0.0)
+            ce1 -= pi * im
+        end
+    end
+
+    return ce1
 end
