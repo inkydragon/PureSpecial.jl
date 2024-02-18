@@ -70,3 +70,13 @@
 - [ ] `itstruve0`: specfun_itsh0
 - [ ] `it2struve0`: specfun_itth0
 - [ ] `itmodstruve0`: specfun_itsl0
+
+## Statistical functions
+> Skip!
+
+## Information Theory functions
+> Skip!
+
+## Gamma functions
+> Use `cephes`
+
