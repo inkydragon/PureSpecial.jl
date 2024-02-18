@@ -23,6 +23,24 @@ const libspecfun = Libdl.dlopen("libspecfun.so")
 f77func(s::Symbol) = Libdl.dlsym(libspecfun, Symbol("$(s)_")) 
 
 
+#= gamma.jl =#
+"""
+Warp fortran `specfun.GAIH`.
+- Input: `x`
+- Output: `ga`
+"""
+function _gaih(x::Float64)
+    ga = Ref{Float64}(NaN)
+    # SUBROUTINE GAIH(X,GA)
+    # double specfun_gaih(double x);
+    ccall(f77func(:gaih), Cvoid,
+        (Ref{Float64}, Ref{Float64}),
+        x, ga)
+
+    ga[]
+end
+
+
 #= ## Airy functions =#
 """
 Warp fortran `specfun.AIRYB`.

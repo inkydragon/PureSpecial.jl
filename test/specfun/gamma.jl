@@ -47,3 +47,18 @@ const _GAMMA2_TEST_X = Float64[
         end   
     end
 end
+
+
+@testset "_gaih" begin
+    test_x = Float64[
+        0.1,
+        1:100...,
+    ]
+    test_x /= 2
+
+    for x in test_x
+        @testset "gaih($x)" begin
+            @test isequal(_gaih(x), Specfun.gaih(x))
+        end   
+    end
+end

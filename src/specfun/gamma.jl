@@ -100,3 +100,37 @@ function gamma2(x::Float64)
 
     return ga
 end
+
+"""
+    gaih(x::Float64)
+
+Compute gamma function Г(x)
+
+Input
+x  --- Argument of Г(x), x = n/2, n=1,2,3,…
+
+Output
+ga --- Г(x)
+"""
+function gaih(x::Float64)
+    @assert x > 0
+
+    ga = NaN
+    if x > 0.0
+        if isinteger(x)
+            m1 = trunc(Int64, x - 1.0)
+            ga = 1.0
+            for k = 2:m1
+                ga *= k
+            end
+        elseif isinteger(x + 0.5)
+            m = trunc(Int64, x)
+            ga = sqrt(pi)
+            for k = 1:m
+                ga *= 0.5 * (2.0 * k - 1.0)
+            end
+        end
+    end
+
+    return ga
+end
