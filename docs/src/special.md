@@ -102,3 +102,15 @@
 - [ ] `lpmn(m, n, z)`: specfun_lpmn
 - [ ] `lqmn(m, n, z)`: specfun_lqmn
 
+## Ellipsoidal harmonics
+## Orthogonal polynomials
++ evaluate values
++ roots
+
+## Hypergeometric functions
+- [ ] `hyp2f1`: cephes_hyp2f1，hyp2f1_complex
+
+- [ ] `hyp1f1`: specfun_chgm,specfun_cchg
+- [ ] `hyperu`: cephes_poch,specfun_chgu
+- [ ] `hyp0f1`: cbesi_wrap,cbesj_wrap,_hyp0f1_asy
+
