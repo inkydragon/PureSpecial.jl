@@ -48,7 +48,6 @@ const _GAMMA2_TEST_X = Float64[
     end
 end
 
-
 @testset "_gaih" begin
     test_x = Float64[
         0.1,
@@ -60,5 +59,27 @@ end
         @testset "gaih($x)" begin
             @test isequal(_gaih(x), Specfun.gaih(x))
         end   
+    end
+end
+
+@testset "_cgama" begin
+    test_z = [
+        1.0 + im,
+        1.0 - im,
+        -1.0 + im,
+        -1.0 - im,
+        
+        -1.0 + 0im,
+        -2.0 + 1im,
+        2.0 + 3im,
+    ]
+
+    for z in test_z,
+        kf in 0:1
+        @testset "cgama($z, $kf)" begin
+            ref = _cgama(z, kf)
+            res = Specfun.cgama(z, kf)
+            @test isapprox(ref, res)
+        end
     end
 end
