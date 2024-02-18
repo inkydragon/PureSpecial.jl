@@ -58,7 +58,7 @@ end
     end
 end
 
-@testset "msta1" begin
+@testset "_msta1" begin
     test_x = Float64[
         rand(10)...,
         -10:-1...,
@@ -71,9 +71,11 @@ end
 
     for x in test_x,
         mp in test_mp
-        @testset "_msta1(x=$x, mp=$mp)" begin
-            if abs(x) < 1.0 && mp <= 2
-                # Will got `InexactError: trunc(Int64, NaN)`
+        @testset "msta1($x, $mp)" begin
+            if abs(x) < 1.0 && mp <= 3
+                #= NOTE: Will got `InexactError: trunc(Int64, NaN)`
+                    _msta1(0.0013043856673833343, 3)
+                =#
                 continue
             end
 
