@@ -92,3 +92,13 @@
     - `fresnelc_zeros`: fresnel_zeros
     - `fresnels_zeros`: fresnel_zeros
 
+## Legendre functions
+- [ ] `sph_harm(m, n, theta, phi)`: cephes_poch
+
+- [ ] `lpmv(m, v, x)`: specfun_lpmv
+- [ ] `clpmn(m, n, z)`: specfun_clpmn
+- [ ] `lpn(n, z)`: specfun_lpn
+- [ ] `lqn(n, z)`: specfun_lpn
+- [ ] `lpmn(m, n, z)`: specfun_lpmn
+- [ ] `lqmn(m, n, z)`: specfun_lqmn
+
