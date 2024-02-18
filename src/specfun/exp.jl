@@ -132,3 +132,51 @@ function e1z(z::Complex{Float64})
 
     return ce1
 end
+
+
+"""
+eix(x::Float64)
+
+Compute exponential integral Ei(x)
+
+Input
+x  --- Argument of Ei(x)
+
+Output
+EI --- Ei(x)
+"""
+function eix(x::Float64)
+    EPS = 1e-15
+
+    ei = NaN
+    if x == 0.0
+        # -Inf
+        return -1.0e+300
+    elseif x < 0
+        return -e1xb(-x)
+    elseif abs(x) <= 40.0
+        # DLMF 6.6.1:  x > 0, Power series around x=0
+        ei = 1.0
+        r = 1.0
+        for k = 1:100
+            r *= k * x / (k + 1)^2
+            ei += r
+            if abs(r / ei) <= EPS
+                break
+            end
+        end
+        ei = EULER_GAMMA_28 + log(x) + x * ei
+    else # x > 40
+        # DLMF 6.12.2:  x > 0, x --> Inf, Asymptotic expansion 
+        #   (the series is not convergent)
+        ei = 1.0
+        r = 1.0
+        for k = 1:20
+            r *= k / x
+            ei += r
+        end
+        ei = exp(x) / x * ei
+    end
+
+    return ei
+end

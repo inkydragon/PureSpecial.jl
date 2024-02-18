@@ -30,3 +30,21 @@ end
         end
     end
 end
+
+
+@testset "eix" begin
+    test_x = [
+        E1XB_TEST_X...,
+        10:40...,
+        rand(4:1000, 5)...,
+    ]
+    test_x = [
+        test_x...,
+        -test_x...,
+    ]
+    for x in test_x
+        @testset "eix($x)" begin
+            @test isapprox(_eix(x), Specfun.eix(x))
+        end
+    end
+end
