@@ -186,6 +186,50 @@ function cerf(z::Complex{Float64})
     return cer, cder
 end
 
+function cerzo!(zo::Vector{Complex{Float64}}, nt::Int)
+    EPS = 1.0e-11
+
+    for nr in 1:nt
+        pu = sqrt(pi * (4.0 * nr - 0.5))
+        pv = pi * sqrt(2.0 * nr - 0.25)
+        px = 0.5 * pu - 0.5 * log(pv) / pu
+        py = 0.5 * pu + 0.5 * log(pv) / pu
+        z = complex(px, py)
+
+        it = 0
+        w = 0.0
+        while true
+            it += 1
+            zf, zd = cerf(z)
+            zp = 1.0
+            for i in 1:nr
+                zp *= (z - zo[i])
+            end
+            zfd = zf / zp
+            zq = 0.0
+            for i in 1:nr
+                zw = 1.0
+                for j in 1:nr
+                    if j != i
+                        zw *= (z - zo[j])
+                    end
+                end
+                zq += zw
+            end
+            zgd = (zd - zq * zfd) / zp
+            z -= zfd / zgd
+            w0 = w
+            w = abs(z)
+            if (it > 50) || (abs((w - w0) / w) <= EPS)
+                break
+            end
+        end
+
+        zo[nr] = z
+    end
+end
+
+
 
 """
 Compute complex Fresnel integral C(z) and C'(z)

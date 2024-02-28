@@ -45,6 +45,19 @@ end
     end
 end
 
+@testset "cerzo!" begin
+    for n in 1:10
+        ref_zo = zeros(ComplexF64, n)
+        zo = zeros(ComplexF64, n)
+        @testset "cerzo!($n)" begin
+            _cerzo!(ref_zo, n)
+            Specfun.cerzo!(zo, n)
+
+            @test isapprox(ref_zo, zo; nans=true)
+        end
+    end
+end
+
 
 const CFC_TEST_Z = ComplexF64[
     #= if z==0 =#

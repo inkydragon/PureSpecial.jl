@@ -352,6 +352,13 @@ function _cerf(z::ComplexF64)
     cer[], cder[]
 end
 
+function _cerzo!(zo::Vector{Complex{Float64}}, nt::Int)
+    # SUBROUTINE CERZO(NT,ZO)
+    ccall(f77func(:cerzo), Cvoid,
+        (Ref{Int32}, Ref{ComplexF64}),
+        nt, zo)
+end
+
 function _cfc(z::ComplexF64)
     zf = Ref{ComplexF64}(NaN + NaN*im)
     zd = Ref{ComplexF64}(NaN + NaN*im)
