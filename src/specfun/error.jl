@@ -616,3 +616,164 @@ function fcszo!(zo::Vector{Complex{Float64}}, kf::Int, nt::Int)
         zo[nr] = z
     end
 end
+
+"""
+Compute modified Fresnel integrals F±(x)
+and K±(x)
+
+Input
+x   --- Argument of F±(x) and K±(x)
+KS  --- Sign code
+    KS=0 for calculating F+(x) and K+(x)
+    KS=1 for calculating F_(x) and K_(x)
+
+Output
+FR  --- Re[F±(x)]
+FI  --- Im[F±(x)]
+FM  --- |F±(x)|
+FA  --- Arg[F±(x)]  (Degs.)
+GR  --- Re[K±(x)]
+GI  --- Im[K±(x)]
+GM  --- |K±(x)|
+GA  --- Arg[K±(x)]  (Degs.)
+"""
+function ffk(ks::Int, x::Float64)
+    srd = 57.29577951308233
+    eps = 1.0e-15
+    pp2 = 1.2533141373155
+    p2p = 0.7978845608028654
+
+    xa = abs(x)
+    x2 = x^2
+    x4 = x2 * x2
+
+    if x == 0.0
+        fr = 0.5 * sqrt(0.5 * pi)
+        fi = (-1)^ks * fr
+        fm = sqrt(0.25 * pi)
+        fa = (-1)^ks * 45.0
+        gr = 0.5
+        gi = 0.0
+        gm = 0.5
+        ga = 0.0
+        return fr, fi, fm, fa, gr, gi, gm, ga
+    end
+
+    fr, fi = 0.0, 0.0
+    fm, fa = 0.0, 0.0
+    gr, gi = 0.0, 0.0
+    gm, ga = 0.0, 0.0
+    if xa <= 2.5
+        xr = p2p * xa
+        c1 = xr
+
+        for k in 1:50
+            xr = -0.5 * xr * (4.0 * k - 3.0) / k / (2.0 * k - 1.0) / (4.0 * k + 1.0) * x4
+            c1 += xr
+            if abs(xr / c1) < eps
+                break
+            end
+        end
+
+        s1 = p2p * xa * xa * xa / 3.0
+        xr = s1
+
+        for k in 1:50
+            xr = -0.5 * xr * (4.0 * k - 1.0) / k / (2.0 * k + 1.0) / (4.0 * k + 3.0) * x4
+            s1 += xr
+            if abs(xr / s1) < eps
+                break
+            end
+        end
+
+        fr = pp2 * (0.5 - c1)
+        fi0 = pp2 * (0.5 - s1)
+        fi = (-1)^ks * fi0
+    elseif xa < 5.5
+        m = trunc(Int64, 42 + 1.75 * x2)
+        xsu = 0.0
+        xc = 0.0
+        xs = 0.0
+        xf1 = 0.0
+        xf0 = 1.0e-100
+
+        for k in m:-1:0
+            xf = (2.0 * k + 3.0) * xf0 / x2 - xf1
+            if k % 2 == 0
+                xc += xf
+            else
+                xs += xf
+            end
+            xsu += (2.0 * k + 1.0) * xf * xf
+            xf1 = xf0
+            xf0 = xf
+        end
+
+        xq = sqrt(xsu)
+        xw = p2p * xa / xq
+        c1 = xc * xw
+        s1 = xs * xw
+    else
+        xr = 1.0
+        xf = 1.0
+
+        for k in 1:12
+            xr = -0.25 * xr * (4.0 * k - 1.0) * (4.0 * k - 3.0) / x4
+            xf += xr
+        end
+
+        xr = 1.0 / (2.0 * xa * xa)
+        xg = xr
+
+        for k in 1:12
+            xr = -0.25 * xr * (4.0 * k + 1.0) * (4.0 * k - 1.0) / x4
+            xg += xr
+        end
+
+        c1 = 0.5 + (xf * sin(x2) - xg * cos(x2)) / sqrt(2.0 * pi) / xa
+        s1 = 0.5 - (xf * cos(x2) + xg * sin(x2)) / sqrt(2.0 * pi) / xa
+    end
+
+    fr = pp2 * (0.5 - c1)
+    fi0 = pp2 * (0.5 - s1)
+    fi = (-1)^ks * fi0
+    fm = abs(fr + fi * im)
+    
+    if fr >= 0.0
+        fa = srd * atan(fi / fr)
+    elseif fi > 0.0
+        fa = srd * (atan(fi / fr) + pi)
+    elseif fi < 0.0
+        fa = srd * (atan(fi / fr) - pi)
+    end
+
+    xp = x2 + pi / 4.0
+    cs = cos(xp)
+    ss = sin(xp)
+    xq2 = 1.0 / sqrt(pi)
+
+    gr = xq2 * (fr * cs + fi0 * ss)
+    gi = (-1)^ks * xq2 * (fi0 * cs - fr * ss)
+    gm = sqrt(gr * gr + gi * gi)
+
+    if gr >= 0.0
+        ga = srd * atan(gi / gr)
+    elseif gi > 0.0
+        ga = srd * (atan(gi / gr) + pi)
+    elseif gi < 0.0
+        ga = srd * (atan(gi / gr) - pi)
+    end
+
+    if x < 0.0
+        fr = pp2 - fr
+        fi = (-1)^ks * pp2 - fi
+        fm = abs(fr + fi * im)
+        fa = srd * atan(fi / fr)
+        gr = cos(x2) - gr
+        gi = -(-1)^ks * sin(x2) - gi
+        gm = sqrt(gr * gr + gi * gi)
+        ga = srd * atan(gi / gr)
+    end
+    
+    fr, fi, fm, fa, gr, gi, gm, ga
+end

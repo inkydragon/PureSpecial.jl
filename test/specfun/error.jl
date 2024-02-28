@@ -136,3 +136,31 @@ end
         end
     end
 end
+
+@testset "ffk" begin
+    test_x = Float64[
+        0.0, -0.0,
+        -42:42...,
+        rand(10)...,
+        -1.0*rand(10)...,
+    ]
+
+    for x in test_x,
+        ks in 1:2
+        @testset "ffk($ks, $x)" begin
+            fr0, fi0, fm0, fa0, gr0, gi0, gm0, ga0 =
+                _ffk(ks, x)
+            fr, fi, fm, fa, gr, gi, gm, ga =
+                Specfun.ffk(ks, x)
+
+            @test isapprox(fr0, fr; nans=true)
+            @test isapprox(fi0, fi; nans=true)
+            @test isapprox(fm0, fm; nans=true)
+            @test isapprox(fa0, fa; nans=true)
+            @test isapprox(gr0, gr; nans=true)
+            @test isapprox(gi0, gi; nans=true)
+            @test isapprox(gm0, gm; nans=true)
+            @test isapprox(ga0, ga; nans=true)
+        end
+    end
+end

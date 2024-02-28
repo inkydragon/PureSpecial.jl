@@ -398,6 +398,25 @@ function _fcszo!(zo::Vector{Complex{Float64}}, kf::Int, nt::Int)
         Int32(kf), Int32(nt), zo)
 end
 
+function _ffk(ks::Int, x::Float64)
+    fr, fi, fm, fa, gr, gi, gm, ga = 
+        Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN),
+        Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN) 
+    # SUBROUTINE FFK(KS,X,FR,FI,FM,FA,GR,GI,GM,GA)
+    # void specfun_ffk(int ks, double x, 
+    #   double *fr, double *fi, double *fm, double *fa,
+    #   double *gr, double *gi, double *gm, double *ga);
+    ccall(f77func(:ffk), Cvoid,
+        (Ref{Int32}, Ref{Float64},
+         Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64},
+         Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        Int32(ks), x,
+        fr, fi, fm, fa,
+        gr, gi, gm, ga)
+        
+    fr[],fi[], fm[],fa[], gr[],gi[], gm[],ga[]
+end
+
 
 #= ## Kelvin functions =#
 """
