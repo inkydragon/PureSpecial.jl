@@ -339,6 +339,18 @@ function _cfc(z::ComplexF64)
     zf[], zd[]
 end
 
+function _cfs(z::ComplexF64)
+    zf = Ref{ComplexF64}(NaN + NaN*im)
+    zd = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE CFS(Z,ZF,ZD)
+    # void specfun_cfs(double complex z, double complex *zf, double complex *zd);
+    ccall(f77func(:cfs), Cvoid,
+        (Ref{ComplexF64}, Ref{ComplexF64}, Ref{ComplexF64}),
+        z, zf, zd)
+    zf[], zd[]
+end
+
+
 #= ## Kelvin functions =#
 """
 Warp fortran `specfun.KLVNA`.

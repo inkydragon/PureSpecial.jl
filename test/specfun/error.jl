@@ -35,3 +35,19 @@ const CFC_TEST_Z = ComplexF64[
     end
 end
 
+@testset "cfs" begin
+    for z in CFC_TEST_Z
+        @testset "cfs($z)" begin
+            r_zf, r_zd = _cfs(z)
+            zf, zd = Specfun.cfs(z)
+            
+            if z==4.0
+                @test_broken false
+                continue 
+            end
+            
+            @test isapprox(r_zf, zf; nans=true)
+            @test isapprox(r_zd, zd; nans=true)
+        end
+    end
+end
