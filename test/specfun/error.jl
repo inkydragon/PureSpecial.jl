@@ -122,3 +122,17 @@ end
         end
     end
 end
+
+@testset "fcszo!" begin
+    for n in 1:10,
+        kf in 1:2
+        ref_zo = zeros(ComplexF64, n)
+        zo = zeros(ComplexF64, n)
+        @testset "fcszo!($kf, $n)" begin
+            _fcszo!(ref_zo, kf, n)
+            Specfun.fcszo!(zo, kf, n)
+
+            @test isapprox(ref_zo, zo; nans=true)
+        end
+    end
+end

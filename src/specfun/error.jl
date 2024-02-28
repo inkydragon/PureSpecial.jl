@@ -533,3 +533,86 @@ function fcs(x::Float64)
 
     return c, s
 end
+
+"""
+Compute the complex zeros of Fresnel integral C(z)
+or S(z) using modified Newton's iteration method
+
+Input
+KF  --- Function code
+    KF=1 for C(z) or KF=2 for S(z)
+NT  --- Total number of zeros
+
+Output
+ZO(L) --- L-th zero of C(z) or S(z)
+
+Routines called:
+(1) CFC for computing Fresnel integral C(z)
+(2) CFS for computing Fresnel integral S(z)
+"""
+function fcszo!(zo::Vector{Complex{Float64}}, kf::Int, nt::Int)
+    EPS = 1.0e-12
+
+    psq = 0.0
+    w = 0.0
+    for nr = 1:nt
+        psq = 0.0
+        if kf == 1
+            psq = sqrt(4.0 * nr - 1.0)
+        end
+        if kf == 2
+            psq = 2.0 * sqrt(nr)
+        end
+
+        px = psq - log(pi * psq) / (pi^2 * psq^3)
+        py = log(pi * psq) / pi / psq
+        z = Complex{Float64}(px, py)
+        if kf == 2
+            if nr == 2; z = complex(2.8334, 0.2443); end
+            if nr == 3; z = complex(3.4674, 0.2185); end
+            if nr == 4; z = complex(4.0025, 0.2008); end
+        end
+
+        it = 0
+        w0 = w
+        while true
+            it += 1
+
+            zf, zd = complex(0.0), complex(0.0)
+            if kf == 1
+                zf, zd = cfc(z)
+            end
+            if kf == 2
+                zf, zd = cfs(z)
+            end
+
+            zp = 1.0
+            for i in 1:(nr-1)
+                zp *= (z - zo[i])
+            end
+
+            zfd = zf / zp
+            zq = 0.0
+            for i in 1:nr-1
+                zw = 1.0
+                for j in 1:nr-1
+                    if j == i
+                        continue
+                    end
+                    zw *= (z - zo[j])
+                end
+                zq += zw
+            end
+            zgd = (zd - zq * zfd) / zp
+            z -= zfd / zgd
+            w0 = w
+            w = abs(z)
+            
+            if (it > 50) || (abs((w - w0) / w) <= EPS)
+                break
+            end
+        end
+
+        zo[nr] = z
+    end
+end

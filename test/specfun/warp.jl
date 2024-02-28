@@ -391,6 +391,13 @@ function _fcs(z::Float64)
     c[], s[]
 end
 
+function _fcszo!(zo::Vector{Complex{Float64}}, kf::Int, nt::Int)
+    # SUBROUTINE FCSZO(KF,NT,ZO)
+    ccall(f77func(:fcszo), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{ComplexF64}),
+        Int32(kf), Int32(nt), zo)
+end
+
 
 #= ## Kelvin functions =#
 """
