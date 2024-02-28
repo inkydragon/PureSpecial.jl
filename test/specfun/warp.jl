@@ -326,6 +326,19 @@ end
 """
 
 
+#= ## Error function =#
+
+function _cfc(z::ComplexF64)
+    zf = Ref{ComplexF64}(NaN + NaN*im)
+    zd = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE CFC(Z,ZF,ZD)
+    # void specfun_cfc(double complex z, double complex *zf, double complex *zd);
+    ccall(f77func(:cfc), Cvoid,
+        (Ref{ComplexF64}, Ref{ComplexF64}, Ref{ComplexF64}),
+        z, zf, zd)
+    zf[], zd[]
+end
+
 #= ## Kelvin functions =#
 """
 Warp fortran `specfun.KLVNA`.

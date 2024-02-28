@@ -43,6 +43,7 @@ include("gamma.jl")
 
 include("airy.jl")
 include("bessel_zeros.jl")
+include("error.jl")
 include("parabolic.jl")
 include("kelvin.jl")
 include("hyper.jl")
