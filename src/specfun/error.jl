@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: MIT OR BSD-3-Clause
 #   See also: src/specfun/LICENSE.md
 
-# TODO: merge cfc/cfs, use one function (CoSF, P631)
 
 """
 Compute complex Fresnel integral C(z) and C'(z)
@@ -213,4 +212,95 @@ function cfs(z::Complex{Float64})
     # S'(z) = sin(pi/2 * z^2)
     zd = sin(0.5 * pi * z * z)
     return zf, zd
+end
+
+
+# TODO: merge cfc/cfs, use one function (CoSF, P631)
+"""
+Compute Fresnel integrals C(x) and S(x)
+
+Input
+x --- Argument of C(x) and S(x)
+
+Output
+C --- C(x)
+S --- S(x)
+"""
+function fcs(x::Float64)
+    EPS = 1.0e-15
+
+    xa = abs(x)
+    px = pi * xa
+    t = 0.5 * px * xa
+    t2 = t * t
+
+    c = 0.0
+    s = 0.0
+    if xa == 0.0
+        c = 0.0
+        s = 0.0
+    elseif xa < 2.5
+        r = xa
+        c = r
+        for k = 1:50
+            r = -0.5 * r * (4 * k - 3) / k / (2 * k - 1) / (4 * k + 1) * t2
+            c += r
+            if abs(r) < abs(c) * EPS
+                break
+            end
+        end
+        s = xa * t / 3.0
+        r = s
+        for k = 1:50
+            r = -0.5 * r * (4 * k - 1) / k / (2 * k + 1) / (4 * k + 3) * t2
+            s += r
+            if abs(r) < abs(s) * EPS
+                break
+            end
+        end
+    elseif xa < 4.5
+        m = trunc(Int64, 42.0 + 1.75 * t)
+        su = 0.0
+        c = 0.0
+        s = 0.0
+        f1 = 0.0
+        f0 = 1.0e-100
+        for k = m:-1:0
+            f = (2 * k + 3) * f0 / t - f1
+            if mod(k, 2) == 0
+                c += f
+            else
+                s += f
+            end
+            su += (2 * k + 1) * f * f
+            f1 = f0
+            f0 = f
+        end
+        q = sqrt(su)
+        c *= xa / q
+        s *= xa / q
+    else
+        r = 1.0
+        f = 1.0
+        for k = 1:20
+            r = -0.25 * r * (4 * k - 1) * (4 * k - 3) / t2
+            f += r
+        end
+        r = 1.0 / (px * xa)
+        g = r
+        for k = 1:12
+            r = -0.25 * r * (4 * k + 1) * (4 * k - 1) / t2
+            g += r
+        end
+        t0 = t - trunc(t / (2.0 * pi)) * 2.0 * pi
+        c = 0.5 + (f * sin(t0) - g * cos(t0)) / px
+        s = 0.5 - (f * cos(t0) + g * sin(t0)) / px
+    end
+
+    if x < 0.0
+        c = -c
+        s = -s
+    end
+
+    return c, s
 end

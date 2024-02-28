@@ -350,6 +350,16 @@ function _cfs(z::ComplexF64)
     zf[], zd[]
 end
 
+function _fcs(z::Float64)
+    c = Ref{Float64}(NaN)
+    s = Ref{Float64}(NaN)
+    # SUBROUTINE FCS(X,C,S)
+    ccall(f77func(:fcs), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        z, c, s)
+    c[], s[]
+end
+
 
 #= ## Kelvin functions =#
 """

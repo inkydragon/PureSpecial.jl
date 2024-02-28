@@ -51,3 +51,15 @@ end
         end
     end
 end
+
+@testset "fcs" begin
+    for x in real.(CFC_TEST_Z)
+        @testset "fcs($x)" begin
+            r_c, r_s = _fcs(x)
+            c, s = Specfun.fcs(x)
+
+            @test isapprox(r_c, c; nans=true)
+            @test isapprox(r_s, s; nans=true)
+        end
+    end
+end
