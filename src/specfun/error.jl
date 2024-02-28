@@ -99,6 +99,93 @@ function erf(z::Complex{Float64})
     return cer
 end
 
+"""
+Compute complex Error function erf(z) & erf'(z)
+    
+Input
+z   --- Complex argument of erf(z)
+
+Output
+CER --- erf(z)
+CDER --- erf'(z)
+"""
+function cerf(z::Complex{Float64})
+    EPS = 1.0e-12
+
+    x = real(z)
+    y = imag(z)
+    x2 = x * x
+
+    cer = complex(NaN)
+    if x <= 3.5
+        er = 1.0
+        r = 1.0
+        w = 0.0
+
+        for k = 1:100
+            r *= x2 / (k + 0.5)
+            er += r
+            if abs(er - w) <= EPS * abs(er)
+                break
+            end
+            w = er
+        end
+
+        c0 = 2.0 / sqrt(pi) * x * exp(-x2)
+        er0 = c0 * er
+        cer = complex(er0, 0.0)
+    else
+        er = 1.0
+        r = 1.0
+
+        for k = 1:12
+            r *= -r * (k - 0.5) / x2
+            er += r
+        end
+
+        c0 = exp(-x2) / (x * sqrt(pi))
+        er0 = 1.0 - c0 * er
+        cer = complex(er0, 0.0)
+    end
+
+    if y == 0.0
+        err = real(cer)
+        cer = complex(err, 0.0)
+    else
+        cs = cos(2.0 * x * y)
+        ss = sin(2.0 * x * y)
+        er1 = exp(-x2) * (1.0 - cs) / (2.0 * pi * x)
+        ei1 = exp(-x2) * ss / (2.0 * pi * x)
+        er2 = 0.0
+        w1 = 0.0
+
+        for n = 1:100
+            er2 += exp(-0.25 * n * n) / (n * n + 4.0 * x2) * (2.0 * x - 2.0 * x * cosh(n * y) * cs + n * sinh(n * y) * ss)
+            if abs((er2 - w1) / er2) < EPS
+                break
+            end
+            w1 = er2
+        end
+
+        c0 = 2.0 * exp(-x2) / pi
+        err = real(cer) + er1 + c0 * er2
+        ei2 = 0.0
+        w2 = 0.0
+
+        for n = 1:100
+            ei2 += exp(-0.25 * n * n) / (n * n + 4.0 * x2) * (2.0 * x * cosh(n * y) * ss + n * sinh(n * y) * cs)
+            if abs((ei2 - w2) / ei2) < EPS
+                break
+            end
+            w2 = ei2
+        end
+        cer = complex(err, ei1 + c0 * ei2)
+    end
+
+    cder = 2.0 / sqrt(pi) * exp(-z*z)
+    return cer, cder
+end
+
 
 """
 Compute complex Fresnel integral C(z) and C'(z)

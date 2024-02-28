@@ -16,8 +16,14 @@ const ERF_TEST_X = Float64[
     end
 end
 
+const ERF_TEST_Z = ComplexF64[
+    complex.(ERF_TEST_X)...,
+    3.0 + 4.0*im,
+    -11.0 - 13.0*im,
+]
+
 @testset "erf" begin
-    for z in complex.(ERF_TEST_X)
+    for z in ERF_TEST_Z
         @testset "erf($z)" begin
             r_err = _erf(z)
             err = Specfun.erf(z)
@@ -26,6 +32,19 @@ end
         end
     end
 end
+
+@testset "cerf" begin
+    for z in ERF_TEST_Z
+        @testset "cerf($z)" begin
+            r_err, r_der = _cerf(z)
+            err, der = Specfun.cerf(z)
+
+            @test isapprox(r_err, err; nans=true)
+            @test isapprox(r_der, der; nans=true)
+        end
+    end
+end
+
 
 const CFC_TEST_Z = ComplexF64[
     #= if z==0 =#

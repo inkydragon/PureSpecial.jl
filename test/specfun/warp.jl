@@ -342,6 +342,16 @@ function _erf(z::ComplexF64)
     cer[]
 end
 
+function _cerf(z::ComplexF64)
+    cer = Ref{ComplexF64}(NaN + NaN*im)
+    cder = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE CERF(Z,CER,CDER)
+    ccall(f77func(:cerf), Cvoid,
+        (Ref{ComplexF64}, Ref{ComplexF64}, Ref{ComplexF64}),
+        z, cer, cder)
+    cer[], cder[]
+end
+
 function _cfc(z::ComplexF64)
     zf = Ref{ComplexF64}(NaN + NaN*im)
     zd = Ref{ComplexF64}(NaN + NaN*im)
