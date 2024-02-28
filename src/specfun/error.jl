@@ -3,6 +3,104 @@
 
 
 """
+Compute error function erf(x)
+Input:  x   --- Argument of erf(x)
+Output: ERR --- erf(x)
+"""
+function erf(x::Float64)
+    EPS = 1.0e-15
+
+    x2 = x * x
+    err = NaN
+    if abs(x) < 3.5
+        er = 1.0
+        r = 1.0
+        for k = 1:50
+            r *= x2 / (k + 0.5)
+            er += r
+            if abs(r) ≤ abs(er) * EPS
+                break
+            end
+        end
+        c0 = 2.0 / sqrt(pi) * x * exp(-x2)
+        err = c0 * er
+    else
+        er = 1.0
+        r = 1.0
+        for k = 1:12
+            r *= -(k - 0.5) / x2
+            er += r
+        end
+        c0 = exp(-x2) / (abs(x) * sqrt(pi))
+        err = 1.0 - c0 * er
+        if x < 0.0
+            err = -err
+        end
+    end
+
+    return err
+end
+
+"""
+Compute error function erf(z) for a complex argument (z=x+iy)
+Input:  z   --- Complex argument
+Output: CER --- erf(z)
+"""
+function erf(z::Complex{Float64})
+    EPS = 1.0e-15
+    sqpi = 1.7724538509055160273
+    z1 = z
+    if real(z) < 0.0
+        z1 = -z
+    end
+
+    # Cutoff radius R = 4.36; determined by balancing rounding error
+    # and asymptotic expansion error, see below.
+    #
+    # The resulting maximum global accuracy expected is around 1e-8
+    #
+    cer = complex(NaN)
+    if abs(z) <= 4.36
+        # Rounding error in the Taylor expansion is roughly
+        # ~ R*R * EPSILON * R**(2 R**2) / (2 R**2 Gamma(R**2 + 1/2))
+        cs = z1
+        cr = z1
+        for k = 1:121
+            cr *= z1 * z1 / (k + 0.5)
+            cs += cr
+            if abs(cr / cs) < EPS
+                break
+            end
+        end
+        cer = 2.0 * exp(-z * z) * cs / sqpi
+    else
+        cl = 1.0 / z1
+        cr = cl
+        # Asymptotic series; maximum K must be at most ~ R^2.
+        #
+        # The maximum accuracy obtainable from this expansion is roughly
+        #
+        # ~ Gamma(2R**2 + 2) / (
+        #          (2 R**2)**(R**2 + 1/2) Gamma(R**2 + 3/2) 2**(R**2 + 1/2))
+        for k = 1:21
+            cr *= -(k - 0.5) / (z1 * z1)
+            cl += cr
+            if abs(cr / cl) < EPS
+                break
+            end
+        end
+        cer = 1.0 - exp(-z * z) * cl / sqpi
+    end
+    # TODO: use copysign
+    if real(z) < 0.0
+        cer = -cer
+    end
+
+    return cer
+end
+
+
+"""
 Compute complex Fresnel integral C(z) and C'(z)
 
 Input

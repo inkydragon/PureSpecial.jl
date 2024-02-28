@@ -328,6 +328,20 @@ end
 
 #= ## Error function =#
 
+function _erf(x::Float64)
+    err = Ref{Float64}(NaN)
+    # SUBROUTINE ERROR(X,ERR)
+    ccall(f77func(:error), Cvoid, (Ref{Float64}, Ref{Float64},), x, err)
+    err[]
+end
+
+function _erf(z::ComplexF64)
+    cer = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE CERROR(Z,CER)
+    ccall(f77func(:cerror), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, cer)
+    cer[]
+end
+
 function _cfc(z::ComplexF64)
     zf = Ref{ComplexF64}(NaN + NaN*im)
     zd = Ref{ComplexF64}(NaN + NaN*im)

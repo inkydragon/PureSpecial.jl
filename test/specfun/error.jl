@@ -1,5 +1,32 @@
 # SPDX-License-Identifier: MIT
 
+const ERF_TEST_X = Float64[
+    -5:5...,
+    rand(0.0:eps():3.5, 5)...,
+]
+
+@testset "erf" begin
+    for x in ERF_TEST_X
+        @testset "erf($x)" begin
+            r_err = _erf(x)
+            err = Specfun.erf(x)
+
+            @test isapprox(r_err, err; nans=true)
+        end
+    end
+end
+
+@testset "erf" begin
+    for z in complex.(ERF_TEST_X)
+        @testset "erf($z)" begin
+            r_err = _erf(z)
+            err = Specfun.erf(z)
+
+            @test isapprox(r_err, err; nans=true)
+        end
+    end
+end
+
 const CFC_TEST_Z = ComplexF64[
     #= if z==0 =#
     0.0, -0.0,
