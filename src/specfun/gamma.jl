@@ -86,6 +86,8 @@ function gamma2(x::Float64)
     ga = NaN
     if isinteger(x)
         if x > 0.0
+            # Whne x is positive integer
+            #   DLMF 5.4.1:  Г(n+1) = n!
             ga = 1.0
             m1 = trunc(Int64, x) - 1
             for k = 2:m1
@@ -98,6 +100,8 @@ function gamma2(x::Float64)
     else
         r = 1.0
         if abs(x) > 1.0
+            # When |x| > 1, DLMF 5.5.1:
+            #   Г(z+1) = z*Г(z)
             z = abs(x)
             m = trunc(Int64, z)
             for k = 1:m
@@ -105,9 +109,11 @@ function gamma2(x::Float64)
             end
             z -= m
         else
+            # When |x| <= 1
             z = x
         end
 
+        # Calculate 1/Г(x), DLMF 5.7.1:
         gr = _GAMMA2_G[26]
         for k = 25:-1:1
             gr = gr*z + _GAMMA2_G[k]
@@ -115,8 +121,10 @@ function gamma2(x::Float64)
         ga = 1.0 / (gr * z)
 
         if abs(x) > 1.0
+            # When |x| > 1, DLMF 5.5.1:
             ga *= r
             if x < 0.0
+                # When x < 0, DLMF 5.5.2:
                 ga = -pi / (x * ga * sin(pi * x))
             end
         end
