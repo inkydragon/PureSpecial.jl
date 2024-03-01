@@ -352,6 +352,17 @@ function _dvsa(x::Float64, va::Float64)
     pd[]
 end
 
+function _pbdv!(dv::Vector{Float64}, dp::Vector{Float64}, x::Float64, v::Float64)
+    pdf, pdd = Ref{Float64}(NaN), Ref{Float64}(NaN)
+    # SUBROUTINE PBDV(V,X,DV,DP,PDF,PDD)
+    ccall(f77func(:pbdv), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ptr{Float64}, Ptr{Float64},
+         Ref{Float64}, Ref{Float64}),
+        v, x, dv, dp,
+        pdf, pdd)
+    pdf[], pdd[]
+end
+
 function _vvsa(x::Float64, va::Float64)
     pv = Ref{Float64}(NaN)
     # SUBROUTINE VVSA(VA,X,PV)

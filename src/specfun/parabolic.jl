@@ -165,6 +165,138 @@ function dvsa(x::Float64, va::Float64)
 end
 
 """
+Compute parabolic cylinder functions Dv(x)
+and their derivatives
+
+Input
+x --- Argument of Dv(x)
+v --- Order of Dv(x)
+
+Output
+DV(na) --- Dn+v0(x)
+DP(na) --- Dn+v0'(x)
+    ( na = |n|, v0 = v-n, |v0| < 1,
+    n = 0,±1,±2,… )
+PDF --- Dv(x)
+PDD --- Dv'(x)
+
+Routines called:
+(1) DVSA for computing Dv(x) for small |x|
+(2) DVLA for computing Dv(x) for large |x|
+"""
+function pbdv!(dv::Vector{Float64}, dp::Vector{Float64}, x::Float64, v::Float64)
+    xa = abs(x)
+    v += copysign(1.0, v)
+    nv = trunc(Int, v)
+    v0 = v - nv
+    na = abs(nv)
+    ep = exp(-0.25 * x * x)
+    ja = na >= 1 ? 1 : 0
+
+    # NOTE: in fortran, the index of `dv,dp` start from 0
+    @assert length(dv) >= (na+1)
+    @assert length(dp) >= (na+1)
+    if v >= 0.0
+        if v0 == 0.0
+            pd0 = ep
+            pd1 = x * ep
+        else
+            for l in 0:ja
+                v1 = v0 + l
+                if xa <= 5.8
+                    pd1 = dvsa(x, v1)
+                else
+                    pd1 = dvla(x, v1)
+                end
+                pd0 = l == 0 ? pd1 : pd0
+            end
+        end
+        dv[1] = pd0
+        dv[2] = pd1
+        for k in 2:na
+            pdf = x * pd1 - (k + v0 - 1.0) * pd0
+            dv[k+1] = pdf
+            pd0 = pd1
+            pd1 = pdf
+        end
+    else
+        if x <= 0.0
+            if xa <= 5.8
+                pd0 = dvsa(x, v0)
+                v1 = v0 - 1.0
+                pd1 = dvsa(x, v1)
+            else
+                pd0 = dvla(x, v0)
+                v1 = v0 - 1.0
+                pd1 = dvla(x, v1)
+            end
+            dv[1] = pd0
+            dv[2] = pd1
+            for k in 2:na
+                pd = (-x * pd1 + pd0) / (k - 1.0 - v0)
+                dv[k+1] = pd
+                pd0 = pd1
+                pd1 = pd
+            end
+        elseif x <= 2.0
+            v2 = nv + v0
+            if nv == 0
+                v2 -= 1.0
+            end
+            nk = trunc(Int, -v2)
+            f1 = dvsa(x, v2)
+            v1 = v2 + 1.0
+            f0 = dvsa(x, v1)
+            dv[nk+1] = f1
+            dv[nk] = f0
+            for k in (nk-2):-1:0
+                f = x * f0 + (k - v0 + 1.0) * f1
+                dv[k+1] = f
+                f1 = f0
+                f0 = f
+            end
+        else
+            if xa <= 5.8
+                pd0 = dvsa(x, v0)
+            else
+                pd0 = dvla(x, v0)
+            end
+            dv[1] = pd0
+            m = 100 + na
+            f1 = 0.0
+            f0 = 1e-30
+            f = 0.0
+            for k in m:-1:0
+                f = x * f0 + (k - v0 + 1.0) * f1
+                if k <= na
+                    dv[k+1] = f
+                end
+                f1 = f0
+                f0 = f
+            end
+            s0 = pd0 / f
+            for k in 0:na
+                dv[k+1] *= s0
+            end
+        end
+    end
+
+    for k in 0:(na-1)
+        v1 = abs(v0) + k
+        if v >= 0.0
+            dp[k+1] =  0.5 * x * dv[k+1] - dv[k+2]
+        else
+            dp[k+1] = -0.5 * x * dv[k+1] - v1 * dv[k+2]
+        end
+    end
+
+    pdf = dv[na]
+    pdd = dp[na]
+    return pdf, pdd
+end
+
+
+"""
 Compute parabolic cylinder function Vv(x)
 for small argument
 
