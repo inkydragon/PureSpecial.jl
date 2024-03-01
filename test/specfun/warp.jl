@@ -325,6 +325,23 @@ end
 
 """
 
+function _vvla(x::Float64, va::Float64)
+    pv = Ref{Float64}(NaN)
+    # SUBROUTINE VVLA(VA,X,PV)
+    ccall(f77func(:vvla), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        va, x, pv)
+    pv[]
+end
+
+function _dvla(x::Float64, va::Float64)
+    pd = Ref{Float64}(NaN)
+    # SUBROUTINE DVLA(VA,X,PD)
+    ccall(f77func(:dvla), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        va, x, pd)
+    pd[]
+end
 
 #= ## Error function =#
 
