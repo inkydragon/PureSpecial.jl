@@ -343,6 +343,15 @@ function _dvla(x::Float64, va::Float64)
     pd[]
 end
 
+function _dvsa(x::Float64, va::Float64)
+    pd = Ref{Float64}(NaN)
+    # SUBROUTINE DVSA(VA,X,PD)
+    ccall(f77func(:dvsa), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        va, x, pd)
+    pd[]
+end
+
 #= ## Error function =#
 
 function _erf(x::Float64)
