@@ -23,6 +23,114 @@ pbdv(v, x)
 
 
 """
+Compute parabolic cylinder functions W(a,±x)
+and their derivatives
+
+Input
+a --- Parameter  ( 0 ≤ |a| ≤ 5 )
+x --- Argument of W(a,±x)  ( 0 ≤ |x| ≤ 5 )
+
+Output
+W1F --- W(a,x)
+W1D --- W'(a,x)
+W2F --- W(a,-x)
+W2D --- W'(a,-x)
+
+Routine called:
+CGAMA for computing complex gamma function
+"""
+function pbwa(a::Float64, x::Float64)
+    EPS = 1e-15
+    p0 = 0.59460355750136
+    h = Vector{Float64}(undef, 100)
+    d = Vector{Float64}(undef, 80)
+
+    if a == 0.0
+        g1 = 3.625609908222
+        g2 = 1.225416702465
+    else
+        g1 = abs(cgama(0.25 + 0.5im * a, 1))
+        g2 = abs(cgama(0.75 + 0.5im * a, 1))
+    end
+
+    f1 = sqrt(g1 / g2)
+    f2 = sqrt(2.0 * g2 / g1)
+
+    h0 = 1.0
+    h1 = a
+    h[1] = a
+    for L1 in 2:100
+        hl = a * h1 - 0.25 * (2 * L1 - 2.0) * (2 * L1 - 3.0) * h0
+        h[L1] = hl
+        h0, h1 = h1, hl
+    end
+
+    y1f = 1.0
+    r = 1.0
+    for k in 1:100
+        r = 0.5 * r * x * x / (k * (2.0 * k - 1.0))
+        r1 = h[k] * r
+        y1f += r1
+        if abs(r1) <= EPS * abs(y1f) && k > 30
+            break
+        end
+    end
+
+    y1d = a
+    r = 1.0
+    for k in 1:99
+        r = 0.5 * r * x * x / (k * (2.0 * k + 1.0))
+        r1 = h[k+1] * r
+        y1d += r1
+        if abs(r1) <= EPS * abs(y1d) && k > 30
+            break
+        end
+    end
+    y1d *= x
+
+    d1 = 1.0
+    d2 = a
+    d[1] = 1.0
+    d[2] = a
+    for L2 in 3:80
+        m = (2 * L2 - 1)
+        dl = a * d2 - 0.25 * (m - 2.0) * (m - 3.0) * d1
+        d[L2] = dl
+        d1, d2 = d2, dl
+    end
+
+    y2f = 1.0
+    r = 1.0
+    for k in 1:79
+        r = 0.5 * r * x * x / (k * (2.0 * k + 1.0))
+        r1 = d[k+1] * r
+        y2f += r1
+        if abs(r1) <= EPS * abs(y2f) && k > 30
+            break
+        end
+    end
+    y2f *= x
+
+    y2d = 1.0
+    r = 1.0
+    for k in 1:79
+        r = 0.5 * r * x * x / (k * (2.0 * k - 1.0))
+        r1 = d[k+1] * r
+        y2d += r1
+        if abs(r1) <= EPS * abs(y2d) && k > 30
+            break
+        end
+    end
+
+    w1f = p0 * (f1 * y1f - f2 * y2f)
+    w2f = p0 * (f1 * y1f + f2 * y2f)
+    w1d = p0 * (f1 * y1d - f2 * y2d)
+    w2d = p0 * (f1 * y1d + f2 * y2d)
+    return w1f, w1d, w2f, w2d
+end
+
+
+"""
 Compute parabolic cylinder function Vv(x)
 for large argument
 

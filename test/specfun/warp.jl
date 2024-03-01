@@ -325,6 +325,18 @@ end
 
 """
 
+function _pbwa(a::Float64, x::Float64)
+    w1f, w2f, w1d, w2d =
+        Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN)
+    # SUBROUTINE PBWA(A,X,W1F,W1D,W2F,W2D)
+    ccall(f77func(:pbwa), Cvoid,
+        (Ref{Float64}, Ref{Float64},
+         Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        a, x,
+        w1f, w2f, w1d, w2d)
+    w1f[], w2f[], w1d[], w2d[]
+end
+
 function _vvla(x::Float64, va::Float64)
     pv = Ref{Float64}(NaN)
     # SUBROUTINE VVLA(VA,X,PV)

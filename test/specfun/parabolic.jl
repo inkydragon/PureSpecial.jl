@@ -17,7 +17,28 @@
 """
 
 @testset "pbwa" begin
-    
+    test_a = Float64[
+        -0.0,
+        -5:5...,
+        rand(-5.0:eps():5.0, 10)...,
+    ]
+    test_x = Float64[
+        -0.0,
+        -5:5...,
+        rand(-5.0:eps():5.0, 10)...,
+    ]
+
+    for a in test_a,
+        x in test_x
+        @testset "pbwa($a, $x)" begin
+            r_w1f, r_w1d, r_w2f, r_w2d = _pbwa(a, x)
+            w1f, w1d, w2f, w2d = Specfun.pbwa(a, x)
+            @test isapprox(r_w1f, w1f; nans=true)
+            @test isapprox(r_w1d, w1d; nans=true)
+            @test isapprox(r_w2f, w2f; nans=true)
+            @test isapprox(r_w2d, w2d; nans=true)
+        end
+    end
 end
 
 @testset "_vvla/_dvla" begin
