@@ -372,6 +372,17 @@ function _vvsa(x::Float64, va::Float64)
     pv[]
 end
 
+function _pbvv!(vv::Vector{Float64}, vp::Vector{Float64}, x::Float64, v::Float64)
+    pvf, pvd = Ref{Float64}(NaN), Ref{Float64}(NaN)
+    # SUBROUTINE PBVV(V,X,VV,VP,PVF,PVD)
+    ccall(f77func(:pbvv), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ptr{Float64}, Ptr{Float64},
+         Ref{Float64}, Ref{Float64}),
+        v, x, vv, vp,
+        pvf, pvd)
+    pvf[], pvd[]
+end
+
 #= ## Error function =#
 
 function _erf(x::Float64)

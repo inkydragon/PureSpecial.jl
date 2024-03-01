@@ -40,10 +40,6 @@ end
     end
 end
 
-@testset "pbvv" begin
-    
-end
-
 @testset "_dvsa/_vvsa" begin
     test_x = Float64[
         0.0, -0.0,
@@ -67,7 +63,7 @@ end
     end
 end
 
-@testset "pbdv" begin
+@testset "pbdv/pbvv" begin
     test_x = Float64[
         0.0, -0.0,
         -10:10...,
@@ -88,16 +84,29 @@ end
         vv = v + copysign(1.0, v)
         na = abs(trunc(Int, vv)) + 1
     
-        pref_dv, ref_dp = zeros(na), zeros(na)
+        r_dv, r_dp = zeros(na), zeros(na)
         dv, dp = zeros(na), zeros(na)
         @testset "pbdv!($x, $v)" begin
-            r_pdf, r_pdd = _pbdv!(pref_dv,ref_dp, x,v)
+            r_pdf, r_pdd = _pbdv!(r_dv,r_dp, x,v)
             pdf, pdd = Specfun.pbdv!(dv,dp, x,v)
     
-            @test isapprox(pref_dv, dv; nans=true)
-            @test isapprox(ref_dp, dp; nans=true)
+            @test isapprox(r_dv, dv; nans=true)
+            @test isapprox(r_dp, dp; nans=true)
             @test isapprox(r_pdf, pdf; nans=true)
             @test isapprox(r_pdd, pdd; nans=true)
+        end
+    
+        arr_len = max(na+1, 3)
+        r_dv, r_dp = zeros(arr_len), zeros(arr_len)
+        dv, dp = zeros(arr_len), zeros(arr_len)
+        @testset "pbvv!($x, $v)" begin
+            r_pvf, r_pvd = _pbvv!(r_dv,r_dp, x,v)
+            pvf, pvd = Specfun.pbvv!(dv,dp, x,v)
+    
+            @test isapprox(r_dv, dv; nans=true)
+            @test isapprox(r_dp, dp; nans=true)
+            @test isapprox(r_pvf, pvf; nans=true)
+            @test isapprox(r_pvd, pvd; nans=true)
         end
     end
 end

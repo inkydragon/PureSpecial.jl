@@ -351,3 +351,143 @@ function vvsa(x::Float64, va::Float64)
 
     return pv
 end
+
+"""
+Compute parabolic cylinder functions Vv(x)
+and their derivatives
+
+Input
+x --- Argument of Vv(x)
+v --- Order of Vv(x)
+
+Output
+VV(na) --- Vv(x)
+VP(na) --- Vv'(x)
+    ( na = |n|, v = n+v0, |v0| < 1
+     n = 0,±1,±2,… )
+PVF --- Vv(x)
+PVD --- Vv'(x)
+
+Routines called:
+(1) VVSA for computing Vv(x) for small |x|
+(2) VVLA for computing Vv(x) for large |x|
+"""
+function pbvv!(vv::Vector{Float64}, vp::Vector{Float64}, x::Float64, v::Float64)
+    xa = abs(x)
+    v += copysign(1.0, v)
+    nv = trunc(Int, v)
+    v0 = v - nv
+    na = abs(nv)
+    qe = exp(0.25 * x * x)
+    q2p = sqrt(2.0 / pi)
+    ja = na >= 1 ? 1 : 0
+
+    # NOTE: When v==-0.0, access `vv[3]``
+    arr_len = max(na+1, 3)
+    # NOTE: in fortran, the index of `vv,vp` start from 0
+    @assert length(vv) >= arr_len
+    @assert length(vp) >= arr_len
+    if v <= 0.0
+        if v0 == 0.0
+            if xa <= 7.5
+                pv0 = vvsa(x, v0)
+            else
+                pv0 = vvla(x, v0)
+            end
+            f0 = q2p * qe
+            f1 = x * f0
+            vv[1] = pv0
+            vv[2] = f0
+            vv[3] = f1
+        else
+            for l in 0:ja
+                v1 = v0 - l
+                if xa <= 7.5
+                    f1 = vvsa(x, v1)
+                else
+                    f1 = vvla(x, v1)
+                end
+                f0 = l == 0 ? f1 : f0
+            end
+            vv[1] = f0
+            vv[2] = f1
+        end
+
+        kv = v0 == 0.0 ? 3 : 2
+        for k in kv:na
+            f = x * f1 + (k - v0 - 2.0) * f0
+            vv[k+1] = f
+            f0 = f1
+            f1 = f
+        end
+    else
+        if 0.0 ≤ x ≤ 7.5
+            v2 = v < 1.0 ? (v + 1.0) : v
+            f1 = vvsa(x, v2)
+            v1 = v2 - 1.0
+            kv = trunc(Int, v2)
+            f0 = vvsa(x, v1)
+            vv[kv+1] = f1
+            vv[kv] = f0
+            for k in (kv-2):-1:0
+                f = x * f0 - (k + v0 + 2.0) * f1
+                if k ≤ na
+                    vv[k+1] = f
+                end
+                f1 = f0
+                f0 = f
+            end
+        elseif x > 7.5
+            pv0 = vvla(x, v0)
+            m = 100 + abs(na)
+            vv[2] = pv0
+            f1 = 0.0
+            f0 = 1.0e-40
+            f = 0.0
+            for k in m:-1:0
+                f = x * f0 - (k + v0 + 2.0) * f1
+                if k ≤ na
+                    vv[k+1] = f
+                end
+                f1 = f0
+                f0 = f
+            end
+            s0 = pv0 / f
+            for k in 0:na
+                vv[k+1] *= s0
+            end
+        else
+            if xa ≤ 7.5
+                f0 = vvsa(x, v0)
+                v1 = v0 + 1.0
+                f1 = vvsa(x, v1)
+            else
+                f0 = vvla(x, v0)
+                v1 = v0 + 1.0
+                f1 = vvla(x, v1)
+            end
+            
+            vv[1] = f0
+            vv[2] = f1
+            for k in 2:na
+                f = (x * f1 - f0) / (k + v0)
+                vv[k+1] = f
+                f0 = f1
+                f1 = f
+            end
+        end
+    end
+
+    for k in 0:(na-1)
+        v1 = v0 + k
+        if v ≥ 0.0
+            vp[k+1] =  0.5 * x * vv[k+1] - (v1 + 1.0) * vv[k+2]
+        else
+            vp[k+1] = -0.5 * x * vv[k+1] + vv[k+2]
+        end
+    end
+
+    pvf = vv[na]
+    pvd = vp[na]
+    return pvf, pvd
+end
