@@ -44,13 +44,15 @@ end
     
 end
 
-@testset "_dvsa" begin
+@testset "_dvsa/_vvsa" begin
     test_x = Float64[
+        0.0, -0.0,
         -10:10...,
         rand(5)...,
         -rand(5)...,
     ]
     test_va = Float64[
+        0.0, -0.0,
         -5:5...,
     ]
     
@@ -58,6 +60,9 @@ end
         va in test_va
         @testset "dvsa($x, $va)" begin
             @test isapprox(_dvsa(x,va), Specfun.dvsa(x,va); nans=true)
+        end
+        @testset "vvsa($x, $va)" begin
+            @test isapprox(_vvsa(x,va), Specfun.vvsa(x,va); nans=true)
         end
     end
 end

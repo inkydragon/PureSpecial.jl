@@ -352,6 +352,15 @@ function _dvsa(x::Float64, va::Float64)
     pd[]
 end
 
+function _vvsa(x::Float64, va::Float64)
+    pv = Ref{Float64}(NaN)
+    # SUBROUTINE VVSA(VA,X,PV)
+    ccall(f77func(:vvsa), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        va, x, pv)
+    pv[]
+end
+
 #= ## Error function =#
 
 function _erf(x::Float64)

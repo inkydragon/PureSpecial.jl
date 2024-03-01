@@ -163,3 +163,59 @@ function dvsa(x::Float64, va::Float64)
 
     return pd
 end
+
+"""
+Compute parabolic cylinder function Vv(x)
+for small argument
+
+Input
+x  --- Argument
+va --- Order
+
+Output
+PV --- Vv(x)
+
+Routine called
+GAMMA2 for computing Г(x)
+"""
+function vvsa(x::Float64, va::Float64)
+    EPS = 1.0e-12
+    ep = exp(-0.25 * x * x)
+    va0 = 1.0 + 0.5 * va
+
+    if x == 0.0
+        if (va0 <= 0.0 && isinteger(va0)) || va == 0.0
+            pv = 0.0
+        else
+            vb0 = -0.5 * va
+            sv0 = sin(va0 * pi)
+            ga0 = gamma2(va0)
+            pv = 2.0^vb0 * sv0 / ga0
+        end
+    else
+        sq2 = sqrt(2.0)
+        a0 = 2.0^(-0.5 * va) * ep / (2.0 * pi)
+        sv = sin(-(va + 0.5) * pi)
+        v1 = -0.5 * va
+        g1 = gamma2(v1)
+        pv = (sv + 1.0) * g1
+        r = 1.0
+        fac = 1.0
+
+        for m in 1:250
+            vm = 0.5 * (m - va)
+            gm = gamma2(vm)
+            r = r * sq2 * x / m
+            fac = -fac
+            gw = fac * sv + 1.0
+            r1 = gw * r * gm
+            pv += r1
+            if (abs(r1 / pv) < EPS) && (gw != 0.0)
+                break
+            end
+        end
+        pv *= a0
+    end
+
+    return pv
+end
