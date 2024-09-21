@@ -1,0 +1,161 @@
+﻿done,Procedure,module,Description
+,airya,,Compute Airy functions and their derivatives
+,airyb,,Compute Airy functions and their derivatives
+,airyzo,,"Compute the first NT zeros of Airy functions Ai(x) and Ai'(x), a and a', and the associated values of Ai(a') and Ai'(a); and the first NT zeros of Airy functions Bi(x) and Bi'(x), b and b', and the associated values of Bi(b') and Bi'(b)"
+,ajyik,,"Compute Bessel functions Jv(x) and Yv(x), and modified Bessel functions Iv(x) and Kv(x), and their derivatives with v=1/3,2/3"
+,aswfa,,Compute the prolate and oblate spheroidal angular functions of the first kind and their derivatives
+,aswfb,,Compute the prolate and oblate spheroidal angular functions of the first kind and their derivatives
+,bernoa,,Compute Bernoulli number Bn
+,bernob,,Compute Bernoulli number Bn
+,beta,,"Compute the beta function B(p,q)"
+,bjndd,,"Compute Bessel functions Jn(x) and their first and second derivatives ( n= 0,1,… )"
+,cbk,,Compute coefficient Bk's for oblate radial functions with a small argument
+,cchg,,"Compute confluent hypergeometric function M(a,b,z) with real parameters a, b and a complex argument z"
+,cerf,,Compute complex Error function erf(z) & erf'(z)
+,cerror,,Compute error function erf(z) for a complex argument (z=x+iy)
+,cerzo,,Evaluate the complex zeros of error function erf(z) using the modified Newton's iteration method
+,cfc,,Compute complex Fresnel integral C(z) and C'(z)
+,cfs,,Compute complex Fresnel Integral S(z) and S'(z)
+,cgama,,Compute the gamma function Г(z) or ln[Г(z)] for a complex argument
+,ch12n,,Compute Hankel functions of the first and second kinds and their derivatives for a complex argument
+,chgm,,"Compute confluent hypergeometric function M(a,b,x)"
+,chgu,,"Compute the confluent hypergeometric function U(a,b,x)"
+,chgubi,,"Compute confluent hypergeometric function U(a,b,x) with integer b ( b = ±1,±2,... )"
+,chguit,,"Compute hypergeometric function U(a,b,x) by using Gaussian-Legendre integration (n=60)"
+,chgul,,"Compute the confluent hypergeometric function U(a,b,x) for large argument x"
+,chgus,,"Compute confluent hypergeometric function U(a,b,x) for small argument x"
+,cik01,,"Compute modified Bessel functions I0(z), I1(z), K0(z), K1(z), and their derivatives for a complex argument"
+,ciklv,,Compute modified Bessel functions Iv(z) and Kv(z) and their derivatives with a complex argument and a large order
+,cikna,,"Compute modified Bessel functions In(z), Kn(x) and their derivatives for a complex argument"
+,ciknb,,"Compute modified Bessel functions In(z) and Kn(z), and their derivatives for a complex argument"
+,cikva,,"Compute the modified Bessel functions Iv(z), Kv(z) and their derivatives for an arbitrary order and complex argument"
+,cikvb,,"Compute the modified Bessel functions Iv(z), Kv(z) and their derivatives for an arbitrary order and complex argument"
+,cisia,,Compute cosine and sine integrals Si(x) and Ci(x) ( x ≥ 0 )
+,cisib,,Compute cosine and sine integrals Si(x) and Ci(x) ( x ≥ 0 )
+,cjk,,Compute the expansion coefficients for the asymptotic expansion of Bessel functions with large orders
+,cjylv,,Compute Bessel functions Jv(z) and Yv(z) and their derivatives with a complex argument and a large order
+,cjynb,,"Compute Bessel functions Jn(z), Yn(z) and their derivatives for a complex argument"
+,cjyva,,"Compute Bessel functions Jv(z), Yv(z) and their derivatives for a complex argument"
+,cjyvb,,"Compute Bessel functions Jv(z), Yv(z) and their derivatives for a complex argument"
+,clpmn,,Compute the associated Legendre functions Pmn(z) and their derivatives Pmn'(z) for a complex argument
+,clpn,,Compute Legendre polynomials Pn(z) and their derivatives Pn'(z) for a complex argument
+,clqmn,,"Compute the associated Legendre functions of the second kind, Qmn(z) and Qmn'(z), for a complex argument"
+,clqn,,Compute the Legendre functions Qn(z) and their derivatives Qn'(z) for a complex argument
+,comelp,,Compute complete elliptic integrals K(k) and E(k)
+,cpbdn,,Compute the parabolic cylinder functions Dn(z) and Dn'(z) for a complex argument
+,cpdla,,Compute complex parabolic cylinder function Dn(z) for large argument
+,cpdsa,,Compute complex parabolic cylinder function Dn(z) for small argument
+,cpsi,,Compute the psi function for a complex argument
+,cv0,,Compute the initial characteristic value of Mathieu functions for m ≤ 12 or q ≤ 300 or q ≥ m*m
+,cva1,,Compute a sequence of characteristic values of Mathieu functions
+,cva2,,Calculate a specific characteristic value of Mathieu functions
+,cvf,,Compute the value of F for characteristic equation of Mathieu functions
+,cvql,,Compute the characteristic value of Mathieu functions for q ≥ 3m
+,cvqm,,Compute the characteristic value of Mathieu functions for q ≤ m*m
+,cy01,,"Compute complex Bessel functions Y0(z), Y1(z) and their derivatives"
+,cyzo,,"Compute the complex zeros of Y0(z), Y1(z) and Y1'(z), and their associated values at the zeros using the modified Newton's iteration method"
+,dinf,,Function
+,dnan,,Function
+,dvla,,Compute parabolic cylinder functions Dv(x) for large argument
+,dvsa,,Compute parabolic cylinder function Dv(x) for small argument
+,e1xa,,Compute exponential integral E1(x)
+,e1xb,,Compute exponential integral E1(x)
+,e1z,,Compute complex exponential integral E1(z)
+,eix,,Compute exponential integral Ei(x)
+,eixz,,Compute exponential integral Ei(x)
+,elit,,"Compute complete and incomplete elliptic integrals F(k,phi) and E(k,phi)"
+,elit3,,Compute the elliptic integral of the third kind using Gauss-Legendre quadrature
+,envj,,Function
+,enxa,,Compute exponential integral En(x)
+,enxb,,Compute exponential integral En(x)
+,error,,Compute error function erf(x)
+,eulera,,Compute Euler number En
+,eulerb,,Compute Euler number En
+,fcoef,,Compute expansion coefficients for Mathieu functions and modified Mathieu functions
+,fcs,,Compute Fresnel integrals C(x) and S(x)
+,fcszo,,Compute the complex zeros of Fresnel integral C(z) or S(z) using modified Newton's iteration method
+,ffk,,Compute modified Fresnel integrals F±(x) and K±(x)
+,gaih,,Compute gamma function Г(x)
+,gam0,,Compute gamma function Г(x)
+,gamma2,,Compute gamma function Г(x)
+,gmn,,"Compute gmn(-ic,ix) and its derivative for oblate radial functions with a small argument"
+,herzo,,"Compute the zeros of Hermite polynomial Ln(x) in the interval [-∞,∞], and the corresponding weighting coefficients for Gauss-Hermite integration"
+,hygfx,,"Compute hypergeometric function F(a,b,c,x)"
+,hygfz,,"Compute the hypergeometric function for a complex argument, F(a,b,c,z)"
+,ik01a,,"Compute modified Bessel functions I0(x), I1(1), K0(x) and K1(x), and their derivatives"
+,ik01b,,"Compute modified Bessel functions I0(x), I1(1), K0(x) and K1(x), and their derivatives"
+,ikna,,"Compute modified Bessel functions In(x) and Kn(x), and their derivatives"
+,iknb,,"Compute modified Bessel functions In(x) and Kn(x), and their derivatives"
+,ikv,,"Compute modified Bessel functions Iv(x) and Kv(x), and their derivatives"
+,incob,,"Compute the incomplete beta function Ix(a,b)"
+,incog,,"Compute the incomplete gamma function r(a,x), Г(a,x) and P(a,x)"
+,itairy,,Compute the integrals of Airy functions with respect to t from 0 and x ( x ≥ 0 )
+,itika,,Integrate modified Bessel functions I0(t) and K0(t) with respect to t from 0 to x
+,itikb,,Integrate Bessel functions I0(t) and K0(t) with respect to t from 0 to x
+,itjya,,Integrate Bessel functions J0(t) & Y0(t) with respect to t from 0 to x
+,itjyb,,Integrate Bessel functions J0(t) and Y0(t) with respect to t from 0 to x ( x ≥ 0 )
+,itsh0,,Evaluate the integral of Struve function H0(t) with respect to t from 0 and x
+,itsl0,,Evaluate the integral of modified Struve function L0(t) with respect to t from 0 to x
+,itth0,,Evaluate the integral H0(t)/t with respect to t from x to infinity
+,ittika,,"Integrate [I0(t)-1]/t with respect to t from 0 to x, and K0(t)/t with respect to t from x to ∞"
+,ittikb,,"Integrate [I0(t)-1]/t with respect to t from 0 to x, and K0(t)/t with respect to t from x to ∞"
+,ittjya,,"Integrate [1-J0(t)]/t with respect to t from 0 to x, and Y0(t)/t with respect to t from x to ∞"
+,ittjyb,,"Integrate [1-J0(t)]/t with respect to t from 0 to x, and Y0(t)/t with respect to t from x to ∞"
+,jdzo,,"Compute the zeros of Bessel functions Jn(x) and Jn'(x), and arrange them in the order of their magnitudes"
+,jelp,,"Compute Jacobian elliptic functions sn u, cn u and dn u"
+,jy01a,,"Compute Bessel functions J0(x), J1(x), Y0(x), Y1(x), and their derivatives"
+,jy01b,,"Compute Bessel functions J0(x), J1(x), Y0(x), Y1(x), and their derivatives"
+,jyna,,Compute Bessel functions Jn(x) & Yn(x) and their derivatives
+,jynb,,"Compute Bessel functions Jn(x), Yn(x) and their derivatives"
+,jynbh,,"Compute Bessel functions Jn(x), Yn(x)"
+,jyndd,,"Compute Bessel functions Jn(x) and Yn(x), and their first and second derivatives"
+,jyv,,Compute Bessel functions Jv(x) and Yv(x) and their derivatives
+,jyzo,,"Compute the zeros of Bessel functions Jn(x), Yn(x), and their derivatives"
+,klvna,,"Compute Kelvin functions ber x, bei x, ker x and kei x, and their derivatives ( x > 0 )"
+,klvnb,,"Compute Kelvin functions ber x, bei x, ker x and kei x, and their derivatives ( x > 0 )"
+,klvnzo,,Compute the zeros of Kelvin functions
+,kmn,,Compute the expansion coefficients of the prolate and oblate spheroidal functions and joining factors
+,lagzo,,"Compute the zeros of Laguerre polynomial Ln(x) in the interval [0,∞], and the corresponding weighting coefficients for Gauss-Laguerre integration"
+,lamn,,Compute lambda functions and their derivatives
+,lamv,,"Compute lambda function with arbitrary order v, and their derivative"
+,legzo,,"Compute the zeros of Legendre polynomial Pn(x) in the interval [-1,1], and the corresponding weighting coefficients for Gauss-Legendre integration"
+,lgama,,Compute gamma function Г(x) or ln[Г(x)]
+,lpmn,,Compute the associated Legendre functions Pmn(x) and their derivatives Pmn'(x) for real argument
+,lpmns,,Compute associated Legendre functions Pmn(x) and Pmn'(x) for a given order
+,lpmv,,"Compute the associated Legendre function Pmv(x) with an integer order and an arbitrary degree v, using recursion for large degrees"
+,lpmv0,,Compute the associated Legendre function Pmv(x) with an integer order and an arbitrary nonnegative degree v
+,lpn,,Compute Legendre polynomials Pn(x) and their derivatives Pn'(x)
+,lpni,,"Compute Legendre polynomials Pn(x), Pn'(x) and the integral of Pn(t) from 0 to x"
+,lqmn,,"Compute the associated Legendre functions of the second kind, Qmn(x) and Qmn'(x)"
+,lqmns,,Compute associated Legendre functions Qmn(x) and Qmn'(x) for a given order
+,lqna,,Compute Legendre functions Qn(x) and Qn'(x)
+,lqnb,,Compute Legendre functions Qn(x) & Qn'(x)
+,msta1,,Determine the starting point for backward recurrence such that the magnitude of Jn(x) at that point is about 10^(-MP)
+,msta2,,Determine the starting point for backward recurrence such that all Jn(x) has MP significant digits
+,mtu0,,"Compute Mathieu functions cem(x,q) and sem(x,q) and their derivatives ( q ≥ 0 )"
+,mtu12,,"Compute modified Mathieu functions of the first and second kinds, Mcm(1)(2)(x,q) and Msm(1)(2)(x,q), and their derivatives"
+,othpl,,"Compute orthogonal polynomials: Tn(x) or Un(x), or Ln(x) or Hn(x), and their derivatives"
+,pbdv,,Compute parabolic cylinder functions Dv(x) and their derivatives
+,pbvv,,Compute parabolic cylinder functions Vv(x) and their derivatives
+,pbwa,,"Compute parabolic cylinder functions W(a,±x) and their derivatives"
+,psi_spec,,Compute Psi function
+,qstar,,Compute Q*mn(-ic) for oblate radial functions with a small argument
+,rctj,,Compute Riccati-Bessel functions of the first kind and their derivatives
+,rcty,,Compute Riccati-Bessel functions of the second kind and their derivatives
+,refine,,calculate the accurate characteristic value by the secant method
+,rmn1,,"Compute prolate and oblate spheroidal radial functions of the first kind for given m, n, c and x"
+,rmn2l,,"Compute prolate and oblate spheroidal radial functions of the second kind for given m, n, c and a large cx"
+,rmn2so,,"Compute oblate radial functions of the second kind with a small argument, Rmn(-ic,ix) & Rmn'(-ic,ix)"
+,rmn2sp,,Compute prolate spheroidal radial function of the second kind with a small argument
+,rswfo,,"Compute oblate radial functions of the first and second kinds, and their derivatives"
+,rswfp,,"Compute prolate spheriodal radial functions of the first and second kinds, and their derivatives"
+,scka,,"Compute the expansion coefficients of the prolate and oblate spheroidal functions, c2k"
+,sckb,,Compute the expansion coefficients of the prolate and oblate spheroidal functions
+,sdmn,,"Compute the expansion coefficients of the prolate and oblate spheroidal functions, dk"
+,segv,,Compute the characteristic values of spheroidal wave functions
+,sphi,,"Compute modified spherical Bessel functions of the first kind, in(x) and in'(x)"
+,sphj,,Compute spherical Bessel functions jn(x) and their derivatives
+,sphk,,"Compute modified spherical Bessel functions of the second kind, kn(x) and kn'(x)"
+,sphy,,Compute spherical Bessel functions yn(x) and their derivatives
+,vvla,,Compute parabolic cylinder function Vv(x) for large argument
+,vvsa,,Compute parabolic cylinder function Vv(x) for small argument
