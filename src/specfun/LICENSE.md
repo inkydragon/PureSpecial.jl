@@ -1,4 +1,4 @@
-The code implementation in this folder is translated from the C code in [`scipy/special/specfun.c`](https://github.com/scipy/scipy/blob/main/scipy/special/specfun.c) to julia.
+The code implementation in this folder is translated from the C code in [`scipy/special/specfun.c`](https://github.com/scipy/scipy/blob/2b8417343ebe919599e6391ac9787001505f9d34/scipy/special/specfun.c) to julia.
 
 The license for the SciPy project is [BSD 3-Clause "New" or "Revised" License](https://github.com/scipy/scipy/blob/main/LICENSE.txt).
 
