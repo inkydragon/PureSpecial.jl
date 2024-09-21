@@ -3,6 +3,12 @@
 > ref: [scipy.special ## SciPy Manual](https://docs.scipy.org/doc/scipy/reference/special.html)  
 > based commit: *2b84173*
 
+- `cephes.h`: 100
+- `specfun_wrappers.h`: 49
+- `amos_wrappers.h`: 14
+- `faddeeva.h++`: 9
+- `boost_special_functions.h++`: 7
+
 ## Airy functions
 
 - [ ] `airy(z)`: cephes_airy; amos_airy,amos_biry
