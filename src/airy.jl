@@ -4,22 +4,25 @@
 """Airy functions
 airy(z)
     Airy functions and their derivatives.
-    + airy_wrap -> cephes_airy
-    + cairy_wrap -> amos_airy,amos_biry
+    /* For small arguments, use Cephes as it's slightly faster.
+     * For large arguments, use AMOS as it's more accurate.
+     */
+    + special_[c]airy -> xsf::airy 
+        -> [-inf, -10) and (10, +inf] amos::airy, 
+        -> [-10, 10] cephes::airy
 
 airye(z)
     Exponentially scaled Airy functions and their derivatives.
-    + cairy_wrap_e -> amos_airy,amos_biry
-    + cairy_wrap_e_real -> amos_airy,amos_biry
+    + special_airye -> xsf::airye -> amos::airy,amos::biry
 
 ai_zeros(nt)
-    + _specfun.airyzo(nt, 1) -> specfun_airyzo
+    + _specfun.airyzo(nt, 1) -> specfun_airyzo -> xsf::airyzo
 
 bi_zeros(nt)
-    + _specfun.airyzo(nt, 2) -> specfun_airyzo
+    + _specfun.airyzo(nt, 2) -> specfun_airyzo -> xsf::airyzo
 
 itairy(x)
-    + itairy_wrap -> specfun_itairy
+    + special_itairy -> xsf::itairy -> xsf::detail::itairy
 """
 
 export ai_zeros, bi_zeros, itairy
