@@ -1,9 +1,14 @@
 # SPDX-License-Identifier: MIT OR BSD-3-Clause
 #   See also: src/specfun/LICENSE.md
 """
-- airyzo
-    + _airyb
-- itairy
+implement:
++ airyzo
+    + airyb
++ itairy
+
+not-impl:
+- AIRYA(X,AI,BI,AD,BD)
+    - AJYIK(X,VJ1,VJ2,VY1,VY2,VI1,VI2,VK1,VK2)
 """
 
 """

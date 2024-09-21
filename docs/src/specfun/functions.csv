@@ -1,8 +1,8 @@
 ﻿done,Procedure,module,Description
-,airya,,Compute Airy functions and their derivatives
-,airyb,,Compute Airy functions and their derivatives
-,airyzo,,"Compute the first NT zeros of Airy functions Ai(x) and Ai'(x), a and a', and the associated values of Ai(a') and Ai'(a); and the first NT zeros of Airy functions Bi(x) and Bi'(x), b and b', and the associated values of Bi(b') and Bi'(b)"
-,ajyik,,"Compute Bessel functions Jv(x) and Yv(x), and modified Bessel functions Iv(x) and Kv(x), and their derivatives with v=1/3,2/3"
+0,airya,airy,Compute Airy functions and their derivatives
+1,airyb,airy,Compute Airy functions and their derivatives
+1,airyzo,airy,"Compute the first NT zeros of Airy functions Ai(x) and Ai'(x), a and a', and the associated values of Ai(a') and Ai'(a); and the first NT zeros of Airy functions Bi(x) and Bi'(x), b and b', and the associated values of Bi(b') and Bi'(b)"
+0,ajyik,airy,"Compute Bessel functions Jv(x) and Yv(x), and modified Bessel functions Iv(x) and Kv(x), and their derivatives with v=1/3,2/3"
 ,aswfa,,Compute the prolate and oblate spheroidal angular functions of the first kind and their derivatives
 ,aswfb,,Compute the prolate and oblate spheroidal angular functions of the first kind and their derivatives
 ,bernoa,,Compute Bernoulli number Bn
@@ -89,7 +89,7 @@
 ,ikv,,"Compute modified Bessel functions Iv(x) and Kv(x), and their derivatives"
 ,incob,,"Compute the incomplete beta function Ix(a,b)"
 ,incog,,"Compute the incomplete gamma function r(a,x), Г(a,x) and P(a,x)"
-,itairy,,Compute the integrals of Airy functions with respect to t from 0 and x ( x ≥ 0 )
+1,itairy,airy,Compute the integrals of Airy functions with respect to t from 0 and x ( x ≥ 0 )
 ,itika,,Integrate modified Bessel functions I0(t) and K0(t) with respect to t from 0 to x
 ,itikb,,Integrate Bessel functions I0(t) and K0(t) with respect to t from 0 to x
 ,itjya,,Integrate Bessel functions J0(t) & Y0(t) with respect to t from 0 to x
