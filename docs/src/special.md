@@ -7,7 +7,7 @@
 
 - [ ] `airy(z)`: cephes_airy; amos_airy,amos_biry
 - [ ] `airye(z)`: amos_airy,amos_biry
-- [ ] `ai_zeros(nt)`: specfun_airyzo
+- [ ] `ai_zeros(nt)`: _specfun.airyzo -> specfun_airyzo
 - [ ] `bi_zeros(nt)`: specfun_airyzo
 - [ ] `itairy(x)`: specfun_itairy
 
@@ -26,24 +26,23 @@
 - [ ] `elliprg(x, y, z)`: fellint_RG,cellint_RG
 - [ ] `elliprj(x, y, z, p)`: fellint_RJ,cellint_RJ
 
-
 ## Bessel functions
 
-- [ ] `lmbda(v, x)`: specfun_lamv
+- [ ] `lmbda(v, x)`: _specfun.lamv -> specfun_lamv; _specfun.lamn -> specfun_lamn
 
 ### Zeros of Bessel functions
 
-- [ ] `jnjnp_zeros(nt)`: specfun_jdzo
+- [ ] `jnjnp_zeros(nt)`: _specfun.jdzo -> specfun_jdzo
+- [ ] `jnyn_zeros(n, nt)`: _specfun.jyzo -> specfun_jyzo
+  - `jn_zeros(n, nt)`
+  - `jnp_zeros(n, nt)`
+  - `yn_zeros(n, nt)`
+  - `ynp_zeros(n, nt)`
 
-- [ ] `jnyn_zeros(n, nt)`: specfun_jyzo
-- [ ] `jn_zeros(n, nt)`: specfun_jyzo
-- [ ] `jnp_zeros(n, nt)`: specfun_jyzo
-- [ ] `yn_zeros(n, nt)`: specfun_jyzo
-- [ ] `ynp_zeros(n, nt)`: specfun_jyzo
-
-- [ ] `y0_zeros(nt)`: specfun_cyzo
-- [ ] `y1_zeros(nt)`: specfun_cyzo
-- [ ] `y1p_zeros(nt)`: specfun_cyzo
+- [ ] _specfun.cyzo -> specfun_cyzo:
+  - `y0_zeros(nt)`
+  - `y1_zeros(nt)`
+  - `y1p_zeros(nt)`
 
 ### Faster Common Bessel functions
 
@@ -67,8 +66,8 @@
 
 ### Riccati-Bessel functions
 
-- [ ] `riccati_jn`: specfun_rctj
-- [ ] `riccati_yn`: specfun_rcty
+- [ ] `riccati_jn`: _specfun.rctj -> specfun_rctj
+- [ ] `riccati_yn`: _specfun.rcty -> specfun_rcty
 
 ## Struve functions
 
@@ -101,21 +100,21 @@
 - [ ] `modfresnelp(x)`: modified_fresnel_plus_wrap -> specfun_ffk
 - [ ] `modfresnelm(x)`: modified_fresnel_minus_wrap -> specfun_ffk
 
-- [ ] `erf_zeros`: specfun_cerzo
-- [ ] `fresnel_zeros`: specfun_fcszo
-    - `fresnelc_zeros`: fresnel_zeros
-    - `fresnels_zeros`: fresnel_zeros
+- [ ] `erf_zeros`: _specfun.cerzo -> specfun_cerzo
+- [ ] `fresnel_zeros`: _specfun.fcszo -> specfun_fcszo
+  - `fresnelc_zeros`
+  - `fresnels_zeros`
 
 ## Legendre functions
 
 - [ ] `sph_harm(m, n, theta, phi)`: cephes_poch
 
 - [ ] `lpmv(m, v, x)`: specfun_lpmv
-- [ ] `clpmn(m, n, z)`: specfun_clpmn
-- [ ] `lpn(n, z)`: specfun_lpn
-- [ ] `lqn(n, z)`: specfun_lpn
-- [ ] `lpmn(m, n, z)`: specfun_lpmn
-- [ ] `lqmn(m, n, z)`: specfun_lqmn
+- [ ] `clpmn(m, n, z)`: _specfun.clpmn -> specfun_clpmn
+- [ ] `lpn(n, z)`: _specfun.lpn -> specfun_lpn; _specfun.clpn -> specfun_clpn
+- [ ] `lqn(n, z)`: _specfun.lqnb -> specfun_lqnb ; _specfun.clqn -> specfun_clqn
+- [ ] `lpmn(m, n, z)`: _specfun.lpmn -> specfun_lpmn
+- [ ] `lqmn(m, n, z)`: _specfun.lqmn -> specfun_lqmn; _specfun.clqmn -> specfun_clqmn
 
 ## Ellipsoidal harmonics
 
@@ -138,13 +137,18 @@
 - [ ] `pbvv`: specfun_pbvv
 - [ ] `pbwa`: specfun_pbwa
 
+- [ ] `pbdv_seq`: _specfun.pbdv -> specfun_pbdv
+- [ ] `pbvv_seq`: _specfun.pbvv -> specfun_pbvv
+- [ ] `pbwa_seq`: _specfun.cpbdn -> specfun_cpbdn
+
 ## Mathieu functions
 
 - [ ] `mathieu_a(m, q)`: cem_cva_wrap -> specfun_cva2
 - [ ] `mathieu_b(m, q)`: sem_cva_wrap -> specfun_cva2
 
-- [ ] `mathieu_even_coef(m, q)`: 
-- [ ] `mathieu_odd_coef(m, q)`: 
+- [ ] _specfun.fcoef -> specfun_fcoef:
+  - `mathieu_even_coef(m, q)`
+  - `mathieu_odd_coef(m, q)`
 
 - [ ] `mathieu_cem(m, q, x)`: specfun_mtu0
 - [ ] `mathieu_sem(m, q, x)`: specfun_mtu0
@@ -163,8 +167,8 @@
 - [ ] `obl_rad2(m, n, c, x)`: oblate_radial2_nocv_wrap -> specfun_segv,specfun_rswfo
 - [ ] `pro_cv(m, n, c)`: prolate_segv_wrap -> specfun_segv
 - [ ] `obl_cv(m, n, c)`: oblate_segv_wrap -> specfun_segv
-- [ ] `pro_cv_seq(m, n, c)`: 
-- [ ] `obl_cv_seq(m, n, c)`: 
+- [ ] `pro_cv_seq(m, n, c)`: _specfun.segv -> specfun_segv
+- [ ] `obl_cv_seq(m, n, c)`: _specfun.segv -> specfun_segv
 
 - [ ] `pro_ang1_cv(m, n, c, cv, x)`: prolate_aswfa_wrap -> specfun_aswfa
 - [ ] `pro_rad1_cv(m, n, c, cv, x)`: prolate_radial1_wrap -> specfun_rswfp(1)
@@ -195,10 +199,10 @@
 ## Other Special functions
 
 - [ ] `agm(a, b)`: 
-- [ ] `bernoulli(n)`: 
+- [ ] `bernoulli(n)`: _specfun.bernob -> specfun_bernob
 - [ ] `binom(x, y)`: 
 - [ ] `diric(x, n)`: 
-- [ ] `euler(n)`: 
+- [ ] `euler(n)`: _specfun.eulerb -> specfun_eulerb
 - [ ] `expn(n, x)`: 
 - [ ] `exp1(z)`: exp1_wrap -> specfun_e1xb; cexp1_wrap -> specfun_e1z
 - [ ] `expi(x)`: expi_wrap -> specfun_eix; cexpi_wrap -> specfun_eixz
