@@ -102,9 +102,20 @@
 
 > faddeeva,cephes,boost_special
 
-- [ ] `fresnel`: cephes_fresnl; cfresnl_wrap -> specfun_cfs,specfun_cfc
+- [ ] `erf(z)`: faddeeva_erf -> Faddeeva::erf; cephes_erf
+- [ ] `erfc(x)`: faddeeva_erfc_complex -> Faddeeva::erfc; cephes_erfc
+- [ ] `erfcx(x)`: faddeeva_erfcx,faddeeva_erfcx_complex -> Faddeeva::erfcx
+- [ ] `erfi(z)`: faddeeva_erfi,faddeeva_erfi_complex -> Faddeeva::erfi
+- [ ] `erfinv(y)`: 
+- [ ] `erfcinv(y)`: 
+
+- [ ] `wofz(z)`: 
+- [ ] `dawsn(x)`: faddeeva_dawsn,faddeeva_dawsn_complex -> Faddeeva::Dawson
+- [ ] `fresnel(z)`: cephes_fresnl; cfresnl_wrap -> specfun_cfs,specfun_cfc
+- [ ] `fresnel_zeros(nt)`: 
 - [ ] `modfresnelp(x)`: modified_fresnel_plus_wrap -> specfun_ffk
 - [ ] `modfresnelm(x)`: modified_fresnel_minus_wrap -> specfun_ffk
+- [ ] `voigt_profile(x, sigma, gamma)`: faddeeva_voigt_profile -> Faddeeva::w
 
 - [ ] `erf_zeros`: _specfun.cerzo -> specfun_cerzo
 - [ ] `fresnel_zeros`: _specfun.fcszo -> specfun_fcszo
