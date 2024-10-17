@@ -1,6 +1,6 @@
 name = "Scipy4j"
 uuid = "cc8e170f-fe75-428c-9780-191f24e086a4"
-authors = ["Chengyu HAN <git@wo-class.cn> and contributors"]
+authors = ["Chengyu HAN <cyhan.dev@outlook.com> and contributors"]
 version = "1.0.0-DEV"
 
 [compat]
