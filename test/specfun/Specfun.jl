@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-using Scipy4j.Specfun
+using PureSpecial.Specfun
 
 
 """Special functions.

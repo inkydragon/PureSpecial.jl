@@ -34,7 +34,7 @@
 - Other Special functions
 """
 
-module Scipy4j
+module PureSpecial
 
 # Submod
 include("specfun/Specfun.jl")

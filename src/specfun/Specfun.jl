@@ -49,4 +49,4 @@ include("kelvin.jl")
 include("hyper.jl")
 include("exp.jl")
 
-end # Scipy4j
+end # PureSpecial

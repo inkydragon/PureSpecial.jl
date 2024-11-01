@@ -81,6 +81,6 @@ jobs:
         shell: julia --project=docs --color=yes {0}
         run: |
           using Documenter: DocMeta, doctest
-          using Scipy4j
-          DocMeta.setdocmeta!(Scipy4j, :DocTestSetup, :(using Scipy4j); recursive=true)
-          doctest(Scipy4j)
+          using PureSpecial
+          DocMeta.setdocmeta!(PureSpecial, :DocTestSetup, :(using PureSpecial); recursive=true)
+          doctest(PureSpecial)

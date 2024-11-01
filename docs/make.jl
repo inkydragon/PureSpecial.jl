@@ -1,7 +1,7 @@
-using Scipy4j
+using PureSpecial
 using Documenter
 
-DocMeta.setdocmeta!(Scipy4j, :DocTestSetup, :(using Scipy4j); recursive=true)
+DocMeta.setdocmeta!(PureSpecial, :DocTestSetup, :(using PureSpecial); recursive=true)
 
 
 pages = Any[
@@ -10,12 +10,12 @@ pages = Any[
 ]
 
 makedocs(;
-    modules=[Scipy4j],
-    repo=Remotes.GitHub("inkydragon", "Scipy4j.jl"),
+    modules=[PureSpecial],
+    repo=Remotes.GitHub("inkydragon", "PureSpecial.jl"),
     authors="Chengyu HAN <cyhan.dev@outlook.com> and contributors",
-    sitename="Scipy4j.jl",
+    sitename="PureSpecial.jl",
     format=Documenter.HTML(;
-        canonical="https://inkydragon.github.io/Scipy4j.jl",
+        canonical="https://inkydragon.github.io/PureSpecial.jl",
         edit_link="main",
         assets=String[],
     ),
@@ -24,6 +24,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/inkydragon/Scipy4j.jl",
+    repo="github.com/inkydragon/PureSpecial.jl",
     devbranch="main",
 )

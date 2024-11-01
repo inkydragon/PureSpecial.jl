@@ -1,14 +1,14 @@
 ```@meta
-CurrentModule = Scipy4j
+CurrentModule = PureSpecial
 ```
 
-# Scipy4j
+# PureSpecial
 
-Documentation for [Scipy4j](https://github.com/inkydragon/Scipy4j.jl).
+Documentation for [PureSpecial](https://github.com/inkydragon/PureSpecial.jl).
 
 ```@index
 ```
 
 ```@autodocs
-Modules = [Scipy4j]
+Modules = [PureSpecial]
 ```
