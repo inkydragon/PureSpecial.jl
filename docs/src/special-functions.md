@@ -32,8 +32,14 @@
 
 ### Incomplete Gamma Function
 
-> - [DLMF: Chapter 8 Incomplete Gamma and Related Functions](https://dlmf.nist.gov/8)
+> - [DLMF: §8.2 Incomplete Gamma and Related Functions](https://dlmf.nist.gov/8.2)
 > - [Incomplete Gamma Function - Wolfram MathWorld](https://mathworld.wolfram.com/IncompleteGammaFunction.html)
+
+- `γ(a, z)`:    (lower) incomplete gamma function
+- `Γ(a, z)`:    (upper/complementary) incomplete gamma function
+- `γ*(a, z)`:   Tricomi’s incomplete gamma function
+- `P(a, z)`:    Normalized lower incomplete gamma function
+- `Q(a, z)`:    Normalized upper incomplete gamma function
 
 ### Pochhammer Function
 
