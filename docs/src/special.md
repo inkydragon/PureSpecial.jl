@@ -19,18 +19,20 @@
 
 ## Elliptic functions
 
-- [ ] `ellipj(u, m)`: cephes_ellpj
 - [ ] `ellipk(m)`: cephes_ellpk
 - [ ] `ellipkm1(p)`: cephes_ellpk
 - [ ] `ellipkinc(phi, m)`: cephes_ellik
 - [ ] `ellipe(m)`: cephes_ellpe
 - [ ] `ellipeinc(phi, m)`: cephes_ellie
 
-- [ ] `elliprc(x, y)`: fellint_RC,cellint_RC
-- [ ] `elliprd(x, y, z)`: fellint_RD,cellint_RD
 - [ ] `elliprf(x, y, z)`: fellint_RF,cellint_RF
 - [ ] `elliprg(x, y, z)`: fellint_RG,cellint_RG
 - [ ] `elliprj(x, y, z, p)`: fellint_RJ,cellint_RJ
+- [ ] `elliprd(x, y, z)`: fellint_RD,cellint_RD
+- [ ] `elliprc(x, y)`: fellint_RC,cellint_RC
+
+- [ ] `ellipj(u, m)`: cephes_ellpj
+  Jacobian elliptic functions
 
 ## Bessel functions
 
