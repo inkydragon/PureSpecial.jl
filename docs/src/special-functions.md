@@ -11,6 +11,11 @@
 
 ### Factorial Function
 
+- `factorial(n::UInt)`:     `n!`, The factorial of non-negative integer n
+- `factorial2(n::UInt)`:    `n!!`, Double factorial
+- `factorialk(n::UInt, k::UInt)`: `n(!!...!)`, Multifactorial of n of order k > 0
+- `binom(x::Real, y::Real)`:    `C(n, k)`, binomial coefficient
+
 ### Gamma Function
 
 > - [DLMF: §5.2 Gamma Function](https://dlmf.nist.gov/5.2)
