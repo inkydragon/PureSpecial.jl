@@ -6,7 +6,9 @@ DocMeta.setdocmeta!(PureSpecial, :DocTestSetup, :(using PureSpecial); recursive=
 
 pages = Any[
     "Home" => "index.md",
-    "Special functions" => "special.md",
+    "impls.md",
+    "scipy.special.md",
+    "special-functions.md",
 ]
 
 makedocs(;
