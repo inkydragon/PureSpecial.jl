@@ -1,4 +1,4 @@
-# Special functions
+# scipy.special
 
 > ref: [scipy.special ## SciPy Manual](https://docs.scipy.org/doc/scipy/reference/special.html)  
 > based commit: *2b84173*
