@@ -7,13 +7,23 @@
 ## Gamma Functions
 
 > - [DLMF: Chapter 5 Gamma Function](https://dlmf.nist.gov/5)
+> - [#Gamma Functions - Wolfram MathWorld](https://mathworld.wolfram.com/topics/GammaFunctions.html)
 
 ### Factorial Function
 
 ### Gamma Function
 
 > - [DLMF: §5.2 Gamma Function](https://dlmf.nist.gov/5.2)
+> - [DLMF: §5.15 Polygamma Functions](https://dlmf.nist.gov/5.15)
 > - [Gamma Function - Wolfram MathWorld](https://mathworld.wolfram.com/GammaFunction.html)
+> - [#Polygamma Functions - Wolfram MathWorld](https://mathworld.wolfram.com/topics/PolygammaFunctions.html)
+
+- `Γ(z)`, `≡ gamma(z::Complex)`:        gamma function
+- `ln Γ(z)`, `≡ loggamma(z::Complex)`:  log gamma function
+- `ln |Γ(z)|`, `≡ logabsgamma(z::Complex)`:     log abs gamma function
+- `ψ(z)`, `≡ psi(z::Complex)`, `≡ digamma(z)`:  psi function
+- `ψ'(z)`, `≡ trigamma(z::Complex)`:    trigamma function
+- `polygamma(n::UInt, z::Complex)`:     polygamma functions
 
 ### Incomplete Gamma Function
 
