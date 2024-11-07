@@ -46,6 +46,9 @@
 > - [DLMF: §5.2 Pochhammer’s Symbol](https://dlmf.nist.gov/5.2#iii)
 > - [Pochhammer Symbol - Wolfram MathWorld](https://mathworld.wolfram.com/PochhammerSymbol.html)
 
+- `poch(z, n)`, `(z)_n = Γ(z+n)/Γ(z)`, Pochhammer’s symbol (or shifted factorial)
+- `poch1(z, n)`, `≡ (poch(z, n) - 1)/z`
+
 ### Beta Function
 
 > - [DLMF: §5.12 Beta Function](https://dlmf.nist.gov/5.12)
