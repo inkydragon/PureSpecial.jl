@@ -61,10 +61,29 @@
 - `I(a, b, z)`, `betainc(a, b, z)`: regularized incomplete beta function
 - `betaincinv(a, b, y)`:    Inverse of the regularized incomplete beta function
 
+
 ## Exponential and Trigonometric Integrals
 
 > - [DLMF: Chapter 6 Exponential, Logarithmic, Sine, and Cosine Integrals](https://dlmf.nist.gov/6)
 > - [Named Integrals - Wolfram MathWorld](https://mathworld.wolfram.com/topics/NamedIntegrals.html)
+
+### Exponential Integral
+
+> - [DLMF: §6.2 Exponential and Logarithmic Integrals](https://dlmf.nist.gov/6.2)
+> - [DLMF: §8.19 Generalized Exponential Integral](https://dlmf.nist.gov/8.19)
+
+- `E₁(z)`, `expint(z::Complex)`: (principal value of) exponential integral
+- `Eν(z)`, `expint(ν::Complex, z::Complex)`: generalized exponential integral
+- `eᶻEν(z)`, `expintx(ν::Complex, z::Complex)`: scaled (generalized) exponential integral
+- `Ei(x)`, `expinti(x::Real)`: exponential integral
+- `Li(x)`, `logint(x::Real)`, `{x>1}`: logarithmic integral
+
+### Trigonometric Integral
+
+- `Si(z)`, `sinint(z)`: sine integral function
+- `Ci(z)`, `cosint(z)`: cosine integral function
+- `Shi(z)`, `sinhint(z)`: hyperbolic sine integral function
+- `Chi(z)`, `coshint(z)`: hyperbolic cosine integral function
 
 
 ## Error Functions
