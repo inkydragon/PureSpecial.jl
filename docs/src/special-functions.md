@@ -172,6 +172,13 @@
 
 ## Elliptic Functions
 
+### Theta Function
+
+> - [DLMF: §20.2 Theta Functions](https://dlmf.nist.gov/20.2)
+> - [Theta Functions - Wolfram MathWorld](https://mathworld.wolfram.com/topics/ThetaFunctions.html)
+
+- `jtheta(n, z, q)`:    (Jacobi) Theta function
+
 ### Jacobi Elliptic Function
 
 > - [DLMF: §22.2 Jacobian Elliptic Functions](https://dlmf.nist.gov/22.2)
@@ -191,12 +198,6 @@
 - `WeierstrassP(z)`,        Weierstrass ℘ function
 - `WeierstrassZeta(z)`,     Weierstrass zeta function
 - `WeierstrassSigma(x)`,    Weierstrass sigma function
-
-
-## Theta Functions
-
-> - [DLMF: Chapter 20 Theta Functions](https://dlmf.nist.gov/20)
-> - [Theta Functions - Wolfram MathWorld](https://mathworld.wolfram.com/topics/ThetaFunctions.html)
 
 
 ## Zeta Functions
