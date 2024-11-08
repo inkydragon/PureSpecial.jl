@@ -129,6 +129,38 @@
 > - [DLMF: §9.2 Airy’s Equation](https://dlmf.nist.gov/9.2#i)
 > - [Airy Functions - Wolfram MathWorld](https://mathworld.wolfram.com/AiryFunctions.html)
 
+- `Ai(z)`, `airyai(z)`:         Airy Ai function
+- `Ai'(z)`, `airyaiprime(z)`:   derivative of Airy Ai function
+- `Bi(z)`, `airybi(z)`:         Airy Bi function
+- `Bi'(z)`, `airybiprime(z)`:   derivative of Airy Bi function
+- `airyaix(z)`:         scaled Airy Ai function
+- `airyaiprimex(z)`:    scaled derivative of Airy Ai function
+- `airybix(z)`:         scaled Airy Bi function
+- `airybiprimex(z)`:    scaled derivative of Airy Bi function
+
+### Zeros of Airy Function
+
+> - [DLMF: §9.9 Zeros ‣ Airy Functions](https://dlmf.nist.gov/9.9)
+
+- `ai_zeros(nt)`:   Compute nt zeros and values of the Airy function Ai and its derivative
+- `bi_zeros(nt)`:   Compute nt zeros and values of the Airy function Bi and its derivative
+
+### Integral of Airy Function
+
+> - [DLMF: §9.10 Integrals ‣ Airy Functions](https://dlmf.nist.gov/9.10)
+
+- `airyaiint(z)`:   Integral of Airy Ai function
+- `airybiint(z)`:   Integral of Airy Bi function
+
+### Scorer Function
+
+> - [DLMF: §9.12 Scorer Functions](https://dlmf.nist.gov/9.12)
+
+- `Gi(z)`:  Scorer function Gi(z)
+- `Gi'(z)`: derivative of the Scorer function Gi(z)
+- `Hi(z)`:  Scorer function Hi(z)
+- `Hi'(z)`: derivative of the Scorer function Hi(z)
+
 
 ## Bessel Functions
 
