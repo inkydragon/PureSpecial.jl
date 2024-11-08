@@ -184,6 +184,13 @@
 > - [DLMF: §10.61 Kelvin Functions](https://dlmf.nist.gov/10.61)
 > - [Kelvin Functions - Wolfram MathWorld](https://mathworld.wolfram.com/KelvinFunctions.html)
 
+- `kelvin(x)`:          Kelvin Function
+- `kelvin_zeros(nt)`
+- `ber(x), bei(x)`:     Kelvin Function of the First Kind
+- `ker(x), kei(x)`:     Kelvin Function of the Second Kind
+- `berp(x), beip(x)`:   Derivative of the Kelvin Function of the First Kind
+- `kerp(x), keip(x)`:   Derivative of the Kelvin Function of the Second Kind
+
 
 ## Struve Functions
 
