@@ -54,6 +54,12 @@
 > - [DLMF: §5.12 Beta Function](https://dlmf.nist.gov/5.12)
 > - [Beta Function - Wolfram MathWorld](https://mathworld.wolfram.com/BetaFunction.html)
 
+- `beta(a, b)`:             Beta function
+- `logbeta(a, b)`:          log beta function
+- `logabsbeta(a, b)`:       log abs beta function
+- `beta(a, b, z)`:          incomplete beta function
+- `I(a, b, z)`, `betainc(a, b, z)`: regularized incomplete beta function
+- `betaincinv(a, b, y)`:    Inverse of the regularized incomplete beta function
 
 ## Exponential and Trigonometric Integrals
 
