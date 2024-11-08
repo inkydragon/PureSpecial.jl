@@ -89,21 +89,39 @@
 ## Error Functions
 
 > - [DLMF: Chapter 7 Error Functions, Dawson’s and Fresnel Integrals](https://dlmf.nist.gov/7)
-> - [Erf - Wolfram MathWorld](https://mathworld.wolfram.com/topics/Erf.html)
+> - [Error and Exponential Integral Functions — Wolfram Language Documentation](https://reference.wolfram.com/language/guide/ErrorAndExponentialIntegralFunctions.html)
 
 ### Error Function
 
 > - [DLMF: §7.2 Error Functions](https://dlmf.nist.gov/7.2#i)
+> - [DLMF: §7.17 Inverse Error Functions](https://dlmf.nist.gov/7.17)
+> - [Erf - Wolfram MathWorld](https://mathworld.wolfram.com/topics/Erf.html)
+
+- `erf(z)`:         error function
+- `erf(z0, z1)`:    generalized error function `erf(z1) - erf(z0)`
+- `erfc(z)`:        complementary error function
+- `erfcx(z)`:       Scaled complementary error function
+- `ω(z)`, `faddeeva(z)`: Faddeeva function
+- `erfi(z)`:        Imaginary error function
+- `erfinv(z)`:      inverse error function
+- `erfcinv(z)`:     inverse complementary error function
 
 ### Dawson Integral
 
 > - [DLMF: §7.2 Dawson’s Integral](https://dlmf.nist.gov/7.2#ii)
 > - [Dawson's Integral - Wolfram MathWorld](https://mathworld.wolfram.com/DawsonsIntegral.html)
 
+- `dawson(z)`: Dawson integral
+
 ### Fresnel Integral
 
 > - [DLMF: §7.2 Fresnel Integrals](https://dlmf.nist.gov/7.2#iii)
 > - [Fresnel Integrals - Wolfram MathWorld](https://mathworld.wolfram.com/FresnelIntegrals.html)
+
+- `C(z)`: Fresnel integral C(z)
+- `S(z)`: Fresnel integral S(z)
+- `f(z)`: Fresnel auxiliary function f(z)
+- `g(z)`: Fresnel auxiliary function g(z)
 
 
 ## Airy Functions
