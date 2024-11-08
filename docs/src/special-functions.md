@@ -154,10 +154,20 @@
 
 > - [Legendre’s Integrals - DLMF](https://dlmf.nist.gov/19.2.8)
 
+- `K(m)`: `{m in (-Inf,1]}`, (Legendre’s) complete elliptic integral of the first kind
+- `E(m)`: `{m in (-Inf,1]}`, (Legendre’s) complete elliptic integral of the second kind
+- `Π(n, m)`:  (Legendre’s) complete elliptic integral of the third kind
+
 ### Symmetric Integral
 
 > - [Symmetric Integrals - DLMF](https://dlmf.nist.gov/19.16)
 > - [Carlson Elliptic Integrals - MathWorld](https://mathworld.wolfram.com/CarlsonEllipticIntegrals.html)
+
+- `RF(x, y, z)`,    symmetric elliptic integral of first kind
+- `RG(x, y, z)`,    symmetric elliptic integral of second kind
+- `RJ(x, y, z, p)`, symmetric elliptic integral of third kind
+- `RD(x, y, z)`,    `≡ RJ(x, y, z, z)`, elliptic integral symmetric in only two variables
+- `RC(x, y)`,       `≡ RF(x, y, y)`,    Carlson’s combination of inverse circular and inverse hyperbolic functions
 
 
 ## Elliptic Functions
@@ -167,12 +177,20 @@
 > - [DLMF: §22.2 Jacobian Elliptic Functions](https://dlmf.nist.gov/22.2)
 > - [Jacobi Elliptic Functions - Wolfram MathWorld](https://mathworld.wolfram.com/JacobiEllipticFunctions.html)
 
+- `sn(z, k)`, Jacobi Elliptic Function sn
+- `cn(z, k)`, Jacobi Elliptic Function cn
+- `dn(z, k)`, Jacobi Elliptic Function dn
+
 ### Weierstrass Elliptic Function
 
 > - [DLMF: §23.2 Weierstrass Elliptic Functions Functions](https://dlmf.nist.gov/23.2)
 > - [Weierstrass Elliptic Function - Wolfram MathWorld](https://mathworld.wolfram.com/WeierstrassEllipticFunction.html)
 > - [Weierstrass Zeta Function - Wolfram MathWorld](https://mathworld.wolfram.com/WeierstrassZetaFunction.html)
 > - [Weierstrass Sigma Function - Wolfram MathWorld](https://mathworld.wolfram.com/WeierstrassSigmaFunction.html)
+
+- `WeierstrassP(z)`,        Weierstrass ℘ function
+- `WeierstrassZeta(z)`,     Weierstrass zeta function
+- `WeierstrassSigma(x)`,    Weierstrass sigma function
 
 
 ## Theta Functions
