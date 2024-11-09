@@ -234,27 +234,38 @@
 - `W(a, x)`, `pbwa(v, x)`:  Parabolic cylinder function W
 
 
-## Confluent Hypergeometric Functions
+## Hypergeometric Functions
+
+> - [DLMF: Chapter 15 Hypergeometric Function](https://dlmf.nist.gov/15)
+> - [Hypergeometric Function - Wolfram MathWorld](https://mathworld.wolfram.com/HypergeometricFunction.html)
+
+- `₂F₁(a,b,c,x)`, `hyp2f1(a,b,c,x)`:    Gauss hypergeometric function 2F1
+
+### Confluent Hypergeometric Function
 
 > - [DLMF: Chapter 13 Confluent Hypergeometric Functions](https://dlmf.nist.gov/13)
+> - [DLMF: §13.14 Whittaker Functions](https://dlmf.nist.gov/13.14)
 > - [Confluent Hypergeometric Functions - Wolfram MathWorld](https://mathworld.wolfram.com/topics/ConfluentHypergeometricFunctions.html)
+
+- `₀F₁(a,z)`, `hyp0F1(a,z)`:        hypergeometric function 0F1
+- `₁F₁(a,b,z)`, `hyp1f1(a,b,z)`:    Kummer confluent hypergeometric function 1F1
+- `U(a,b,x)`, `hyperu(a,b,x)`:      confluent hypergeometric function U
+- `M(a,b,x)`:                       Olver’s confluent hypergeometric function
+- `Mκμ(z)`, `WhittakerM(k,m,z)`:    Whittaker confluent hypergeometric function M
+- `Wκμ(z)`, `WhittakerW(k,m,z)`:    Whittaker confluent hypergeometric function W
+
+### Generalized Hypergeometric Function
+
+> - [DLMF: Chapter 16 Generalized Hypergeometric Functions and Meijer 𝐺-Function](https://dlmf.nist.gov/16)
+> - [Generalized Hypergeometric Functions - Wolfram MathWorld](https://mathworld.wolfram.com/topics/GeneralizedHypergeometricFunctions.html)
+
+- `pFq(A, B, z)`, `Hyper(as, bs, z)`:       Generalized Hypergeometric Function
+- `Gmnpq(A, B, z)`, `MeijerG(as, bs, z)`:   Meijer G-Function
 
 
 ## Legendre Functions
 
 > - [DLMF: Chapter 14 Legendre and Related Functions](https://dlmf.nist.gov/14)
-
-
-## Hypergeometric Functions
-
-> - [DLMF: Chapter 15 Hypergeometric Function](https://dlmf.nist.gov/15)
-> - [Hypergeometric Functions - Wolfram MathWorld](https://mathworld.wolfram.com/topics/HypergeometricFunctions.html)
-
-
-## Generalized Hypergeometric Functions
-
-> - [DLMF: Chapter 16 Generalized Hypergeometric Functions and Meijer 𝐺-Function](https://dlmf.nist.gov/16)
-> - [Generalized Hypergeometric Functions - Wolfram MathWorld](https://mathworld.wolfram.com/topics/GeneralizedHypergeometricFunctions.html)
 
 
 ## Elliptic Integrals
