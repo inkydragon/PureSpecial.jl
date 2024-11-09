@@ -260,9 +260,12 @@
 
 > - [Legendre’s Integrals - DLMF](https://dlmf.nist.gov/19.2.8)
 
-- `K(m)`: `{m in (-Inf,1]}`, (Legendre’s) complete elliptic integral of the first kind
-- `E(m)`: `{m in (-Inf,1]}`, (Legendre’s) complete elliptic integral of the second kind
-- `Π(n, m)`:  (Legendre’s) complete elliptic integral of the third kind
+- `F(Φ, m)`,    (Legendre’s) incomplete elliptic integral of the first kind
+- `E(Φ, m)`,    (Legendre’s) incomplete elliptic integral of the second kind
+- `Π(Φ, u, m)`, (Legendre’s) incomplete elliptic integral of the third kind
+- `K(m)`,       `≡ F(π/2, m)`: `{m in (-Inf,1]}`, (Legendre’s) complete elliptic integral of the first kind
+- `E(m)`,       `≡ E(π/2, m)`: `{m in (-Inf,1]}`, (Legendre’s) complete elliptic integral of the second kind
+- `Π(u, m)`,    `≡ Π(π/2, u, m)`:   (Legendre’s) complete elliptic integral of the third kind
 
 ### Symmetric Integral
 
