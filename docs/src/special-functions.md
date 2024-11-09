@@ -224,8 +224,14 @@
 
 ## Parabolic Cylinder Functions
 
-> - [DLMF: Chapter 12 Parabolic Cylinder Functions](https://dlmf.nist.gov/12)
+> - [DLMF: §12.2 Parabolic Cylinder Functions](https://dlmf.nist.gov/12.2)
+> - [DLMF: §12.14 The Function 𝑊(𝑎,𝑥) ‣ Parabolic Cylinder Functions](https://dlmf.nist.gov/12.14)
 > - [Parabolic Cylinder Functions - Wolfram MathWorld](https://mathworld.wolfram.com/topics/ParabolicCylinderFunctions.html)
+
+- `Dn(z)`, `pbdv(v, x)`:    Parabolic cylinder function, in Whittaker’s notation Dn
+- `V(a, x)`, `pbvv(v, x)`:  Parabolic cylinder function V
+- `U(a, z)`:                Parabolic cylinder function U
+- `W(a, x)`, `pbwa(v, x)`:  Parabolic cylinder function W
 
 
 ## Confluent Hypergeometric Functions
