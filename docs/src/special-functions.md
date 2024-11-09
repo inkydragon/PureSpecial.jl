@@ -309,18 +309,31 @@
 ## Zeta Functions
 
 > - [DLMF: §25.2 Riemann Zeta Function](https://dlmf.nist.gov/25.2)
+> - [DLMF: §25.11 Hurwitz Zeta Function](https://dlmf.nist.gov/25.11)
 > - [Riemann Zeta Function - Wolfram MathWorld](https://mathworld.wolfram.com/RiemannZetaFunction.html)
+> - [Hurwitz Zeta Function - Wolfram MathWorld](https://mathworld.wolfram.com/HurwitzZetaFunction.html)
 
-### Dilogarithms
+- `ζ(s)`, `zeta(s)`: Riemann zeta function
+- `ζ(s, a)`, `zeta(s, a)`: generalized Riemann zeta function, Hurwitz zeta function
+
+### Dilogarithm
 
 > - [DLMF: §25.12 Polylogarithms](https://dlmf.nist.gov/25.12)
 > - [Spence's Function - Wolfram MathWorld](https://mathworld.wolfram.com/SpencesFunction.html)
+> - [Lerch Transcendent - Wolfram MathWorld](https://mathworld.wolfram.com/LerchTranscendent.html)
+
+- `Li₂(z)`, `spence(z)`: Spence’s function, also known as the dilogarithm.
+- `Liₛ(z)`, `PolyLog(n, z)`: polylogarithm
+- `Φ(z, s, a)`, `LerchPhi(z, s, a)`: Lerch transcendent
 
 ### Dirichlet L-function
 
 > - [DLMF: §25.15 Dirichlet 𝐿-functions](https://dlmf.nist.gov/25.15)
 > - [Dirichlet L-Series - Wolfram MathWorld](https://mathworld.wolfram.com/DirichletL-Series.html)
 > - [Dirichlet Eta Function - Wolfram MathWorld](https://mathworld.wolfram.com/DirichletEtaFunction.html)
+
+- `L(s, χ)`, `dirichlet(s, chi)`: Dirichlet L-function
+- `η(s)`, `eta(s)`, `dirichlet(s, [-1,1])`: Dirichlet eta function
 
 
 ## Mathieu Functions
