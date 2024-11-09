@@ -28,7 +28,7 @@
 + specfun_rctj
 + specfun_rcty
 + specfun_sdmn
-+ specfun_segv
++ ✅ specfun_segv
 
 ## Airy functions
 - `ai_zeros(nt)`: specfun_airyzo
@@ -48,5 +48,6 @@ include("parabolic.jl")
 include("kelvin.jl")
 include("hyper.jl")
 include("exp.jl")
+include("spheroidal.jl")
 
 end # PureSpecial
