@@ -613,9 +613,15 @@ end
 - specfun_rswfo
 =#
 
-function _segv(m::Int, n::Int, c::Float64, kd::Int)
+"""
+Warp fortran `specfun.SEGV`.
+
+- Input: `m,n,c`, `kd`
+- Output: `cv`, `eg`
+"""
+function _segv!(m::Int, n::Int, c::Float64, kd::Int, eg::Vector{Float64})
     cv = Ref{Float64}(NaN)
-    eg = zeros(Float64, 200)
+    @assert length(eg) >= 200
     # SUBROUTINE SEGV(M,N,C,KD,CV,EG)
     # void segv(int m, int n, T c, int kd, T *cv, T *eg)
     ccall(f77func(:segv), Cvoid,

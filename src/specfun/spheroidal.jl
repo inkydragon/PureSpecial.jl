@@ -39,7 +39,7 @@ EG(L) --- Characteristic value for mode m and n'
         ( L = n' - m + 1 )
 """
 function segv(m::Int, n::Int, c::T, kd::Int, eg::Vector{T}) where {T<:AbstractFloat}
-    @assert kd==0 || kd==1 "Bad kd, kd not in [0, 1]"
+    @assert kd==1 || kd==-1 "Bad kd, kd not in [1, -1]"
     eg_len = n - m + 1
     @assert eg_len > 0 "Bad (m, n)"
     @assert length(eg) >= 200 "eg[] too small, need length(eg) >= 200"
@@ -68,11 +68,10 @@ function segv(m::Int, n::Int, c::T, kd::Int, eg::Vector{T}) where {T<:AbstractFl
     k = Int(0)
     @assert nm <= 300 "a[], d[], g[] out of range"
     @assert nm <= 300 "e[], k[] out of range"
-    @assert nm1 <= 300 "d[] out of range"
     @assert icm <= 100 "h[] out of range"
     for l in 0:1
         for i in 1:nm
-            k = (l == 0 ? 2 * (i-1) : 2 * i)
+            k = (l == 0 ? 2 * (i-1) : 2*i-1)
             dk0 = m + k
             dk1 = m + k + 1
             dk2 = 2 * (m + k)
@@ -91,6 +90,7 @@ function segv(m::Int, n::Int, c::T, kd::Int, eg::Vector{T}) where {T<:AbstractFl
         xa = d[nm] + abs(e[nm])
         xb = d[nm] - abs(e[nm])
         nm1 = Int(nm - 1)
+        @assert nm1 <= 300 "d[] out of range"
         for i in 1:nm1
             t = abs(e[i]) + abs(e[i+1])
             t1 = d[i] + t
