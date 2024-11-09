@@ -265,7 +265,14 @@
 
 ## Legendre Functions
 
-> - [DLMF: Chapter 14 Legendre and Related Functions](https://dlmf.nist.gov/14)
+> - [DLMF: §14.2 Legendre and Related Functions](https://dlmf.nist.gov/14.2)
+> - [DLMF: §14.30 Spherical and Spheroidal Harmonics](https://dlmf.nist.gov/14.30)
+
+- `Pn(z)`, `LegendreP(n, z)`:       Legendre functions of the first kind
+- `Qn(z)`, `LegendreQ(n, z)`:       Legendre functions of the second kind
+- `Pmn(z)`, `LegendreP(n, m, z)`:   associated Legendre functions of the first kind
+- `Qmn(z)`, `LegendreQ(n, m, z)`:   associated Legendre functions of the second kind
+- `Yml(θ, ϕ)`:  spherical harmonic
 
 
 ## Elliptic Integrals
