@@ -197,6 +197,30 @@
 > - [DLMF: Chapter 11 Struve and Related Functions](https://dlmf.nist.gov/11)
 > - [Struve Function - Wolfram MathWorld](https://mathworld.wolfram.com/StruveFunction.html)
 
+- `Hν(z)`, `StruveH`:   Struve function
+- `Lν(z)`, `StruveL`:   Modified Struve function
+- `∫Hν(z)`:     Integrals of Struve function
+- `∫Lν(z)`:     Integrals of Modified Struve function
+
+### Lommel Function
+
+> - [DLMF: §11.9 Lommel Functions](https://dlmf.nist.gov/11.9)
+
+- `sμν(z)`, `LommelS1(μ, ν, z)`:    Lommel function `s`
+- `Sμν(z)`, `LommelS2(μ, ν, z)`:    Lommel function `S`
+- `tₘₙ(z)`, `LommelT1(m, n, z)`:    Modified Lommel Function `t`
+- `Tₘₙ(z)`, `LommelT2(m, n, z)`:    Modified Lommel Function `T`
+
+### Anger and Weber Function
+
+> - [DLMF: §11.10 Anger–Weber Functions](https://dlmf.nist.gov/11.10)
+
+- `Jν(z)`, `AngerJ(ν, z)`:  Anger Function
+- `Eν(z)`, `WeberE(ν, z):   Weber Function
+- `Aν(z)`, `AngerWeberA(ν, z)`:     associated Anger-Weber function
+- `∫Jν(z)`:     Integrals of Anger Function
+- `∫Eν(z)`:     Integrals of Weber Function
+
 
 ## Parabolic Cylinder Functions
 
