@@ -26,6 +26,19 @@ include("specfun/Specfun.jl")
 import .Specfun
 
 # APIs
+include("elementary.jl")
+include("gamma.jl")
+include("exp_int.jl")
+include("error.jl")
 include("airy.jl")
+include("bessel.jl")
+include("struve.jl")
+include("parabolic.jl")
+include("hyper.jl")
+include("legendre.jl")
+include("elliptic.jl")
+include("zeta.jl")
+include("mathieu.jl")
+include("spheroidal.jl")
 
 end
