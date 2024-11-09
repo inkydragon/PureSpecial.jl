@@ -604,3 +604,26 @@ function _eixz(z::ComplexF64)
     ccall(f77func(:eixz), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, cei)
     cei[]
 end
+
+
+#= Spheroidal Wave Functions
+- specfun_segv
+- specfun_rswfp
+- specfun_aswfa
+- specfun_rswfo
+=#
+
+function _segv(m::Int, n::Int, c::Float64, kd::Int)
+    cv = Ref{Float64}(NaN)
+    eg = zeros(Float64, 200)
+    # SUBROUTINE SEGV(M,N,C,KD,CV,EG)
+    # void segv(int m, int n, T c, int kd, T *cv, T *eg)
+    ccall(f77func(:segv), Cvoid,
+        (Ref{Int32}, Ref{Int32},
+         Ref{Float64}, Ref{Int32},
+         Ref{Float64}, Ptr{Float64}),
+         Int32(m), Int32(n),
+         c, Int32(kd),
+         cv, eg)
+    cv[], eg
+end
