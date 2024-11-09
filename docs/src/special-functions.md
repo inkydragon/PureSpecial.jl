@@ -336,10 +336,28 @@
 ## Spheroidal Wave Functions
 
 > - [DLMF: Chapter 30 Spheroidal Wave Functions](https://dlmf.nist.gov/30)
-> - [Prolate Spheroidal Wave Function - Wolfram MathWorld](https://mathworld.wolfram.com/ProlateSpheroidalWaveFunction.html)
-> - [Oblate Spheroidal Wave Function - Wolfram MathWorld](https://mathworld.wolfram.com/OblateSpheroidalWaveFunction.html)
+> - [Prolate Spheroidal Coordinates - Wolfram MathWorld](https://mathworld.wolfram.com/ProlateSpheroidalCoordinates.html)
+> - [Oblate Spheroidal Coordinates - Wolfram MathWorld](https://mathworld.wolfram.com/OblateSpheroidalCoordinates.html)
 
-### Characteristic Value
+### Spheroidal Wave Function
+
+> - [DLMF: §30.11 Radial Spheroidal Wave Functions](https://dlmf.nist.gov/30.11)
+> - [DLMF: §30.4 Functions of the First Kind](https://dlmf.nist.gov/30.4)
+> - [DLMF: §30.5 Functions of the Second Kind](https://dlmf.nist.gov/30.5)
+
+γ² > 0 corresponds to a prolate spheroidal geometry,
+while γ² <= 0 corresponds to an oblate spheroidal geometry.
+
+- `S1mn(z, γ)`, `SpheroidalS1(n, m, γ, z)`: Radial Spheroidal Wave Function S1
+- `S2mn(z, γ)`, `SpheroidalS2(n, m, γ, z)`: Radial Spheroidal Wave Function S2
+- `PSmn(z, γ)`, `SpheroidalPS(n, m, γ, z)`: Angular Spheroidal Wave Function PS
+- `QSmn(z, γ)`, `SpheroidalQS(n, m, γ, z)`: Angular Spheroidal Wave Function QS
+
+### Spheroidal Eigenvalue
+
+> - [DLMF: §30.3 Eigenvalues ‣ Chapter 30 Spheroidal Wave Functions](https://dlmf.nist.gov/30.3)
+
+- `λmn(γ)`, `SpheroidalEigenvalue(n, m, γ)`: Spheroidal Eigenvalue of degree `n` and order `m`
 
 
 ## Miscellaneous Functions
