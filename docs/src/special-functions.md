@@ -328,9 +328,18 @@
 > - [DLMF: §28.2 Mathieu Functions of Integer Order ‣ Eigenfunctions](https://dlmf.nist.gov/28.2#vi)
 > - [Mathieu Function - Wolfram MathWorld](https://mathworld.wolfram.com/MathieuFunction.html)
 
-### Eigenvalue
+- `cem(a, q, z)`, `MathieuC(a, q, z)`:  even, periodic Mathieu functions with characteristic value a and parameter q
+- `sem(b, q, z)`, `MathieuS(b, q, z)`:  odd, periodic Mathieu functions with characteristic value b and parameter q
+- `cemp(a, q, z)`, `MathieuCPrime(a, q, z)`:    z derivatives of even Mathieu functions
+- `semp(b, q, z)`, `MathieuSPrime(b, q, z)`:    z derivatives of odd Mathieu functions
+
+### Characteristic Value of Mathieu function
 
 > - [DLMF: §28.2 Mathieu Functions of Integer Order ‣ Eigenvalues](https://dlmf.nist.gov/28.2#v)
+
+- `mathieu_a(n, q)`, `MathieuCharacteristicA(n, q)`,  eigenvalues of even Mathieu functions
+- `mathieu_b(n, q)`, `MathieuCharacteristicB(n, q)`,  eigenvalues of odd Mathieu functions
+- `mathieu_exp(a ,q)`, `MathieuCharacteristicExponent(a ,q)`: characteristic exponent r for Mathieu functions
 
 
 ## Spheroidal Wave Functions
