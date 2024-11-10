@@ -170,8 +170,155 @@ function segv(m::Int, n::Int, c::T, kd::Int, eg::Vector{T}) where {T<:AbstractFl
     return cv, eg
 end
 
-function sdmn()
-    
+"""
+Compute the expansion coefficients of the
+prolate and oblate spheroidal functions, dk
+
+Input: 
+m  --- Mode parameter
+n  --- Mode parameter
+c  --- Spheroidal parameter
+cv --- Characteristic value
+KD --- Function code
+    KD=1 for prolate; KD=-1 for oblate
+
+Output: 
+DF(k) --- Expansion coefficients dk;
+    DF(1), DF(2), ... correspond to
+    d0, d2, ... for even n-m and d1,
+    d3, ... for odd n-m
+"""
+function sdmn!(m::Int, n::Int, c::T, cv::T, kd::Int, df::Vector{T}) where {T<:AbstractFloat}
+    @assert kd in Set([1, -1]) "Bad kd: kd not in [1, -1]"
+    @assert length(df) >= 200 "df[] too small, need length(df) >= 200"
+
+    nm = 25 + trunc(Int, 0.5*(n-m) + c)
+    @assert nm <= length(df) "(n-m) too large"
+    @assert ((n-m)÷2 + 1) <= length(df) "((n-m)÷2 + 1) too large"
+    if c < 1e-10
+        for i in 1:nm
+            df[i] = 0
+        end
+        df[(n-m)÷2 + 1] = 1
+        return
+    end
+
+    a = fill(T(0), nm + 2)
+    d = fill(T(0), nm + 2)
+    g = fill(T(0), nm + 2)
+    cs = c*c*kd
+    ip = (n - m) % 2
+
+    for i in 1:(nm+2)
+        k = (ip == 0 ? 2*(i-1) : 2*i - 1)
+        dk0 = m + k
+        dk1 = m + k + 1
+        dk2 = 2 * (m + k)
+        d2k = 2 * m + k
+        a[i] = (d2k+2)*(d2k+1) / ((dk2+3)*(dk2+5)) * cs
+        d[i] = dk0*dk1 + (2*dk0*dk1 - 2*m*m - 1) / ((dk2-1)*(dk2+3)) * cs
+        g[i] = k * (k-1) / ((dk2-3)*(dk2-1)) * cs
+    end
+
+    fs = T(1.0)
+    f1 = T(0.0)
+    f0 = T(1e-100)
+    kb = Int(0)
+    @assert (nm+1) <= length(df) "(n-m) too large"
+    df[nm+1] = T(0.0)
+    fl = T(0.0)
+    for k in nm:-1:1
+        f = -((d[k+1]-cv)*f0 + a[k+1]*f1) / g[k+1]
+        if abs(f) > abs(df[k+1])
+            df[k] = f
+            f1 = f0
+            f0 = f
+
+            if abs(f) > T(1e100)
+                for k1 in k:nm
+                    df[k1] *= T(1e-100)
+                end
+                f1 *= T(1e-100)
+                f0 *= T(1e-100)
+            end
+        else
+            kb = k
+            fl = df[k+1]
+            f1 = T(1e-100)
+            f2 = -((d[1]-cv) / a[1]) * f1
+            df[1] = f1
+
+            if kb == 1
+                fs = f2
+            elseif kb == 2
+                df[2] = f2
+                fs = -((d[2]-cv)*f2 + g[2]*f1) / a[2]
+            else
+                df[2] = f2
+                for j in 3:(kb+1)
+                    f = -((d[j-1]-cv)*f2 + g[j-1]*f1) / a[j-1]
+                    if j <= kb
+                        df[j] = f
+                    end
+                    if abs(f) > T(1e100)
+                        for k1 in 1:j
+                            df[k1] *= T(1e-100)
+                        end
+                        f *= T(1e-100)
+                        f2 *= T(1e-100)
+                    end
+                    f1 = f2
+                    f2 = f
+                end
+                fs = f
+            end
+
+            break
+        end
+    end
+
+    su1 = T(0.0)
+    r1 = T(1.0)
+    for j in range(m+ip+1, 2*(m+ip))
+        r1 *= j
+    end
+
+    su1 = df[1] * r1
+    for k in 2:kb
+        r1 = -r1 * (k+m+ip-1.5) / (k-1.0)
+        su1 += r1 * df[k]
+    end
+
+    su2 = T(0.0)
+    sw = T(0.0)
+    for k in (kb+1):nm
+        if k != 1
+            r1 = -r1 * (k+m+ip-1.5) / (k-1.0)
+        end
+        su2 += r1 * df[k]
+        if abs(sw - su2) < abs(su2)*T(1e-14)
+            break
+        end
+
+        sw = su2
+    end
+
+    r3 = T(1.0)
+    for j in 1:((m+n+ip) ÷ 2)
+        r3 *= j + 0.5*(m+n+ip)
+    end
+    r4 = T(1.0)
+    for j in 1:((n-m-ip) ÷ 2)
+        r4 *= -4.0 * j
+    end
+
+    s0 = r3 / (fl*(su1/fs) + su2) / r4
+    for k in 1:kb
+        df[k] *= fl / fs * s0
+    end
+    for k in (kb+1):nm
+        df[k] *= s0
+    end
 end
 
 function sckb()

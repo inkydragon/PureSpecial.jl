@@ -633,3 +633,18 @@ function _segv!(m::Int, n::Int, c::Float64, kd::Int, eg::Vector{Float64})
          cv, eg)
     cv[], eg
 end
+
+"""
+    SUBROUTINE SDMN(M,N,C,CV,KD, DF(200))
+    void sdmn(int m, int n, T c, T cv, int kd, T *df)
+
+- Output: `df[]`
+"""
+function _sdmn!(m::Int, n::Int, c::Float64, cv::Float64, kd::Int, df::Vector{Float64})
+    ccall(f77func(:sdmn), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{Float64}, Ref{Float64}, Ref{Int32},
+         Ptr{Float64}),
+        Int32(m), Int32(n), c, cv, Int32(kd),
+        df)
+    df
+end
