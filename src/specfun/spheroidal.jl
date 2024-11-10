@@ -540,13 +540,129 @@ function sphj!(n::Int, x::T, sj::Vector{Float64}, dj::Vector{Float64}) where {T<
 end
 
 """
+Compute prolate and oblate spheroidal radial
+functions of the first kind for given m, n, c, and x
 
 Routines called:
 - sckb
 - sphj
 """
-function rmn1()
+function rmn1(m::Int, n::Int, c::T, x::T, kd::Int, df::Vector{T}) where {T<:AbstractFloat}
+    _EPS = 1e-14
+    ck = zeros(T, 200)
+
+    nm1 = trunc(Int, (n - m) / 2)
+    ip = ifelse((n-m) == 2*nm1, 0, 1)
+    nm = 25 + nm1 + trunc(Int, c)
+    reg = ifelse((m+nm) > 80, T(1e-200), T(1.0))
+    r0 = reg
+    for j in 1:(2*m + ip)
+        r0 *= j
+    end
+
+    r = T(r0)
+    suc = r * df[1]
+    sw = T(0.0)
+    for k in 2:nm
+        r *= (m + k - 1) * (m + k + ip - 1.5) / ((k - 1) * (k + ip - 1.5))
+        suc += r * df[k]
+        if (k > nm1) && (abs(suc - sw) < abs(suc) * _EPS)
+            break
+        end
     
+        sw = suc
+    end
+
+    if x == 0.0
+        sckb!(m, n, c, df, ck)
+
+        sum = T(0.0)
+        sw1 = T(0.0)
+        for j in 1:nm
+            sum += ck[j]
+            if abs(sum - sw1) < abs(sum) * _EPS
+                break
+            end
+
+            sw1 = sum
+        end
+
+        r1 = T(1.0)
+        for j in 1:trunc(Int, (n + m + ip) / 2)
+            r1 *= j + 0.5 * (n + m + ip)
+        end
+        r2 = T(1.0)
+        for j in 1:m
+            r2 *= 2.0 * c * j
+        end
+        r3 = T(1.0)
+        for j in 1:trunc(Int, (n - m - ip) / 2)
+            r3 *= j
+        end
+        sa0 = (2*(m+ip) + 1) * r1 / (2.0^n * c^ip * r2 * r3)
+        if ip == 0
+            r1f = sum / (sa0 * suc) * df[1] * reg
+            r1d = T(0.0)
+        else
+            r1f = T(0.0)
+            r1d = sum / (sa0 * suc) * df[1] * reg
+        end
+
+        return r1f, r1d
+    end
+
+    # NOTE: in f77 version
+    #   DIMENSION SJ(0:251),DJ(0:251)
+    sj = zeros(T, 251+1)
+    dj = zeros(T, 251+1)
+
+    cx = c * x
+    nm2 = 2 * nm + m
+    _, _, nm2 = sphj!(nm2, cx, sj, dj)
+
+    a0 = (1.0 - kd / (x * x))^(0.5 * m) / suc
+    r1f = T(0.0)
+    sw = T(0.0)
+    for k in 1:nm
+        l = 2*k + m - n - 2 + ip
+        lg = ifelse(l % 4 == 0, 1, -1)
+        if k == 1
+            r = r0
+        else
+            r *= (m + k - 1.0) * (m + k + ip - 1.5) / ((k - 1.0) * (k + ip - 1.5))
+        end
+        np = m + 2 * k - 2 + ip
+        r1f += lg * r * df[k] * sj[np + 1]
+        if (k > nm1) && (abs(r1f - sw) < abs(r1f) * _EPS)
+            break
+        end
+
+        sw = r1f
+    end
+
+    r1f *= a0
+    b0 = kd * m / (x^3 * (1.0 - kd / (x * x))) * r1f
+    sud = T(0.0)
+    sw = T(0.0)
+    for k in 1:nm
+        l = 2 * k + m - n - 2 + ip
+        lg = ifelse(l % 4 == 0, 1, -1)
+        if k == 1
+            r = r0
+        else
+            r *= (m + k - 1) * (m + k + ip - 1.5) / ((k-1) * (k + ip - 1.5))
+        end
+        np = m + 2 * k - 2 + ip
+        sud += lg * r * df[k] * dj[np + 1]
+        if (k > nm1) && (abs(sud - sw) < abs(sud) * _EPS)
+            break
+        end
+
+        sw = sud
+    end
+
+    r1d = b0 + a0 * c * sud
+    return r1f, r1d
 end
 
 """

@@ -697,3 +697,19 @@ function _sphj!(n::Int, x::Float64, sj::Vector{Float64}, dj::Vector{Float64})
         sj, dj)
     sj, dj, Int(nm[])
 end
+
+"""
+    SUBROUTINE RMN1(M,N,C,X,DF(200),KD, R1F,R1D)
+    void rmn1(int m, int n, T c, T x, int kd, T *df, T *r1f, T *r1d)
+
+- Output: `(r1f, r1d)`
+"""
+function rmn1(m::Int, n::Int, c::Float64, x::Float64, df::Vector{Float64}, kd::Int)
+    r1f, r1d  = Ref{Float64}(NaN), Ref{Float64}(NaN)
+    ccall(f77func(:rmn1), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{Float64}, Ref{Float64}, Ptr{Float64}, Ref{Int32},
+         Ref{Float64}, Ref{Float64}),
+        Int(m), Int(n), c, x, df, Int(kd),
+        r1f, r1d)
+    r1f[], r1d[]
+end
