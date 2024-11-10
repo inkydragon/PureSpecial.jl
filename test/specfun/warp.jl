@@ -704,7 +704,7 @@ end
 
 - Output: `(r1f, r1d)`
 """
-function rmn1(m::Int, n::Int, c::Float64, x::Float64, df::Vector{Float64}, kd::Int)
+function _rmn1(m::Int, n::Int, c::Float64, x::Float64, kd::Int, df::Vector{Float64})
     r1f, r1d  = Ref{Float64}(NaN), Ref{Float64}(NaN)
     ccall(f77func(:rmn1), Cvoid,
         (Ref{Int32}, Ref{Int32}, Ref{Float64}, Ref{Float64}, Ptr{Float64}, Ref{Int32},

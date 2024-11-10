@@ -199,3 +199,48 @@ end
         end
     end
 end
+
+@testset "rmn1" begin
+    test_mn = Tuple{Int64,Int64}[
+        # branch: x == 1
+        (0, 1),
+        (1, 2),
+        (2, 3),
+        (3, 4),
+        (10, 20),
+        (100, 200),
+        (710, 1000),
+    ]
+    test_c = Float64[
+        # test br: c < 1e-10
+        1e-9,
+        rand(5)...,
+    ]
+    test_cv = Float64[
+        rand(5)...,
+    ]
+    test_x = Float64[
+        1, -1,
+        rand(4)...,
+        -rand(4)...,
+    ]
+
+    for (m, n) in test_mn,
+        c in test_c,
+        cv in test_cv,
+        x in test_x,
+        kd in [1, -1]
+        df_ref = zeros(Float64, 200)
+        df_res = zeros(Float64, 200)
+        #
+        _sdmn!(m, n, c, cv, kd, df_ref)
+        r1f_ref, r1d_ref = _rmn1(m, n, c, x, kd, df_ref)
+        Specfun.sdmn!(m, n, c, cv, kd, df_res)
+        r1f, r1d = Specfun.rmn1(m, n, c, x, kd, df_res)
+        @testset "rmn1(m=$m,n=$n,c=$c,x=$x,kd=$kd)" begin
+            # Result
+            @test isapprox(r1f_ref, r1f; nans=true)
+            @test isapprox(r1d_ref, r1d; nans=true)
+        end
+    end
+end
