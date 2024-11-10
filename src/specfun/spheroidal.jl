@@ -459,3 +459,104 @@ function aswfa(m::Int, n::Int, c::T, x::T, kd::Int, cv::T) where {T<:AbstractFlo
 
     return s1f, s1d
 end
+
+
+"""
+
+Compute spherical Bessel functions jn(x) and their derivatives
+
+Input:  
+x --- Argument of jn(x)
+n --- Order of jn(x)  ( n = 0,1,… )
+
+Output:  
+sj --- Array of jn(x) values
+dj --- Array of jn'(x) values
+nm --- Highest order computed
+
+Routines called:
+- msta1
+- msta2
+"""
+function sphj!(n::Int, x::T, sj::Vector{Float64}, dj::Vector{Float64}) where {T<:AbstractFloat}
+    @assert n >= 0
+    # NOTE: in f77 version
+    #   DIMENSION SJ(0:N),DJ(0:N)
+    @assert length(sj) >= 1
+    @assert length(dj) >= 1
+
+    nm = n
+    if abs(x) < T(1e-100)
+        for k in 0:n
+            sj[k+1] = T(0.0)
+            dj[k+1] = T(0.0)
+        end
+        sj[0+1] = T(1.0)
+        if n > 0
+            dj[1+1] = T(1.0) / 3.0
+        end
+        return sj, dj, nm
+    end
+
+    sj[0+1] = sin(x) / x
+    dj[0+1] = (cos(x) - sin(x) / x) / x
+    if n < 1
+        return sj, dj, nm
+    end
+
+    sj[1+1] = (sj[0+1] - cos(x)) / x
+    if n >= 2
+        sa = sj[0+1]
+        sb = sj[1+1]
+        m = msta1(x, 200)
+        if m < n
+            nm = m
+        else
+            m = msta2(x, n, 15)
+        end
+
+        f = T(0.0)
+        f0 = T(0.0)
+        f1 = T(1e-100)
+        for k in m:-1:0
+            f = ((2*k+3) * f1 / x) - f0
+            if k <= nm
+                sj[k+1] = f
+            end
+            f0 = f1
+            f1 = f
+        end
+
+        cs = abs(sa) > abs(sb) ? sa/f : sb/f0
+        for k in 0:nm
+            sj[k+1] *= cs
+        end
+    end
+    for k in 1:nm
+        dj[k+1] = sj[k] - (k+1)*sj[k+1] / x
+    end
+
+    return sj, dj, nm
+end
+
+"""
+
+Routines called:
+- sckb
+- sphj
+"""
+function rmn1()
+    
+end
+
+"""
+
+Routines called:
+- sdmn
+- rmn1
+- rmn2l
+- rmn2sp
+"""
+function rswfp()
+    
+end
