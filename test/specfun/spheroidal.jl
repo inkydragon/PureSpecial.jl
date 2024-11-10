@@ -129,3 +129,40 @@ end
         end
     end
 end
+
+@testset "aswfa" begin
+    test_mn = Tuple{Int64,Int64}[
+        (1, 2),
+        (10, 20),
+        (100, 200),
+        (710, 1000),
+    ]
+    test_c = Float64[
+        # test br: c < 1e-10
+        1e-9, eps(), 1e-10,
+        1:10...,
+        rand(10)...,
+    ]
+    test_cv = Float64[
+        rand(10)...,
+        1:10...,
+    ]
+    test_x = Float64[
+        rand(10)...,
+    ]
+
+    for (m, n) in test_mn,
+        kd in [1, -1],
+        c in test_c,
+        cv in test_cv,
+        x in test_x
+        #
+        s1f_ref, s1d_ref = _aswfa(m, n, c, x, kd, cv)
+        s1f_res, s1d_res = Specfun.aswfa(m, n, c, x, kd, cv)
+        @testset "_aswfa(m=$m,n=$n, c=$c,x=$x,kd=$kd,cv=$cv)" begin
+            # Result
+            @test isapprox(s1f_ref, s1f_res; nans=true)
+            @test isapprox(s1d_ref, s1d_res; nans=true)
+        end
+    end
+end
