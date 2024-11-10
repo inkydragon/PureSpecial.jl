@@ -90,3 +90,42 @@ end
         end
     end
 end
+
+@testset "sckb" begin
+    test_mn = Tuple{Int64,Int64}[
+        (1, 2),
+        (10, 20),
+        (100, 200),
+        (710, 1000),
+    ]
+    test_c = Float64[
+        # test br: c < 1e-10
+        1e-9, eps(), 1e-10,
+        1:10...,
+        rand(10)...,
+    ]
+    test_cv = Float64[
+        rand(10)...,
+        1:10...,
+    ]
+
+    for (m, n) in test_mn,
+        kd in [1, -1],
+        c in test_c,
+        cv in test_cv
+        #
+        df_ref = zeros(Float64, 200)
+        ck_ref = zeros(Float64, 200)
+        df_res = zeros(Float64, 200)
+        ck_res = zeros(Float64, 200)
+        #
+        _sdmn!(m, n, c, cv, kd, df_ref)
+        _sckb!(m, n, c, df_ref, ck_ref)
+        Specfun.sdmn!(m, n, c, cv, kd, df_res)
+        Specfun.sckb!(m, n, c, df_res, ck_res)
+        @testset "_sckb(m=$m, n=$n, c=$c)" begin
+            # Result
+            @test isapprox(ck_ref, ck_res; nans=true)
+        end
+    end
+end

@@ -648,3 +648,19 @@ function _sdmn!(m::Int, n::Int, c::Float64, cv::Float64, kd::Int, df::Vector{Flo
         df)
     df
 end
+
+"""
+    SUBROUTINE SCKB(M,N,C, DF(200),CK(200))
+    void sckb(int m, int n, T c, T *df, T *ck)
+
+- Input: `df[]`
+- Output: `ck[]`
+"""
+function _sckb!(m::Int, n::Int, c::Float64, df::Vector{Float64}, ck::Vector{Float64})
+    ccall(f77func(:sckb), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{Float64},
+         Ptr{Float64}, Ptr{Float64}),
+        Int32(m), Int32(n), c,
+        df, ck)
+    ck
+end
