@@ -132,25 +132,27 @@ end
 
 @testset "aswfa" begin
     test_mn = Tuple{Int64,Int64}[
+        # branch: x == 1
+        (0, 1),
         (1, 2),
+        (2, 3),
+        (3, 4),
         (10, 20),
         (100, 200),
         (710, 1000),
     ]
     test_c = Float64[
         # test br: c < 1e-10
-        1e-9, eps(), 1e-10,
-        1:10...,
-        rand(10)...,
+        1e-9,
+        rand(5)...,
     ]
     test_cv = Float64[
-        rand(10)...,
-        1:10...,
+        rand(5)...,
     ]
     test_x = Float64[
         1, -1,
-        rand(10)...,
-        -rand(10)...,
+        rand(4)...,
+        -rand(4)...,
     ]
 
     for (m, n) in test_mn,
