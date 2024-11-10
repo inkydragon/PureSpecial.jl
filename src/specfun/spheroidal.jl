@@ -668,6 +668,62 @@ function rmn1(m::Int, n::Int, c::T, x::T, kd::Int, df::Vector{T}) where {T<:Abst
 end
 
 """
+Compute spherical Bessel functions yn(x) and
+their derivatives
+
+Input :  
+x --- Argument of yn(x) ( x ≥ 0 )
+n --- Order of yn(x) ( n = 0,1,… )
+
+Output:  
+SY(n) --- yn(x)
+DY(n) --- yn'(x)
+NM --- Highest order computed
+"""
+function sphy!(n::Int, x::T, sy::Vector{Float64}, dy::Vector{Float64}) where {T<:AbstractFloat}
+    @assert length(sy) >= (n+1)
+    @assert length(dy) >= (n+1)
+
+    nm = n
+    if x < 1.0e-60
+        fill_len = n + 1
+        sy_view = @view sy[1:fill_len]
+        fill!(sy_view, -1.0e300)
+        dy_view = @view dy[1:fill_len]
+        fill!(dy_view, 1.0e300)
+        return sy, dy, nm
+    end
+
+    sy[0+1] = -cos(x) / x
+    f0 = sy[0+1]
+    dy[0+1] = (sin(x) + cos(x) / x) / x
+    if n < 1
+        return sy, dy, nm
+    end
+
+    sy[1+1] = (sy[0+1] - sin(x)) / x
+    f1 = sy[1+1]
+    for k in 2:n
+        f = (2.0*k - 1.0) * f1 / x - f0
+        sy[k+1] = f
+        if abs(f) >= 1.0e300
+            nm = k - 1
+            return sy, dy, nm
+        end
+
+        f0 = f1
+        f1 = f
+        nm = k - 1
+    end
+    nm = n - 1
+    for k in 1:nm
+        dy[k+1] = sy[k] - (k + 1.0) * sy[k+1] / x
+    end
+
+    return sy, dy, nm
+end
+
+"""
 Compute prolate spheriodal radial functions of the
 first and second kinds, and their derivatives
 
