@@ -170,3 +170,32 @@ end
         end
     end
 end
+
+@testset "sphj" begin
+    test_n = Int[
+        0:10...,
+    ]
+    test_x = Float64[
+        eps(0.0),
+        1, -1,
+        rand(4)...,
+        -rand(4)...,
+    ]
+
+    for n in test_n,
+        x in test_x
+        sj_ref = zeros(Float64, 200)
+        dj_ref = zeros(Float64, 200)
+        sj_res = zeros(Float64, 200)
+        dj_res = zeros(Float64, 200)
+        #
+        _, _, nm_ref = _sphj!(n, x, sj_ref, dj_ref)
+        _, _, nm_res = Specfun.sphj!(n, x, sj_res, dj_res)
+        @testset "sphj!(n=$n, x=$x)" begin
+            # Result
+            @test isapprox(nm_ref, nm_res)
+            @test isapprox(sj_ref, sj_res; nans=true)
+            @test isapprox(dj_ref, dj_res; nans=true)
+        end
+    end
+end
