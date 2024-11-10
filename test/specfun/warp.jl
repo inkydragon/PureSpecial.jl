@@ -681,3 +681,19 @@ function _aswfa(m::Int, n::Int, c::Float64, x::Float64, kd::Int, cv::Float64)
         s1f, s1d)
     s1f[], s1d[]
 end
+
+"""
+    SUBROUTINE SPHJ(N,X, NM,SJ(0:N),DJ(0:N))
+    void sphj(T x, int n,  int *nm, T *sj, T *dj)
+
+- Output: `(sj, dj, nm)`
+"""
+function _sphj!(n::Int, x::Float64, sj::Vector{Float64}, dj::Vector{Float64})
+    nm = Ref{Int32}(0)
+    ccall(f77func(:sphj), Cvoid,
+        (Ref{Int32}, Ref{Float64}, Ref{Int32},
+         Ref{Float64}, Ref{Float64}),
+        Int32(n), x, nm,
+        sj, dj)
+    sj, dj, Int(nm[])
+end
