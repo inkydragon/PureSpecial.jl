@@ -378,6 +378,83 @@ function sckb!(m::Int, n::Int, c::T, df::Vector{T}, ck::Vector{T}) where {T<:Abs
     end
 end
 
-function aswfa()
-    # Call: sdmn,sckb
+"""
+Compute the prolate and oblate spheroidal angular
+functions of the first kind and their derivatives
+
+Input :  
+m  --- Mode parameter,  m = 0,1,2,...
+n  --- Mode parameter,  n = m,m+1,...
+c  --- Spheroidal parameter
+x  --- Argument of angular function, |x| < 1.0
+KD --- Function code
+    KD=1 for prolate;  KD=-1 for oblate
+cv --- Characteristic value
+
+Output:  
+s1f --- Angular function of the first kind
+s1d --- Derivative of the angular function of
+        the first kind
+
+Call: sdmn,sckb
+"""
+function aswfa(m::Int, n::Int, c::T, x::T, kd::Int, cv::T) where {T<:AbstractFloat}
+    _EPS = T(1e-14)
+    ip = ((n - m) % 2 == 0) ? 0 : 1
+    nm = 40 + Int((n - m) / 2 + c)
+    nm2 = nm ÷ 2 - 2
+    x0 = x
+    x = abs(x)
+
+    df = zeros(T, 200)
+    ck = zeros(T, 200)
+    sdmn!(m, n, c, cv, kd, df)
+    sckb!(m, n, c, df, ck)
+
+    x1 = T(1) - x * x
+    a0 = ((m == 0) && (x1 == 0.0)) ? T(1.0) : x1^(T(0.5) * m)
+
+    su1 = ck[1]
+    for k in 1:nm2
+        r = ck[k+1] * x1^k
+        su1 += r
+        if (k >= 10) && (abs(r/su1) < _EPS)
+            break
+        end
+    end
+
+    s1f = a0 * x^ip * su1
+    s1d = T(0.0)
+    if x == T(1.0)
+        if m == 0
+            s1d = ip*ck[1] - 2.0*ck[2]
+        elseif m == 1
+            s1d = -1e100
+        elseif m == 2
+            s1d = -2.0*ck[1]
+        elseif m == 3
+            s1d = 0.0
+        end
+    else
+        d0 = ip - m / x1 * x^(ip+1)
+        d1 = -2.0 * a0 * x^(ip+1)
+        su2 = ck[2]
+        for k in 2:nm2
+            r = k * ck[k+1] * x1^(k-1)
+            su2 += r
+            if (k >= 10) && (abs(r/su2) < _EPS)
+                break
+            end
+        end
+        s1d = d0 * a0 * su1 + d1 * su2
+    end
+
+    if (x0 < 0.0) && (ip == 0)
+        s1d = -s1d
+    end
+    if (x0 < 0.0) && (ip == 1)
+        s1f = -s1f
+    end
+
+    return s1f, s1d
 end

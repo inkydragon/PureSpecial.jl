@@ -664,3 +664,20 @@ function _sckb!(m::Int, n::Int, c::Float64, df::Vector{Float64}, ck::Vector{Floa
         df, ck)
     ck
 end
+
+"""
+    SUBROUTINE ASWFA(M,N,C,X,KD,CV, S1F,S1D)
+    void aswfa(int m, int n, T c, T x, int kd, T cv,  T *s1f, T *s1d)
+
+- Output: `(s1f, s1d)`
+"""
+function _aswfa(m::Int, n::Int, c::Float64, x::Float64, kd::Int, cv::Float64) 
+    s1f = Ref{Float64}(NaN)
+    s1d = Ref{Float64}(NaN)
+    ccall(f77func(:aswfa), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{Float64}, Ref{Float64}, Ref{Int32}, Ref{Float64},
+         Ref{Float64}, Ref{Float64}),
+        Int32(m), Int32(n), c, x, Int32(kd), cv,
+        s1f, s1d)
+    s1f[], s1d[]
+end
