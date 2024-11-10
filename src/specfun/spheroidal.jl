@@ -321,8 +321,61 @@ function sdmn!(m::Int, n::Int, c::T, cv::T, kd::Int, df::Vector{T}) where {T<:Ab
     end
 end
 
-function sckb()
-    
+"""
+Compute the expansion coefficients of the
+prolate and oblate spheroidal functions
+
+Input:
+m  --- Mode parameter
+n  --- Mode parameter
+c  --- Spheroidal parameter
+DF(k) --- Expansion coefficients dk
+
+Output:  
+CK(k) --- Expansion coefficients ck;
+    CK(1), CK(2), ... correspond to
+    c0, c2, ...
+"""
+function sckb!(m::Int, n::Int, c::T, df::Vector{T}, ck::Vector{T}) where {T<:AbstractFloat}
+    if c <= T(1.0e-10)
+        c = T(1.0e-10)
+    end
+    nm = 25 + trunc(Int, 0.5*(n-m) + c)
+    ip = (n - m) % 2
+    reg = ((m+nm) > 80 ? T(1.0e-200) : T(1.0))
+    fac = -T(0.5)^m
+    sw = T(0.0)
+    for k in 0:(nm-1)
+        fac = -fac
+        i1 = 2*k + ip + 1
+        r = reg
+        for i in i1:(i1 + 2*m - 1)
+            r *= i
+        end
+        i2 = k + m + ip
+        for i in i2:(i2 + k - 1)
+            r *= i + T(0.5)
+        end
+
+        sum = r * df[k+1]
+        for i in (k+1):nm
+            d1 = T(2.0)*i + ip
+            d2 = T(2.0)*m + d1
+            d3 = i + m + ip - T(0.5)
+            r = r*d2*(d2-1)*i*(d3+k) / (d1*(d1-1)*(i-k)*d3)
+            sum += r * df[i+1]
+            if abs(sw - sum) < abs(sum) * T(1.0e-14)
+                break
+            end
+
+            sw = sum
+        end
+        r1 = reg
+        for i in 2:(m+k)
+            r1 *= i
+        end
+        ck[k+1] = fac * sum / r1
+    end
 end
 
 function aswfa()
