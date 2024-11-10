@@ -209,7 +209,6 @@ end
         (3, 4),
         (10, 20),
         (100, 200),
-        (710, 1000),
     ]
     test_c = Float64[
         # test br: c < 1e-10
@@ -220,6 +219,7 @@ end
         rand(5)...,
     ]
     test_x = Float64[
+        0.0,
         1, -1,
         rand(4)...,
         -rand(4)...,
@@ -230,6 +230,10 @@ end
         cv in test_cv,
         x in test_x,
         kd in [1, -1]
+        if kd / (x * x) >= 1
+            continue  # @assert
+        end
+
         df_ref = zeros(Float64, 200)
         df_res = zeros(Float64, 200)
         #

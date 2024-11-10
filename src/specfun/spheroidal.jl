@@ -548,6 +548,7 @@ Routines called:
 - sphj
 """
 function rmn1(m::Int, n::Int, c::T, x::T, kd::Int, df::Vector{T}) where {T<:AbstractFloat}
+    @assert (1.0 - kd / (x * x)) >= 0 
     _EPS = 1e-14
     ck = zeros(T, 200)
 
@@ -615,6 +616,7 @@ function rmn1(m::Int, n::Int, c::T, x::T, kd::Int, df::Vector{T}) where {T<:Abst
     #   DIMENSION SJ(0:251),DJ(0:251)
     sj = zeros(T, 251+1)
     dj = zeros(T, 251+1)
+    @assert ((m + 2*nm - 2 + ip) + 1) <= (251+1) "sj[], dj[] Out of index"
 
     cx = c * x
     nm2 = 2 * nm + m
