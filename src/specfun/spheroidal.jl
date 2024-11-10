@@ -6,14 +6,22 @@
 pro_rad1(m, n, c, x),
 pro_rad2(m, n, c, x)
 + specfun_segv, specfun_rswfp
+    -> sdmn
+    -> rmn1 -> sckb,sphj
+        -> msta1,msta2
+    -> rmn2l -> sphy
+    -> rmn2sp -> kmn,lqmns,lpmns
 
 pro_ang1(m, n, c, x),
 obl_ang1(m, n, c, x)
 + specfun_segv, specfun_aswfa
+    -> sdmn,sckb
 
 obl_rad1(m, n, c, x),
 obl_rad2(m, n, c, x)
 + specfun_segv, specfun_rswfo
+    -> sdmn,sckb,[rmn2l],rmn2so
+        -> qstar,cbk,gmn,kmn,[rmn1]
 
 pro_cv(m, n, c),
 obl_cv(m, n, c),
@@ -160,4 +168,16 @@ function segv(m::Int, n::Int, c::T, kd::Int, eg::Vector{T}) where {T<:AbstractFl
 
     cv = eg[eg_len]
     return cv, eg
+end
+
+function sdmn()
+    
+end
+
+function sckb()
+    
+end
+
+function aswfa()
+    # Call: sdmn,sckb
 end
