@@ -399,9 +399,10 @@ s1d --- Derivative of the angular function of
 Call: sdmn,sckb
 """
 function aswfa(m::Int, n::Int, c::T, x::T, kd::Int, cv::T) where {T<:AbstractFloat}
+    @assert abs(x) < 1 "Bad x: |x| < 1.0"
     _EPS = T(1e-14)
     ip = ((n - m) % 2 == 0) ? 0 : 1
-    nm = 40 + Int((n - m) / 2 + c)
+    nm = trunc(Int, 40 + (n - m) / 2 + c)
     nm2 = nm ÷ 2 - 2
     x0 = x
     x = abs(x)
