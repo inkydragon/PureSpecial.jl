@@ -8,6 +8,7 @@
 """
 
 @testset "segv" begin
+    # TODO: test branch: `if k != 1 && h[k] < h[k-1]`
     test_mn = Tuple{Int64,Int64}[
         (1, 2),
         (10, 20),
@@ -35,9 +36,12 @@
         cv_ref, _ = _segv!(m, n, c, kd, eg_ref)
         cv_res, _ = Specfun.segv(m, n, c, kd, eg_res)
         @testset "_segv(m=$m, n=$n, c=$c, kd=$kd)" begin
+            # Result
             @test isapprox(cv_ref, cv_res)
             @test isapprox(eg_ref[1:max_cv_len], eg_res[1:max_cv_len])
+            # temp value
             @test isapprox(eg_ref[max_cv_len+1:max_eg_nz_len], eg_res[max_cv_len+1:max_eg_nz_len])
+            # zeros
             @test iszero(eg_ref[max_eg_nz_len+1:end])
             @test iszero(eg_res[max_eg_nz_len+1:end])
         end
