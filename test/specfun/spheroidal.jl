@@ -148,7 +148,9 @@ end
         1:10...,
     ]
     test_x = Float64[
+        1, -1,
         rand(10)...,
+        -rand(10)...,
     ]
 
     for (m, n) in test_mn,
