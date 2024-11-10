@@ -47,3 +47,46 @@
         end
     end
 end
+
+@testset "sdmn" begin
+    test_mn = Tuple{Int64,Int64}[
+        (1, 2),
+        (10, 20),
+        (50, 100),
+        (100, 200),
+        (710, 1000),
+    ]
+    test_c = Float64[
+        # test br: c < 1e-10
+        1e-9, eps(), 1e-10,
+        1:10...,
+        rand(10)...,
+    ]
+    test_cv = Float64[
+        rand(10)...,
+        1:10...,
+        # test branch: `kb > 2 && if abs(f) > T(1e100)`
+        930:950...,
+    ]
+
+    for (m, n) in test_mn,
+        kd in [1, -1],
+        c in test_c,
+        cv in test_cv
+        #
+        max_df_len = 1 + 25 + trunc(Int, 0.5*(n-m) + c)
+        @assert 0 <= max_df_len <= 200
+        df_ref = zeros(Float64, 200)
+        df_res = zeros(Float64, 200)
+        #
+        _sdmn!(m, n, c, cv, kd, df_ref)
+        Specfun.sdmn!(m, n, c, cv, kd, df_res)
+        @testset "_sdmn(m=$m,n=$n, c=$c,cv=$cv, kd=$kd)" begin
+            # Result
+            @test isapprox(df_ref[1:max_df_len], df_res[1:max_df_len]; nans=true)
+            # zeros
+            # @test iszero(df_ref[max_df_len+1:end])
+            # @test iszero(df_res[max_df_len+1:end])
+        end
+    end
+end
