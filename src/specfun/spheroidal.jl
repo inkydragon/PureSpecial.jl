@@ -668,6 +668,27 @@ function rmn1(m::Int, n::Int, c::T, x::T, kd::Int, df::Vector{T}) where {T<:Abst
 end
 
 """
+Compute prolate spheriodal radial functions of the
+first and second kinds, and their derivatives
+
+Input:  
+m  --- Mode parameter, m = 0,1,2,...
+n  --- Mode parameter, n = m,m+1,m+2,...
+c  --- Spheroidal parameter
+x  --- Argument of radial function ( x > 1.0 )
+cv --- Characteristic value
+KF --- Function code
+    KF=1 for the first kind
+    KF=2 for the second kind
+    KF=3 for both the first and second kinds
+
+Output:  
+R1F --- Radial function of the first kind
+R1D --- Derivative of the radial function of
+        the first kind
+R2F --- Radial function of the second kind
+R2D --- Derivative of the radial function of
+        the second kind
 
 Routines called:
 - sdmn
@@ -675,6 +696,25 @@ Routines called:
 - rmn2l
 - rmn2sp
 """
-function rswfp()
-    
+function rswfp(m::Int, n::Int, c::T, x::T, cv::T, kf::Int) where {T<:AbstractFloat}
+    df = zeros(T, 200)
+    kd = 1
+
+    sdmn!(m, n, c, cv, kd, df)
+
+    r1f = 0.0
+    r1d = 0.0
+    r2f = 0.0
+    r2d = 0.0
+    if kf != 2
+        r1f, r1d = rmn1(m, n, c, x, kd, df)
+    end
+    # if kf > 1
+    #     r2f, r2d, id = rmn2l(m, n, c, x, kd, df)
+    #     if id > -8
+    #         r2f, r2d = rmn2sp(m, n, c, x, cv, kd, df)
+    #     end
+    # end
+
+    # return r1f, r1d, r2f, r2d
 end
