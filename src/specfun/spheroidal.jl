@@ -386,7 +386,7 @@ Input :
 m  --- Mode parameter,  m = 0,1,2,...
 n  --- Mode parameter,  n = m,m+1,...
 c  --- Spheroidal parameter
-x  --- Argument of angular function, |x| < 1.0
+x  --- Argument of angular function, |x| ≤ 1.0
 KD --- Function code
     KD=1 for prolate;  KD=-1 for oblate
 cv --- Characteristic value
@@ -399,7 +399,7 @@ s1d --- Derivative of the angular function of
 Call: sdmn,sckb
 """
 function aswfa(m::Int, n::Int, c::T, x::T, kd::Int, cv::T) where {T<:AbstractFloat}
-    @assert abs(x) < 1 "Bad x: |x| < 1.0"
+    @assert abs(x) <= 1 "Bad x: |x| ≤ 1.0"
     _EPS = T(1e-14)
     ip = ((n - m) % 2 == 0) ? 0 : 1
     nm = trunc(Int, 40 + (n - m) / 2 + c)
