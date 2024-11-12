@@ -283,3 +283,34 @@ end
 
 end
 
+@testset "sphy" begin
+    test_x = Float64[
+        0.0, 1,
+        rand(10)...,
+        rand(0:1000, 10)...,
+    ]
+    test_n = Int[
+        0:20...,
+    ]
+
+    for x in test_x,
+        n in test_n
+        sy_ref = zeros(Float64, 200)
+        dy_ref = zeros(Float64, 200)
+        sy = zeros(Float64, 200)
+        dy = zeros(Float64, 200)
+        nz_len = n + 1
+        #
+        _, _, nm_ref = _sphy!(n, x, sy_ref, dy_ref)
+        _, _, nm = Specfun.sphy!(n, x, sy, dy)
+        @testset "_sphy!(n=$n, x=$x)" begin
+            @test nm_ref == nm
+            # Result
+            @test isapprox(sy_ref[1:nz_len], sy[1:nz_len]; nans=true)
+            @test isapprox(dy_ref[1:nz_len], dy[1:nz_len]; nans=true)
+            # zeros
+            @test iszero(sy[nz_len+1:end])
+            @test iszero(dy[nz_len+1:end])
+        end
+    end
+end
