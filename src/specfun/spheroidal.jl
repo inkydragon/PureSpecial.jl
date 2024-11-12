@@ -681,6 +681,8 @@ DY(n) --- yn'(x)
 NM --- Highest order computed
 """
 function sphy!(n::Int, x::T, sy::Vector{Float64}, dy::Vector{Float64}) where {T<:AbstractFloat}
+    @assert n >= 0
+    @assert x >= 0
     @assert length(sy) >= (n+1)
     @assert length(dy) >= (n+1)
 
@@ -713,9 +715,7 @@ function sphy!(n::Int, x::T, sy::Vector{Float64}, dy::Vector{Float64}) where {T<
 
         f0 = f1
         f1 = f
-        nm = k - 1
     end
-    nm = n - 1
     for k in 1:nm
         dy[k+1] = sy[k] - (k + 1.0) * sy[k+1] / x
     end
