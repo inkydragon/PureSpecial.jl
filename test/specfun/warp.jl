@@ -713,3 +713,19 @@ function _rmn1(m::Int, n::Int, c::Float64, x::Float64, kd::Int, df::Vector{Float
         r1f, r1d)
     r1f[], r1d[]
 end
+
+"""
+    SUBROUTINE SPHY(N,X,NM, SY(0:N),DY(0:N))
+    void sphy(T x, int n, int *nm, T *sy, T *dy)
+
+- Output: `(sy, dy, nm)`
+"""
+function _sphy!(n::Int, x::Float64, sy::Vector{Float64}, dy::Vector{Float64})
+    nm = Ref{Int32}(0)
+    ccall(f77func(:sphy), Cvoid,
+        (Ref{Int32}, Ref{Float64}, Ref{Int32},
+         Ptr{Float64}, Ptr{Float64}),
+        Int32(n), x, nm,
+        sy, dy)
+    sy, dy, Int(nm[])
+end

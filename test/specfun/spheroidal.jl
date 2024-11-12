@@ -248,3 +248,38 @@ end
         end
     end
 end
+
+@testset "sphy.special" begin
+    function sphy_nm(n, x)
+        sy = zeros(Float64, 201)
+        dy = zeros(Float64, 201)
+        _, _, nm = Specfun.sphy!(n, x, sy, dy)
+        nm
+    end
+
+    test_nm = @NamedTuple{x::Float64, nm::Int}.([
+        (1e-16, 16),
+        (1e-8, 31),
+        (1e-4, 52),
+        (0.1, 103),
+        (1.0, 147),
+        (3.14, 183),
+        (4.0, 193),
+        (4.6, 199),
+        (1000, 200),
+    ])
+    
+    for tup in test_nm
+        @testset "sphy_nm(nm=$(tup.nm), x=$(tup.x))" begin
+            for n in 0:200
+                if n > tup.nm
+                    @test sphy_nm(n, tup.x) == tup.nm
+                else
+                    @test sphy_nm(n, tup.x) == n
+                end
+            end
+        end
+    end
+
+end
+
