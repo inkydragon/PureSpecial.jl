@@ -724,6 +724,105 @@ function sphy!(n::Int, x::T, sy::Vector{Float64}, dy::Vector{Float64}) where {T<
 end
 
 """
+Compute prolate and oblate spheroidal radial
+functions of the second kind for given m, n,
+c and a large cx
+
+Routine called:
+SPHY for computing the spherical Bessel
+functions of the second kind
+"""
+function rmn2l(m::Int, n::Int, c::T, x::T, kd::Int, df::Vector{T}) where {T<:AbstractFloat}
+    @assert length(df) >= 200
+    _EPS = 1.0e-14
+    # In f77 version:
+    #   DIMENSION DF(200),SY(0:251),DY(0:251)
+    sy = zeros(T, 251+1)
+    dy = zeros(T, 251+1)
+
+    ip = ifelse((n - m) % 2 == 0, 0, 1)
+    nm1 = (n - m) ÷ 2
+    nm = 25 + nm1 + trunc(Int, c)
+    reg = ifelse(m + nm > 80, 1.0e-200, 1.0)
+    nm2 = 2 * nm + m
+    cx = c * x
+    _, _, nm2 = sphy!(nm2, cx, sy, dy)
+    r0 = reg
+    for j in 1:(2*m + ip)
+        r0 *= j
+    end
+
+    r = r0
+    suc = r * df[1]
+    sw = 0.0
+    for k in 2:nm
+        r *= (m + k - 1.0) * (m + k + ip - 1.5) / ((k - 1.0) * (k + ip - 1.5))
+        suc += r * df[k]
+        if k > nm1 && abs(suc - sw) < abs(suc) * _EPS
+            break
+        end
+
+        sw = suc
+    end
+
+    a0 = (1.0 - kd / (x * x))^(0.5 * m) / suc
+    r2f = 0.0
+    r2d = 0.0
+    eps1 = 0.0
+    np = 0
+    for k in 1:nm
+        l = 2 * k + m - n - 2 + ip
+        lg = ifelse(l % 4 == 0, 1, -1)
+        if k == 1
+            r = r0
+        else
+            r *= (m + k - 1.0) * (m + k + ip - 1.5) / ((k - 1.0) * (k + ip - 1.5))
+        end
+        np = m + 2 * k - 2 + ip
+        r2f += lg * r * (df[k] * sy[np + 1])
+        eps1 = abs(r2f - sw)
+        if k > nm1 && eps1 < abs(r2f) * _EPS
+            break
+        end
+
+        sw = r2f
+    end
+
+    id1 = trunc(Int, log10(eps1 / abs(r2f) + _EPS))
+    r2f *= a0
+    if np >= nm2
+        id = 10
+        return T(r2f), T(r2d), id
+    end
+
+    b0 = kd * m / x^3.0 / (1.0 - kd / (x * x)) * r2f
+    sud = 0.0
+    eps2 = 0.0
+    for k in 1:nm
+        l = 2 * k + m - n - 2 + ip
+        lg = ifelse(l % 4 == 0, 1, -1)
+        if k == 1
+            r = r0
+        else
+            r *= (m + k - 1.0) * (m + k + ip - 1.5) / ((k - 1.0) * (k + ip - 1.5))
+        end
+        np = m + 2 * k - 2 + ip
+        sud += lg * r * (df[k] * dy[np + 1])
+        eps2 = abs(sud - sw)
+        if k > nm1 && eps2 < abs(sud) * _EPS
+            break
+        end
+
+        sw = sud
+    end
+
+    r2d = b0 + a0 * c * sud
+    id2 = trunc(Int, log10(eps2 / abs(sud) + _EPS))
+    id = max(id1, id2)
+    return T(r2f), T(r2d), id
+end
+
+"""
 Compute prolate spheriodal radial functions of the
 first and second kinds, and their derivatives
 
