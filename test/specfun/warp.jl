@@ -729,3 +729,23 @@ function _sphy!(n::Int, x::Float64, sy::Vector{Float64}, dy::Vector{Float64})
         sy, dy)
     sy, dy, Int(nm[])
 end
+
+"""
+    SUBROUTINE RMN2L(M,N,C,X, DF(200), KD,R2F,R2D,ID)
+    void rmn2l(int m, int n, T c, T x, int Kd, T *Df,  T *R2f, T *R2d, int *Id)
+
+- Output: `(r2f, r2d, id)`
+"""
+function _rmn2l(m::Int, n::Int, c::Float64, x::Float64, kd::Int, df::Vector{Float64})
+    r2f = Ref{Float64}(NaN)
+    r2d = Ref{Float64}(NaN)
+    id = Ref{Int32}(0)
+    ccall(f77func(:rmn2l), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{Float64}, Ref{Float64},
+         Ptr{Float64}, Ref{Int32},
+         Ref{Float64}, Ref{Float64}, Ref{Int32}),
+        Int32(m), Int32(n), c, x,
+        df, Int32(kd),
+        r2f, r2d, id)
+    r2f[], r2d[], Int(id[])
+end
