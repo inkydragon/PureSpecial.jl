@@ -23,6 +23,7 @@ Run test and gen coverage:
 using Pkg; using LocalCoverage;
 ENV["GITHUB_WORKSPACE"] = pwd()
 Pkg.add(url=".");  html_coverage(generate_coverage("PureSpecial"; run_test=true); dir = "../cov")
+# Pkg.add(PackageSpec(path=".", rev="dev")); html_coverage(generate_coverage("PureSpecial"; run_test=true); dir = "../cov")
 ```
 
 
