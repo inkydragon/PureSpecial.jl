@@ -823,6 +823,18 @@ function rmn2l(m::Int, n::Int, c::T, x::T, kd::Int, df::Vector{T}) where {T<:Abs
 end
 
 """
+Compute prolate spheroidal radial function of the second kind with a small argument
+
+Routines called:
+- KMN for computing expansion coefficients and joining factors
+- LPMNS for computing the associated Legendre functions of the first kind
+- LQMNS for computing the associated Legendre functions of the second kind
+"""
+function rmn2sp(m, n, c, x, cv, kd, df)
+    
+end
+
+"""
 Compute prolate spheriodal radial functions of the
 first and second kinds, and their derivatives
 
