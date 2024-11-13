@@ -823,6 +823,23 @@ function rmn2l(m::Int, n::Int, c::T, x::T, kd::Int, df::Vector{T}) where {T<:Abs
 end
 
 """
+Compute the expansion coefficients of the
+prolate and oblate spheroidal functions
+and joining factors.
+
+Input:
+- `df`, in, read-only
+
+Output:
+- `dn`
+
+Return: (ck1, ck2)
+"""
+function kmn!(m::Int, n::Int, c::T, cv::T, kd::Int, df::Vector{T}, dn::Vector{T}) where {T<:AbstractFloat}
+    
+end
+
+"""
 Compute prolate spheroidal radial function of the second kind with a small argument
 
 Routines called:
