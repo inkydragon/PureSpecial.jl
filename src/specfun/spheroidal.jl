@@ -188,7 +188,7 @@ DF(k) --- Expansion coefficients dk;
     d0, d2, ... for even n-m and d1,
     d3, ... for odd n-m
 """
-function sdmn!(m::Int, n::Int, c::T, cv::T, kd::Int, df::Vector{T}) where {T<:AbstractFloat}
+function sdmn(m::Int, n::Int, c::T, cv::T, kd::Int, df::Vector{T}) where {T<:AbstractFloat}
     @assert kd in Set([1, -1]) "Bad kd: kd not in [1, -1]"
     @assert length(df) >= 200 "df[] too small, need length(df) >= 200"
 
@@ -336,7 +336,7 @@ CK(k) --- Expansion coefficients ck;
     CK(1), CK(2), ... correspond to
     c0, c2, ...
 """
-function sckb!(m::Int, n::Int, c::T, df::Vector{T}, ck::Vector{T}) where {T<:AbstractFloat}
+function sckb(m::Int, n::Int, c::T, df::Vector{T}, ck::Vector{T}) where {T<:AbstractFloat}
     if c <= T(1.0e-10)
         c = T(1.0e-10)
     end
@@ -409,8 +409,8 @@ function aswfa(m::Int, n::Int, c::T, x::T, kd::Int, cv::T) where {T<:AbstractFlo
 
     df = zeros(T, 200)
     ck = zeros(T, 200)
-    sdmn!(m, n, c, cv, kd, df)
-    sckb!(m, n, c, df, ck)
+    sdmn(m, n, c, cv, kd, df)
+    sckb(m, n, c, df, ck)
 
     x1 = T(1) - x * x
     a0 = ((m == 0) && (x1 == 0.0)) ? T(1.0) : x1^(T(0.5) * m)
@@ -478,7 +478,7 @@ Routines called:
 - msta1
 - msta2
 """
-function sphj!(n::Int, x::T, sj::Vector{Float64}, dj::Vector{Float64}) where {T<:AbstractFloat}
+function sphj(n::Int, x::T, sj::Vector{Float64}, dj::Vector{Float64}) where {T<:AbstractFloat}
     @assert n >= 0
     # NOTE: in f77 version
     #   DIMENSION SJ(0:N),DJ(0:N)
@@ -575,7 +575,7 @@ function rmn1(m::Int, n::Int, c::T, x::T, kd::Int, df::Vector{T}) where {T<:Abst
     end
 
     if x == 0.0
-        sckb!(m, n, c, df, ck)
+        sckb(m, n, c, df, ck)
 
         sum = T(0.0)
         sw1 = T(0.0)
@@ -620,7 +620,7 @@ function rmn1(m::Int, n::Int, c::T, x::T, kd::Int, df::Vector{T}) where {T<:Abst
 
     cx = c * x
     nm2 = 2 * nm + m
-    _, _, nm2 = sphj!(nm2, cx, sj, dj)
+    _, _, nm2 = sphj(nm2, cx, sj, dj)
 
     a0 = (1.0 - kd / (x * x))^(0.5 * m) / suc
     r1f = T(0.0)
@@ -680,7 +680,7 @@ SY(n) --- yn(x)
 DY(n) --- yn'(x)
 NM --- Highest order computed
 """
-function sphy!(n::Int, x::T, sy::Vector{Float64}, dy::Vector{Float64}) where {T<:AbstractFloat}
+function sphy(n::Int, x::T, sy::Vector{Float64}, dy::Vector{Float64}) where {T<:AbstractFloat}
     @assert n >= 0
     @assert x >= 0
     @assert length(sy) >= (n+1)
@@ -746,7 +746,7 @@ function rmn2l(m::Int, n::Int, c::T, x::T, kd::Int, df::Vector{T}) where {T<:Abs
     reg = ifelse(m + nm > 80, 1.0e-200, 1.0)
     nm2 = 2 * nm + m
     cx = c * x
-    _, _, nm2 = sphy!(nm2, cx, sy, dy)
+    _, _, nm2 = sphy(nm2, cx, sy, dy)
     r0 = reg
     for j in 1:(2*m + ip)
         r0 *= j
@@ -835,7 +835,7 @@ Output:
 
 Return: (ck1, ck2)
 """
-function kmn!(m::Int, n::Int, c::T, cv::T, kd::Int, df::Vector{T}, dn::Vector{T}) where {T<:AbstractFloat}
+function kmn(m::Int, n::Int, c::T, cv::T, kd::Int, df::Vector{T}, dn::Vector{T}) where {T<:AbstractFloat}
     
 end
 
@@ -884,7 +884,7 @@ function rswfp(m::Int, n::Int, c::T, x::T, cv::T, kf::Int) where {T<:AbstractFlo
     df = zeros(T, 200)
     kd = 1
 
-    sdmn!(m, n, c, cv, kd, df)
+    sdmn(m, n, c, cv, kd, df)
 
     r1f = 0.0
     r1d = 0.0

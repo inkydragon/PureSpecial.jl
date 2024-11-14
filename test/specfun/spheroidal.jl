@@ -80,7 +80,7 @@ end
         df_res = zeros(Float64, 200)
         #
         _sdmn(m, n, c, cv, kd, df_ref)
-        Specfun.sdmn!(m, n, c, cv, kd, df_res)
+        Specfun.sdmn(m, n, c, cv, kd, df_res)
         @testset "_sdmn(m=$m,n=$n, c=$c,cv=$cv, kd=$kd)" begin
             # Result
             @test isapprox(df_ref[1:max_df_len], df_res[1:max_df_len]; nans=true)
@@ -121,8 +121,8 @@ end
         #
         _sdmn(m, n, c, cv, kd, df_ref)
         _sckb(m, n, c, df_ref, ck_ref)
-        Specfun.sdmn!(m, n, c, cv, kd, df_res)
-        Specfun.sckb!(m, n, c, df_res, ck_res)
+        Specfun.sdmn(m, n, c, cv, kd, df_res)
+        Specfun.sckb(m, n, c, df_res, ck_res)
         @testset "_sckb(m=$m, n=$n, c=$c)" begin
             # Result
             @test isapprox(ck_ref, ck_res; nans=true)
@@ -190,8 +190,8 @@ end
         dj_res = zeros(Float64, 200)
         #
         _, _, nm_ref = _sphj(n, x, sj_ref, dj_ref)
-        _, _, nm_res = Specfun.sphj!(n, x, sj_res, dj_res)
-        @testset "sphj!(n=$n, x=$x)" begin
+        _, _, nm_res = Specfun.sphj(n, x, sj_res, dj_res)
+        @testset "sphj(n=$n, x=$x)" begin
             # Result
             @test isapprox(nm_ref, nm_res)
             @test isapprox(sj_ref, sj_res; nans=true)
@@ -239,7 +239,7 @@ end
         #
         _sdmn(m, n, c, cv, kd, df_ref)
         r1f_ref, r1d_ref = _rmn1(m, n, c, x, kd, df_ref)
-        Specfun.sdmn!(m, n, c, cv, kd, df_res)
+        Specfun.sdmn(m, n, c, cv, kd, df_res)
         r1f, r1d = Specfun.rmn1(m, n, c, x, kd, df_res)
         @testset "rmn1(m=$m,n=$n,c=$c,x=$x,kd=$kd)+sdmn(cv=$cv)" begin
             # Result
@@ -253,7 +253,7 @@ end
     function sphy_nm(n, x)
         sy = zeros(Float64, 201)
         dy = zeros(Float64, 201)
-        _, _, nm = Specfun.sphy!(n, x, sy, dy)
+        _, _, nm = Specfun.sphy(n, x, sy, dy)
         nm
     end
 
@@ -302,7 +302,7 @@ end
         nz_len = n + 1
         #
         _, _, nm_ref = _sphy(n, x, sy_ref, dy_ref)
-        _, _, nm = Specfun.sphy!(n, x, sy, dy)
+        _, _, nm = Specfun.sphy(n, x, sy, dy)
         @testset "_sphy(n=$n, x=$x)" begin
             @test nm_ref == nm
             # Result
@@ -353,7 +353,7 @@ end
             #
             _sdmn(m, n, c, cv, kd, df_ref)
             r2f_ref, r2d_ref, id_ref = _rmn2l(m, n, c, x, kd, df_ref)
-            Specfun.sdmn!(m, n, c, cv, kd, df)
+            Specfun.sdmn(m, n, c, cv, kd, df)
             r2f, r2d, id = Specfun.rmn2l(m, n, c, x, kd, df)
             # Result
             @test isapprox(r2f_ref, r2f; nans=true)
