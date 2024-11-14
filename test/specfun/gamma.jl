@@ -83,3 +83,29 @@ end
         end
     end
 end
+
+@testset "psi" begin
+    test_x = Float64[
+        # negative int: `(x == trunc(Int, x)) && (x <= 0.0)`
+        -4:-1...,
+        # nonnegative int:  `if xa == trunc(Int, xa)`
+        0:10...,
+        -0.0,
+        # N+0.5:    `(xa + 0.5) == trunc(Int, xa + 0.5)`
+        1.5, 2.5, 3.5,
+        # `else`
+        3.1,
+        eps(),
+        rand(4)...,
+        # `x < 0.0`
+        -rand(4)...,
+    ]
+
+    for x in test_x
+        @testset "psi($x)" begin
+            p_ref = _psi(x)
+            p = Specfun.psi(x)
+            @test isapprox(p_ref, p)
+        end   
+    end
+end

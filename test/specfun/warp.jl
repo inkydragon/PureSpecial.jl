@@ -28,6 +28,7 @@ f77func(s::Symbol) = Libdl.dlsym(libspecfun, Symbol("$(s)_"))
     + gamma2
     + gaih
     + cgama
+    + psi (PSI_SPEC)
 =#
 """
 Warp fortran `specfun.GAM0`.
@@ -94,6 +95,21 @@ function _cgama(z::Complex{Float64}, kf::Int)
         gr, gi)
 
     complex(gr[], gi[])
+end
+
+"""
+    SUBROUTINE PSI_SPEC(X,  PS)
+    double psi_spec(double x)
+
+- Input: `x`
+- Output: `psi(x)`
+"""
+function _psi(x::Float64)
+    psi = Ref{Float64}(NaN)
+    ccall(f77func(:psi_spec), Cvoid,
+        (Ref{Float64}, Ref{Float64}),
+        x, psi)
+    psi[]
 end
 
 
