@@ -187,18 +187,70 @@ Compute the associated Legendre function
 Pmv(x) with an integer order and an arbitrary
 degree v, using recursion for large degrees
 
-Input :  
-- x   --- Argument of Pm(x)  ( -1 ≤ x ≤ 1 )
-- m   --- Order of Pmv(x)
+Input:
 - v   --- Degree of Pmv(x)
+- m   --- Order of Pmv(x)
+- x   --- Argument of Pm(x), -1 ≤ x ≤ 1
 
-Output:  
+Output:
 - PMV --- Pmv(x)
 
-Routine called:  
+Routine called:
 - LPMV0
 - GAMMA2
 """
-function lpmv()
+function lpmv(v::T, m::Int, x::T)::T where {T<:AbstractFloat}
+    @assert abs(x) <= 1
+    vx = v
+    mx = m
+    pmv = 0.0
 
+    if (x == -1.0) && (v != trunc(Int, v))
+        if m == 0
+            pmv = -Inf
+        else
+            pmv = Inf
+        end
+        return pmv
+    end
+
+    # DLMF 14.9.5
+    if v < 0
+        vx = -vx - 1.0
+    end
+    neg_m = 0
+    if m < 0
+        if ((vx + m + 1) > 0) || (vx != trunc(Int, vx))
+            neg_m = 1
+            mx = -m
+        else
+            # We don't handle cases where DLMF 14.9.3 doesn't help
+            return NaN
+        end
+    end
+
+    nv = trunc(Int, vx)
+    v0 = vx - nv
+    if (nv > 2) && (nv > mx)
+        # Up-recursion on degree, AMS 8.5.3 / DLMF 14.10.3
+        p0 = lpmv0(v0 + mx, mx, x)
+        p1 = lpmv0(v0 + mx + 1, mx, x)
+        pmv = p1
+        for j in (mx + 2):nv
+            pmv = ((2 * (v0 + j) - 1) * x * p1 - (v0 + j - 1 + mx) * p0) / (v0 + j - mx)
+            p0 = p1
+            p1 = pmv
+        end
+    else
+        pmv = lpmv0(vx, mx, x)
+    end
+
+    if (neg_m != 0) && (abs(pmv) < 1.e300)
+        # DLMF 14.9.3
+        g1 = gamma2(vx - mx + 1)
+        g2 = gamma2(vx + mx + 1)
+        pmv *= g1 / g2 * (-1) ^ mx
+    end
+
+    return pmv
 end
