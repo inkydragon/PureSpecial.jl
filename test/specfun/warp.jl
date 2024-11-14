@@ -260,7 +260,13 @@ function _ffk(ks::Int, x::Float64)
 end
 
 
-#= ## Airy functions =#
+"""Airy Functions"""
+#=Airy functions
+- airyb
+- airyzo
+- itairy
+=#
+
 """
 Warp fortran `specfun.AIRYB`.
 

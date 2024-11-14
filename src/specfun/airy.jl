@@ -1,15 +1,35 @@
 # SPDX-License-Identifier: MIT OR BSD-3-Clause
 #   See also: src/specfun/LICENSE.md
-"""
-implement:
-+ airyzo
-    + airyb
-+ itairy
+"""Airy Functions"""
+#=
+airy(z)
+    Airy functions and their derivatives.
+    /* For small arguments, use Cephes as it's slightly faster.
+     * For large arguments, use AMOS as it's more accurate.
+     */
+    + special_[c]airy -> xsf::airy 
+        -> [-inf, -10) and (10, +inf] amos::airy, 
+        -> [-10, 10] cephes::airy
+
+airye(z)
+    Exponentially scaled Airy functions and their derivatives.
+    + special_airye -> xsf::airye -> amos::airy,amos::biry
+
+ai_zeros(nt)
+    + _specfun.airyzo(nt, 1) -> specfun_airyzo -> xsf::airyzo
+
+bi_zeros(nt)
+    + _specfun.airyzo(nt, 2) -> specfun_airyzo -> xsf::airyzo
+
+itairy(x)
+    + special_itairy -> xsf::itairy -> xsf::detail::itairy
+
 
 not-impl:
 - AIRYA(X,AI,BI,AD,BD)
     - AJYIK(X,VJ1,VJ2,VY1,VY2,VI1,VI2,VK1,VK2)
-"""
+=#
+
 
 """
     airyb(x::Float64)
