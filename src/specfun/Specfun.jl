@@ -19,6 +19,7 @@ include("parabolic.jl")
 include("hyper.jl")
 include("legendre.jl")
 
+include("mathieu.jl")
 include("spheroidal.jl")
 
 end # PureSpecial

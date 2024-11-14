@@ -736,6 +736,18 @@ function _lpmv(v::Float64, m::Int, x::Float64)
 end
 
 
+"""Mathieu Functions"""
+#=
+- fcoef
+- cva2
+    -> refine -> cvf
+    -> cv0
+    -> cvqm,cvql
+- mtu0
+- mtu12
+=#
+
+
 """Spheroidal Wave Functions"""
 #=
 segv
