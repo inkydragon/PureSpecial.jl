@@ -28,6 +28,7 @@ f77func(s::Symbol) = Libdl.dlsym(libspecfun, Symbol("$(s)_"))
     + gamma2
     + gaih
     + cgama
+    + psi (PSI_SPEC)
 =#
 """
 Warp fortran `specfun.GAM0`.
@@ -94,6 +95,21 @@ function _cgama(z::Complex{Float64}, kf::Int)
         gr, gi)
 
     complex(gr[], gi[])
+end
+
+"""
+    SUBROUTINE PSI_SPEC(X,  PS)
+    double psi_spec(double x)
+
+- Input: `x`
+- Output: `psi(x)`
+"""
+function _psi(x::Float64)
+    psi = Ref{Float64}(NaN)
+    ccall(f77func(:psi_spec), Cvoid,
+        (Ref{Float64}, Ref{Float64}),
+        x, psi)
+    psi[]
 end
 
 
@@ -603,4 +619,209 @@ function _eixz(z::ComplexF64)
     # double complex specfun_eixz(double complex z);
     ccall(f77func(:eixz), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, cei)
     cei[]
+end
+
+
+#=Legendre Functions
+=#
+
+"""
+    SUBROUTINE LPMNS(M,N,X,  PM(0:N),PD(0:N))
+    lpmns(int m, int n, T x,  T* pm, T* pd)
+
+- Output: `pm, pd`
+"""
+function _lpmns(m::Int, n::Int, x::Float64, pm::Vector{Float64}, pd::Vector{Float64})
+    ccall(f77func(:lpmns), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{Float64},
+         Ptr{Float64}, Ptr{Float64}),
+        Int32(m), Int32(n), x,
+        pm, pd)
+end
+
+"""
+    SUBROUTINE LQMNS(M,N,X,  QM(0:N),QD(0:N))
+    void lqmns(int m, int n, T x,  T *qm, T *qd)
+
+- Output: `Qmn(x), Qmn'(x)`
+"""
+function _lqmns(m::Int, n::Int, x::Float64, qm::Vector{Float64}, qd::Vector{Float64})
+    ccall(f77func(:lqmns), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{Float64},
+         Ptr{Float64}, Ptr{Float64}),
+        Int32(m), Int32(n), x,
+        qm, qd)
+end
+
+"""
+    SUBROUTINE LPMV0(V,M,X,PMV)
+    double lpmv0(double v, int m, double x)
+
+- Output: `Pmv(x)`
+"""
+function _lpmv0(v::Float64, m::Int, x::Float64)
+    pmv = Ref{Float64}(NaN)
+    ccall(f77func(:lpmv0), Float64,
+        (Ref{Float64}, Ref{Int32}, Ref{Float64},Ref{Float64}),
+        v, Int32(m), x, pmv)
+    pmv[]
+end
+
+"""
+    SUBROUTINE LPMV(V,M,X, PMV)
+    double lpmv(double x, int m, double v)
+
+- Output: `Pmv(x)`
+"""
+function _lpmv(v::Float64, m::Int, x::Float64)
+    pmv = Ref{Float64}(NaN)
+    ccall(f77func(:lpmv), Float64,
+        (Ref{Float64}, Ref{Int32}, Ref{Float64},Ref{Float64}),
+        v, Int32(m), x, pmv)
+    pmv[]
+end
+
+
+#= Spheroidal Wave Functions
+- specfun_segv
+- specfun_rswfp
+- specfun_aswfa
+- specfun_rswfo
+=#
+
+"""
+Warp fortran `specfun.SEGV`.
+
+- Input: `m,n,c`, `kd`
+- Output: `cv`, `eg`
+"""
+function _segv!(m::Int, n::Int, c::Float64, kd::Int, eg::Vector{Float64})
+    cv = Ref{Float64}(NaN)
+    @assert length(eg) >= 200
+    # SUBROUTINE SEGV(M,N,C,KD,CV,EG)
+    # void segv(int m, int n, T c, int kd, T *cv, T *eg)
+    ccall(f77func(:segv), Cvoid,
+        (Ref{Int32}, Ref{Int32},
+         Ref{Float64}, Ref{Int32},
+         Ref{Float64}, Ptr{Float64}),
+         Int32(m), Int32(n),
+         c, Int32(kd),
+         cv, eg)
+    cv[], eg
+end
+
+"""
+    SUBROUTINE SDMN(M,N,C,CV,KD, DF(200))
+    void sdmn(int m, int n, T c, T cv, int kd, T *df)
+
+- Output: `df[]`
+"""
+function _sdmn!(m::Int, n::Int, c::Float64, cv::Float64, kd::Int, df::Vector{Float64})
+    ccall(f77func(:sdmn), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{Float64}, Ref{Float64}, Ref{Int32},
+         Ptr{Float64}),
+        Int32(m), Int32(n), c, cv, Int32(kd),
+        df)
+    df
+end
+
+"""
+    SUBROUTINE SCKB(M,N,C, DF(200),CK(200))
+    void sckb(int m, int n, T c, T *df, T *ck)
+
+- Input: `df[]`
+- Output: `ck[]`
+"""
+function _sckb!(m::Int, n::Int, c::Float64, df::Vector{Float64}, ck::Vector{Float64})
+    ccall(f77func(:sckb), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{Float64},
+         Ptr{Float64}, Ptr{Float64}),
+        Int32(m), Int32(n), c,
+        df, ck)
+    ck
+end
+
+"""
+    SUBROUTINE ASWFA(M,N,C,X,KD,CV, S1F,S1D)
+    void aswfa(int m, int n, T c, T x, int kd, T cv,  T *s1f, T *s1d)
+
+- Output: `(s1f, s1d)`
+"""
+function _aswfa(m::Int, n::Int, c::Float64, x::Float64, kd::Int, cv::Float64) 
+    s1f = Ref{Float64}(NaN)
+    s1d = Ref{Float64}(NaN)
+    ccall(f77func(:aswfa), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{Float64}, Ref{Float64}, Ref{Int32}, Ref{Float64},
+         Ref{Float64}, Ref{Float64}),
+        Int32(m), Int32(n), c, x, Int32(kd), cv,
+        s1f, s1d)
+    s1f[], s1d[]
+end
+
+"""
+    SUBROUTINE SPHJ(N,X, NM,SJ(0:N),DJ(0:N))
+    void sphj(T x, int n,  int *nm, T *sj, T *dj)
+
+- Output: `(sj, dj, nm)`
+"""
+function _sphj!(n::Int, x::Float64, sj::Vector{Float64}, dj::Vector{Float64})
+    nm = Ref{Int32}(0)
+    ccall(f77func(:sphj), Cvoid,
+        (Ref{Int32}, Ref{Float64}, Ref{Int32},
+         Ref{Float64}, Ref{Float64}),
+        Int32(n), x, nm,
+        sj, dj)
+    sj, dj, Int(nm[])
+end
+
+"""
+    SUBROUTINE RMN1(M,N,C,X,DF(200),KD, R1F,R1D)
+    void rmn1(int m, int n, T c, T x, int kd, T *df, T *r1f, T *r1d)
+
+- Output: `(r1f, r1d)`
+"""
+function _rmn1(m::Int, n::Int, c::Float64, x::Float64, kd::Int, df::Vector{Float64})
+    r1f, r1d  = Ref{Float64}(NaN), Ref{Float64}(NaN)
+    ccall(f77func(:rmn1), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{Float64}, Ref{Float64}, Ptr{Float64}, Ref{Int32},
+         Ref{Float64}, Ref{Float64}),
+        Int(m), Int(n), c, x, df, Int(kd),
+        r1f, r1d)
+    r1f[], r1d[]
+end
+
+"""
+    SUBROUTINE SPHY(N,X,NM, SY(0:N),DY(0:N))
+    void sphy(T x, int n, int *nm, T *sy, T *dy)
+
+- Output: `(sy, dy, nm)`
+"""
+function _sphy!(n::Int, x::Float64, sy::Vector{Float64}, dy::Vector{Float64})
+    nm = Ref{Int32}(0)
+    ccall(f77func(:sphy), Cvoid,
+        (Ref{Int32}, Ref{Float64}, Ref{Int32},
+         Ptr{Float64}, Ptr{Float64}),
+        Int32(n), x, nm,
+        sy, dy)
+    sy, dy, Int(nm[])
+end
+
+"""
+    SUBROUTINE RMN2L(M,N,C,X, DF(200), KD,R2F,R2D,ID)
+    void rmn2l(int m, int n, T c, T x, int Kd, T *Df,  T *R2f, T *R2d, int *Id)
+
+- Output: `(r2f, r2d, id)`
+"""
+function _rmn2l(m::Int, n::Int, c::Float64, x::Float64, kd::Int, df::Vector{Float64})
+    r2f = Ref{Float64}(NaN)
+    r2d = Ref{Float64}(NaN)
+    id = Ref{Int32}(0)
+    ccall(f77func(:rmn2l), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{Float64}, Ref{Float64},
+         Ptr{Float64}, Ref{Int32},
+         Ref{Float64}, Ref{Float64}, Ref{Int32}),
+        Int32(m), Int32(n), c, x,
+        df, Int32(kd),
+        r2f, r2d, id)
+    r2f[], r2d[], Int(id[])
 end
