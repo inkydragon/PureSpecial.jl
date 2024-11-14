@@ -241,7 +241,7 @@ end
         r1f_ref, r1d_ref = _rmn1(m, n, c, x, kd, df_ref)
         Specfun.sdmn!(m, n, c, cv, kd, df_res)
         r1f, r1d = Specfun.rmn1(m, n, c, x, kd, df_res)
-        @testset "rmn1(m=$m,n=$n,c=$c,x=$x,kd=$kd)" begin
+        @testset "rmn1(m=$m,n=$n,c=$c,x=$x,kd=$kd)+sdmn(cv=$cv)" begin
             # Result
             @test isapprox(r1f_ref, r1f; nans=true)
             @test isapprox(r1d_ref, r1d; nans=true)
