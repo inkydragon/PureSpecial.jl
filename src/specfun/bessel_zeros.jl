@@ -68,7 +68,7 @@ function bjndd(x::Float64, n::Int)
 end
 
 """
-    jdzo!(nt::Int, zo::Vector{Float64}, n::Vector{Int}, m::Vector{Int}, p::Vector{Int})
+    jdzo(nt::Int, zo::Vector{Float64}, n::Vector{Int}, m::Vector{Int}, p::Vector{Int})
 
 Compute the zeros of Bessel functions Jn(x) and
 Jn'(x), and arrange them in the order of their
@@ -95,7 +95,7 @@ P(L)  --- 0 (TM) or 1 (TE), a code for designating the
 ## Routine called
 BJNDD for computing Jn(x), Jn'(x) and Jn''(x)
 """
-function jdzo!(nt::Int, zo::Vector{Float64}, n::Vector{Int}, m::Vector{Int}, p::Vector{Int})
+function jdzo(nt::Int, zo::Vector{Float64}, n::Vector{Int}, m::Vector{Int}, p::Vector{Int})
     #= Array Size const =#
     # Note: ZO and ZOC arrays are 0-indexed in specfun.f
     ZO_size = 1400 + 1
@@ -248,7 +248,7 @@ function jdzo(nt::Int64)
     m = zeros(Int64, 1400)
     p = zeros(Int64, 1400)
 
-    jdzo!(nt, zo, n, m, p)
+    jdzo(nt, zo, n, m, p)
     
     zo[1:nt], n[1:nt], m[1:nt], p[1:nt]
 end
@@ -353,7 +353,7 @@ function msta2(x::Float64, n::Int64, mp::Int64)
 end
 
 """
-    jynbh!(
+    jynbh(
         x::Float64, n::Int, nmin::Int,
         bj::Vector{Float64}, by::Vector{Float64}
     )
@@ -376,7 +376,7 @@ Routines called
 MSTA1 and MSTA2 to calculate the starting
 point for backward recurrence
 """
-function jynbh!(
+function jynbh(
     x::Float64, n::Int, nmin::Int,
     bj::Vector{Float64}, by::Vector{Float64})
     out_len = length(nmin:n)
@@ -555,7 +555,7 @@ function jyndd(x::Float64, n::Int)
     @assert x > 0.0
     bj, by = zeros(Float64, 2), zeros(Float64, 2)
 
-    jynbh!(x, n + 1, n, bj, by)
+    jynbh(x, n + 1, n, bj, by)
 
     # Compute derivatives by differentiation formulas
     bjn = bj[1]
@@ -569,7 +569,7 @@ function jyndd(x::Float64, n::Int)
 end
 
 """
-    jn_zeros!(rj0::Vector{Float64}, n::Int64, nt::Int64)
+    jn_zeros(rj0::Vector{Float64}, n::Int64, nt::Int64)
 
 Compute zeros of integer-order Bessel functions Jn.
 
@@ -584,7 +584,7 @@ RJ0(L) --- L-th zero of Jn(x),  L=1,2,...,NT
 JYNDD for computing Jn(x), and
 its first and second derivatives
 """
-function jn_zeros!(rj0::Vector{Float64}, n::Int64, nt::Int64)
+function jn_zeros(rj0::Vector{Float64}, n::Int64, nt::Int64)
     @assert n >= 0
     @assert length(rj0) >= nt
 
@@ -641,7 +641,7 @@ function jn_zeros!(rj0::Vector{Float64}, n::Int64, nt::Int64)
 end
 
 """
-    djn_zeros!(rj1::Vector{Float64}, n::Int64, nt::Int64)
+    djn_zeros(rj1::Vector{Float64}, n::Int64, nt::Int64)
 
 Compute zeros of integer-order Bessel function Jn(x)
 and its derivatives Jn'(x)
@@ -658,11 +658,11 @@ RJ1(L) --- L-th zero of Jn'(x), L=1,2,...,NT
 JYNDD for computing Jn(x), and
 its first and second derivatives
 """
-function djn_zeros!(rj0::Vector{Float64}, rj1::Vector{Float64}, n::Int64, nt::Int64)
+function djn_zeros(rj0::Vector{Float64}, rj1::Vector{Float64}, n::Int64, nt::Int64)
     @assert n >= 0
     @assert length(rj1) >= nt
 
-    jn_zeros!(rj0, n, nt)
+    jn_zeros(rj0, n, nt)
 
     #= Newton method for j_{N,L+1}' =#
     # initial guess
@@ -700,7 +700,7 @@ function djn_zeros!(rj0::Vector{Float64}, rj1::Vector{Float64}, n::Int64, nt::In
 end
 
 """
-    yn_zeros!(ry0::Vector{Float64}, n::Int64, nt::Int64)
+    yn_zeros(ry0::Vector{Float64}, n::Int64, nt::Int64)
 
 Compute zeros of integer-order Bessel function Yn(x).
 
@@ -715,7 +715,7 @@ RY0(L) --- L-th zero of Yn(x),  L=1,2,...,NT
 JYNDD for computing Yn(x), and
 its first and second derivatives
 """
-function yn_zeros!(ry0::Vector{Float64}, n::Int64, nt::Int64)
+function yn_zeros(ry0::Vector{Float64}, n::Int64, nt::Int64)
     @assert n >= 0
     @assert length(ry0) >= nt
 
@@ -773,7 +773,7 @@ function yn_zeros!(ry0::Vector{Float64}, n::Int64, nt::Int64)
 end
 
 """
-    dyn_zeros!(ry1::Vector{Float64}, n::Int64, nt::Int64)
+    dyn_zeros(ry1::Vector{Float64}, n::Int64, nt::Int64)
 
 Compute zeros of integer-order Bessel function Yn(x)
 and its derivatives Yn'(x)
@@ -790,11 +790,11 @@ RY1(L) --- L-th zero of Yn'(x), L=1,2,...,NT
 JYNDD for computing Yn(x), and
 its first and second derivatives
 """
-function dyn_zeros!(ry0::Vector{Float64}, ry1::Vector{Float64}, n::Int64, nt::Int64)
+function dyn_zeros(ry0::Vector{Float64}, ry1::Vector{Float64}, n::Int64, nt::Int64)
     @assert n >= 0
     @assert length(ry1) >= nt
     
-    yn_zeros!(ry0, n, nt)
+    yn_zeros(ry0, n, nt)
 
     #= Newton method for y_{N,L+1}' =#
     x = 0.0
@@ -848,14 +848,14 @@ RY1(L) --- L-th zero of Yn'(x), L=1,2,...,NT
 JYNDD for computing Jn(x), Yn(x), and
 their first and second derivatives
 """
-function jyzo!(n::Int64, nt::Int64,
+function jyzo(n::Int64, nt::Int64,
     rj0::Vector{Float64}, rj1::Vector{Float64},
     ry0::Vector{Float64}, ry1::Vector{Float64})
     @assert nt >= 1
 
     # j_{N,1} and j_{N,L+1}'
-    djn_zeros!(rj0, rj1, n, nt)
+    djn_zeros(rj0, rj1, n, nt)
 
     # y_{N,L} and y_{N,L+1}'
-    dyn_zeros!(ry0, ry1, n, nt)
+    dyn_zeros(ry0, ry1, n, nt)
 end
