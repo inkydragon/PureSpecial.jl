@@ -12,6 +12,7 @@ include("airy.jl")
 
 include("bessel_zeros.jl")
 
+include("struve.jl")
 include("parabolic.jl")
 include("kelvin.jl")
 include("hyper.jl")
