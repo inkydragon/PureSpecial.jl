@@ -21,11 +21,11 @@ Legendre Function
 Associated Legendre Function
 - lpmn:     Associated legendre function, Pmn(x), Pmn'(x)
 - clpmn:    Associated legendre function, Pmn(z), Pmn'(z)
-- 🚧 lpmns:    Associated legendre function for a given order, Pmn(x), Pmn'(x) 
+- ✅ lpmns:    Associated legendre function for a given order, Pmn(x), Pmn'(x) 
 - lqmn:     Associated legendre function, Qmn(x), Qmn'(x)
 - clqmn:    Associated legendre function, Qmn(z), Qmn'(z)
-- 🚧 lqmns:    Associated legendre function for a given order, Qmn(x), Qmn'(x)
-- 🚧 lpmv:     Associated legendre function, Pmv(x), |x| <= 1, v isa Real, v >= 0, 
+- ✅ lqmns:    Associated legendre function for a given order, Qmn(x), Qmn'(x)
+- ✅ lpmv:     Associated legendre function, Pmv(x), |x| <= 1, v isa Real, v >= 0, 
 """
 
 """
