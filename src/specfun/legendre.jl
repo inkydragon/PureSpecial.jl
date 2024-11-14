@@ -63,6 +63,22 @@ function lqmns()
 end
 
 """
+Euler's Constant γ
+"""
+const SF_CONST_EULER = 0.5772156649015329
+
+const _PSI_A = NTuple{8, Float64}((
+    -0.8333333333333e-01,
+    0.83333333333333333e-02,
+    -0.39682539682539683e-02,
+    0.41666666666666667e-02,
+    -0.75757575757575758e-02,
+    0.21092796092796093e-01,
+    -0.83333333333333333e-01,
+    0.4432598039215686
+)) # _PSI_A
+
+"""
 Compute Psi function
 
 Input :  
@@ -73,9 +89,53 @@ Output:
 
 TODO: move to gamma.jl
 """
-function psi()
+function psi(x::T) where {T<:AbstractFloat}
+    @assert isapprox(pi, 3.141592653589793)
+    _EL = SF_CONST_EULER
+    _2LOG2 = 1.386294361119891
+    @assert isapprox(2*log(2), _2LOG2)
 
+    if (x == trunc(Int, x)) && (x <= 0.0)
+        return T(1e300)
+    end
+
+    xa = abs(x)
+    s = 0.0
+    if xa == trunc(Int, xa)
+        n = trunc(Int, xa)
+        for k in 1:(n-1)
+            s += 1.0 / k
+        end
+        ps = -_EL + s
+    elseif (xa + 0.5) == trunc(Int, xa + 0.5)
+        n = trunc(Int, xa - 0.5)
+        for k in 1:n
+            s += 1.0 / (2.0 * k - 1.0)
+        end
+        ps = -_EL + 2.0 * s - _2LOG2
+    else
+        if xa < 10.0
+            n = 10 - trunc(Int, xa)
+            for k in 0:(n-1)
+                s += 1.0 / (xa + k)
+            end
+            xa += n
+        end
+        a = _PSI_A
+        x2 = 1.0 / (xa * xa)
+        ps = log(xa) - 0.5 / xa
+        ps += x2 *
+            (((((((a[8]*x2+a[7])*x2+a[6])*x2+a[5])*x2+a[4])*x2+a[3])*x2+a[2])*x2+a[1])
+        ps -= s
+    end
+
+    if x < 0.0
+        ps -= pi * cos(pi * x) / sin(pi * x) + 1.0 / x
+    end
+
+    return T(ps)
 end
+
 
 """
 Compute the associated Legendre function
