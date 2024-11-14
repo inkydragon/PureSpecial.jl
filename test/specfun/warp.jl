@@ -671,7 +671,12 @@ function _chgm(a::Float64, b::Float64, x::Float64)
 end
 
 
-#=Legendre Functions
+"""Legendre functions"""
+#=
+lpmns
+lqmns
+lpmv0
+lpmv
 =#
 
 """
@@ -731,6 +736,7 @@ function _lpmv(v::Float64, m::Int, x::Float64)
 end
 
 
+"""Spheroidal Wave Functions"""
 #= Spheroidal Wave Functions
 - specfun_segv
 - specfun_rswfp

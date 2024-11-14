@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: MIT OR BSD-3-Clause
 #   See also: src/specfun/LICENSE.md
-
-"""Legendre Functions
-
+"""Legendre functions"""
+#=
 Note:
     - m isa Integer; m >= 0
     - n isa Integer; n >= 0
@@ -26,7 +25,16 @@ Associated Legendre Function
 - clqmn:    Associated legendre function, Qmn(z), Qmn'(z)
 - ✅ lqmns:    Associated legendre function for a given order, Qmn(x), Qmn'(x)
 - ✅ lpmv:     Associated legendre function, Pmv(x), |x| <= 1, v isa Real, v >= 0, 
-"""
+
+## scipy
+
+lpmv(m, v, x)   + pmv_wrap -> specfun_lpmv
+clpmn(m, n, z)  + specfun_clpmn
+lpn(n, z)   + specfun_lpn
+lqn(n, z)   + specfun_lpn
+lpmn(m, n, z)   + specfun_lpmn
+lqmn(m, n, z)   + specfun_lqmn
+=#
 
 """
 Compute associated Legendre functions Pmn(x)
