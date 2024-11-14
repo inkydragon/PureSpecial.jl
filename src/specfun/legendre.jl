@@ -51,7 +51,7 @@ and Qmn'(x) for a given order
 
 Input:
 - m --- Order of Qmn(x),  m = 0,1,2,...
-- n --- Degree of Qmn(x), n = 0,1,2,...
+- n --- Degree of Qmn(x), n = 1,2,...
 - x --- Argument of Qmn(x)
 
 Output:
@@ -59,8 +59,12 @@ Output:
 - QD(n) --- Qmn'(x)
 """
 function lqmns(m::Int, n::Int, x::Float64, qm::Vector{Float64}, qd::Vector{Float64})
+    # NOTE: f77:  DIMENSION QM(0:N),QD(0:N)
     @assert m >= 0
-    @assert n >= 0
+    @assert n >= 1
+    @assert length(qm) >= (n+1)
+    @assert length(qm) >= 2
+    @assert length(qd) >= (n+1)
 
     val = ifelse(abs(x) == 1.0, 1e300, 0.0)
     for k in 0:n
