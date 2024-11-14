@@ -626,6 +626,20 @@ end
 =#
 
 """
+    SUBROUTINE LPMNS(M,N,X,  PM(0:N),PD(0:N))
+    lpmns(int m, int n, T x,  T* pm, T* pd)
+
+- Output: `pm, pd`
+"""
+function _lpmns(m::Int, n::Int, x::Float64, pm::Vector{Float64}, pd::Vector{Float64})
+    ccall(f77func(:lpmns), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{Float64},
+         Ptr{Float64}, Ptr{Float64}),
+        Int32(m), Int32(n), x,
+        pm, pd)
+end
+
+"""
     SUBROUTINE LQMNS(M,N,X,  QM(0:N),QD(0:N))
     void lqmns(int m, int n, T x,  T *qm, T *qd)
 

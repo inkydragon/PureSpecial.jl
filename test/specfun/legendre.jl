@@ -1,6 +1,41 @@
 # SPDX-License-Identifier: MIT
 
-@testset "lpmv" begin
+@testset "lpmns" begin
+    test_m = Int[
+        0:4...,
+    ]
+    test_n = Int[
+        1:4...,
+    ]
+    test_x = Float64[
+        -1, 1,
+        0.0, -0.0,
+        -0.4,
+        # `!(if abs(x) < 1.0001)`
+        3.14,
+        # `!(if abs(x) < 1.0001) && abs(x) > 1.1`
+        prevfloat(1.1),
+    ]
+
+    for m in test_m,
+        n in test_n,
+        x in test_x
+        if (m) > n
+            continue
+        end
+        @testset "lpmns(m=$m, n=$n, x=$x)" begin
+            pm_ref, pd_ref = zeros(n+2), zeros(n+2)
+            pm, pd = zeros(n+2), zeros(n+2)
+            Specfun.lpmns(m, n, x, pm, pd)
+            _lpmns(m, n, x, pm_ref, pd_ref)
+            # 
+            @test isapprox(pm_ref, pm; nans=true)
+            @test isapprox(pd_ref, pd; nans=true)
+        end   
+    end
+end
+
+@testset "lqmns" begin
     test_m = Int[
         0:4...,
     ]
