@@ -45,13 +45,13 @@ end
     end
 end
 
-@testset "cerzo!" begin
+@testset "cerzo" begin
     for n in 1:10
         ref_zo = zeros(ComplexF64, n)
         zo = zeros(ComplexF64, n)
-        @testset "cerzo!($n)" begin
+        @testset "cerzo($n)" begin
             _cerzo(ref_zo, n)
-            Specfun.cerzo!(zo, n)
+            Specfun.cerzo(zo, n)
 
             @test isapprox(ref_zo, zo; nans=true)
         end
@@ -123,14 +123,14 @@ end
     end
 end
 
-@testset "fcszo!" begin
+@testset "fcszo" begin
     for n in 1:10,
         kf in 1:2
         ref_zo = zeros(ComplexF64, n)
         zo = zeros(ComplexF64, n)
-        @testset "fcszo!($kf, $n)" begin
+        @testset "fcszo($kf, $n)" begin
             _fcszo(ref_zo, kf, n)
-            Specfun.fcszo!(zo, kf, n)
+            Specfun.fcszo(zo, kf, n)
 
             @test isapprox(ref_zo, zo; nans=true)
         end

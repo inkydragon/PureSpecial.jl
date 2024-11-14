@@ -186,7 +186,7 @@ function cerf(z::Complex{Float64})
     return cer, cder
 end
 
-function cerzo!(zo::Vector{Complex{Float64}}, nt::Int)
+function cerzo(zo::Vector{Complex{Float64}}, nt::Int)
     EPS = 1.0e-11
 
     for nr in 1:nt
@@ -550,7 +550,7 @@ Routines called:
 (1) CFC for computing Fresnel integral C(z)
 (2) CFS for computing Fresnel integral S(z)
 """
-function fcszo!(zo::Vector{Complex{Float64}}, kf::Int, nt::Int)
+function fcszo(zo::Vector{Complex{Float64}}, kf::Int, nt::Int)
     EPS = 1.0e-12
 
     psq = 0.0
