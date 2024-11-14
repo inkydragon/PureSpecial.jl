@@ -2,31 +2,26 @@
 #   See also: src/specfun/LICENSE.md
 """Spheroidal Wave Functions"""
 #=
-pro_rad1(m, n, c, x),
-pro_rad2(m, n, c, x)
-+ specfun_segv, specfun_rswfp
-    -> sdmn
-    -> rmn1 -> sckb,sphj
-        -> msta1,msta2
-    -> rmn2l -> sphy
-    -> rmn2sp -> kmn,lqmns,lpmns
-
-pro_ang1(m, n, c, x),
-obl_ang1(m, n, c, x)
-+ specfun_segv, specfun_aswfa
-    -> sdmn,sckb
-
-obl_rad1(m, n, c, x),
-obl_rad2(m, n, c, x)
-+ specfun_segv, specfun_rswfo
-    -> sdmn,sckb,[rmn2l],rmn2so
-        -> qstar,cbk,gmn,kmn,[rmn1]
-
-pro_cv(m, n, c),
-obl_cv(m, n, c),
-pro_cv_seq(m, n, c),
-obl_cv_seq(m, n, c)
-+ specfun_segv
+- ✅ segv
+- ✅ aswfa
+    - ✅ sdmn
+    - ✅ sckb
+- ✅ rmn1
+    - [sckb]
+    - ✅ sphj -> ✅ smsta1, ✅ msta2
+- ✅ rmn2l
+    - ✅ sphy
+- *rmn2sp
+    - kmn
+    - lqmns
+    - lpmns
+- rmn2so
+    - [kmn,rmn1]
+    - qstar
+    - cbk
+    - gmn
++ *rswfp -> [sdmn,rmn1,rmn2l,rmn2sp]
++ rswfo -> [sdmn,sckb,rmn2l,rmn2so]
 =#
 
 """

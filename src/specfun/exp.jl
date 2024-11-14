@@ -1,22 +1,15 @@
 # SPDX-License-Identifier: MIT OR BSD-3-Clause
 #   See also: src/specfun/LICENSE.md
 """Exponential and Trigonometric Integrals"""
-#=exp.jl
-exp1(z)
-    + exp1_wrap -> specfun_e1xb
-    + cexp1_wrap -> specfun_e1z
-expi(x)
-    + expi_wrap -> specfun_eix
-    + cexpi_wrap -> specfun_eixz
-
-Maybe todo:
-    - ENXA(N,X,EN)
-        Compute exponential integral En(x), x ≤ 20
-    - ENXB(N,X,EN)
-        Compute exponential integral En(x)
-    - Use impl from: https://netlib.org/math/docpdf/ch02-10.pdf
+#=
+- ✅ e1xb
+- ✅ e1z
+- ✅ eix
+- ✅ eixz
+- E1XA
+- ENXA
+- ENXB
 =#
-
 
 """
 Base.MathConstants.eulergamma

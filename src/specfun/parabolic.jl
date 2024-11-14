@@ -2,26 +2,16 @@
 #   See also: src/specfun/LICENSE.md
 """Parabolic cylinder functions"""
 #=
-pbwa(a, x)
-    Parabolic cylinder function W
-    pbwa_wrap -> specfun_pbwa -> specfun_cgama
-
-pbvv(v, x)
-pbvv_seq(v, x)
-    Parabolic cylinder function V
-    pbvv_wrap -> specfun_pbvv
-                    + specfun_vvsa -> gamma2
-                    + specfun_vvla
-    
-pbdv(v, x)
-pbdv_seq(v, x)
-    Parabolic cylinder function D
-    pbdv_wrap -> specfun_pbdv
-                    + specfun_dvsa -> specfun_vvla -> gamma2
-                    + specfun_dvla
-
-pbdn_seq(n, z)
-    + _specfun.cpbdn -> specfun_cpbdn
+- ✅ pbwa
+- ✅ pbvv
+    - ✅ vvsa
+    - ✅ vvla
+- ✅ pbdv
+    - ✅ dvsa
+    - ✅ dvla
+- cpbdn
+    - cpdla
+    - cpdsa
 =#
 
 """

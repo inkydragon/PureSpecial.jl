@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: MIT OR BSD-3-Clause
 #   See also: src/specfun/LICENSE.md
-#= gamma.jl 
-    + gam0:     abs(x) <= 1
-    + gamma2:   x
-    + gaih:     x = n/2, n=1,2,3,…
-    + cgama:    Г(z) or ln[Г(z)]
-
-TODO: use gamma in AMOS?
+"""Gamma Functions"""
+#=
+- ✅ gam0
+- ✅ gamma2
+- ✅ gaih
+- ✅ cgama
+- ✅ psi
 =#
 
 """

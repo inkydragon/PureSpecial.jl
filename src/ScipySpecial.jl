@@ -100,7 +100,11 @@ fresnel_zeros(nt)
 """Airy Functions"""
 #=
 airy(z)
++ special_[c]airy -> xsf::airy 
+    -> [-inf, -10) and (10, +inf] amos::airy, 
+    -> [-10, 10] cephes::airy
 airye(z)
++ special_airye -> xsf::airye -> amos::airy,amos::biry
 ai_zeros(nt)
 bi_zeros(nt)
 itairy(x)
