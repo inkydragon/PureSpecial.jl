@@ -327,10 +327,19 @@ function _itairy(x::Float64)
 end
 
 
-#= ## Bessel functions =#
+"""Bessel functions"""
+#= ## Bessel functions
+=#
+#= ## Zeros of Bessel functions
+bjndd
+jdzo
+msta1
+msta2
+jynbh
+jyndd
+jyzo
+=#
 
-
-#= ## Zeros of Bessel functions =#
 """
 Warp fortran `specfun.BJNDD`.
 
