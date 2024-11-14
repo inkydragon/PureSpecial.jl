@@ -49,17 +49,142 @@ end
 Compute associated Legendre functions Qmn(x)
 and Qmn'(x) for a given order
 
-Input :  
-- x --- Argument of Qmn(x)
+Input:
 - m --- Order of Qmn(x),  m = 0,1,2,...
 - n --- Degree of Qmn(x), n = 0,1,2,...
+- x --- Argument of Qmn(x)
 
-Output:  
+Output:
 - QM(n) --- Qmn(x)
 - QD(n) --- Qmn'(x)
 """
-function lqmns()
+function lqmns(m::Int, n::Int, x::Float64, qm::Vector{Float64}, qd::Vector{Float64})
+    @assert m >= 0
+    @assert n >= 0
 
+    val = ifelse(abs(x) == 1.0, 1e300, 0.0)
+    for k in 0:n
+        qm[k+1] = val
+        qd[k+1] = val
+    end
+    if abs(x) == 1.0
+        return
+    end
+
+    ls = ifelse(abs(x) > 1.0, -1, 1)
+    xq = sqrt(ls * (1.0 - x * x))
+    q0 = 0.5 * log(abs((x + 1.0) / (x - 1.0)))
+    q00 = q0
+    q10 = -1.0 / xq
+    q01 = x * q0 - 1.0
+    q11 = -ls * xq * (q0 + x / (1.0 - x * x))
+    qf0 = q00
+    qf1 = q10
+    qm0 = 0.0
+    qm1 = 0.0
+    for k in 2:m
+        qm0 = -2.0 * (k - 1.0) / xq * x * qf1 - ls * (k - 1.0) * (2.0 - k) * qf0
+        qf0 = qf1
+        qf1 = qm0
+    end
+
+    if m == 0
+        qm0 = q00
+    elseif m == 1
+        qm0 = q10
+    end
+    qm[1] = qm0
+    if abs(x) < 1.0001
+        if (m == 0) && (n > 0)
+            qf0 = q00
+            qf1 = q01
+            for k in 2:n
+                qf2 = ((2.0 * k - 1.0) * x * qf1 - (k - 1.0) * qf0) / k
+                qm[k+1] = qf2
+                qf0 = qf1
+                qf1 = qf2
+            end
+        end
+
+        qg0 = q01
+        qg1 = q11
+        for k in 2:m
+            qm1 = -2.0 * (k - 1.0) / xq * x * qg1 - ls * k * (3.0 - k) * qg0
+            qg0 = qg1
+            qg1 = qm1
+        end
+
+        if m == 0
+            qm1 = q01
+        elseif m == 1
+            qm1 = q11
+        end
+
+        qm[2] = qm1
+
+        if (m == 1) && (n > 1)
+            qh0 = q10
+            qh1 = q11
+            for k in 2:n
+                qh2 = ((2.0 * k - 1.0) * x * qh1 - k * qh0) / (k - 1.0)
+                qm[k+1] = qh2
+                qh0 = qh1
+                qh1 = qh2
+            end
+        elseif m >= 2
+            qg0 = q00
+            qg1 = q01
+            qh0 = q10
+            qh1 = q11
+            qmk = 0.0
+            for l in 2:n
+                q0l = ((2.0 * l - 1.0) * x * qg1 - (l - 1.0) * qg0) / l
+                q1l = ((2.0 * l - 1.0) * x * qh1 - l * qh0) / (l - 1.0)
+                qf0 = q0l
+                qf1 = q1l
+                for k in 2:m
+                    qmk = -2.0 * (k - 1.0) / xq * x * qf1 - ls * (k + l - 1.0) * (l + 2.0 - k) * qf0
+                    qf0 = qf1
+                    qf1 = qmk
+                end
+                qm[l+1] = qmk
+                qg0 = qg1
+                qg1 = q0l
+                qh0 = qh1
+                qh1 = q1l
+            end
+        end
+    else
+        if abs(x) > 1.1
+            km = 40 + m + n
+        else
+            km = trunc(Int, -1.0 - 1.8 * log(x - 1.0)) * (40 + m + n)
+        end
+        qf2 = 0.0
+        qf1 = 1.0
+        for k in km:-1:0
+            qf0 = ((2.0 * k + 3.0) * x * qf1 - (k + 2.0 - m) * qf2) / (k + m + 1.0)
+            if k <= n
+                qm[k+1] = qf0
+            end
+            qf2 = qf1
+            qf1 = qf0
+        end
+        for k in 0:n
+            qm[k+1] *= qm0 / qf0
+        end
+    end
+
+    if abs(x) < 1.0
+        for k in 0:n
+            qm[k+1] *= (-1) ^ m
+        end
+    end
+
+    qd[1] = ((1.0 - m) * qm[2] - x * qm[1]) / (x * x - 1.0)
+    for k in 1:n
+        qd[k+1] = (k * x * qm[k+1] - (k + m) * qm[k]) / (x * x - 1.0)
+    end
 end
 
 
