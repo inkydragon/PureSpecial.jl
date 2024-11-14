@@ -32,17 +32,77 @@ Associated Legendre Function
 Compute associated Legendre functions Pmn(x)
 and Pmn'(x) for a given order
 
-Input :
-- x --- Argument of Pmn(x)
+Input:
 - m --- Order of Pmn(x),  m = 0,1,2,...,n
 - n --- Degree of Pmn(x), n = 0,1,2,...,N
+- x --- Argument of Pmn(x)
 
 Output:
 - PM(n) --- Pmn(x)
 - PD(n) --- Pmn'(x)
 """
-function lpmns()
+function lpmns(m::Int, n::Int, x::Float64, pm::Vector{Float64}, pd::Vector{Float64})
+    # NOTE: f77:  DIMENSION PM(0:N),PD(0:N)
+    @assert m >= 0
+    @assert n >= 0
+    @assert length(pm) >= (n+1)
+    @assert length(pm) >= 2
+    @assert length(pm) >= (m+2)
+    @assert length(pd) >= (n+1)
 
+    for k in 0:n
+        pm[k + 1] = 0.0
+        pd[k + 1] = 0.0
+    end
+
+    if abs(x) == 1.0
+        for k in 0:n
+            if m == 0
+                pm[k + 1] = 1.0
+                pd[k + 1] = 0.5 * k * (k + 1.0)
+                if x < 0.0
+                    pm[k + 1] *= (k % 2 == 0 ? 1 : -1)
+                    pd[k + 1] *= ((k + 1) % 2 == 0 ? 1 : -1)
+                end
+            elseif m == 1
+                pd[k + 1] = 1e300
+            elseif m == 2
+                pd[k + 1] = -0.25 * (k + 2.0) * (k + 1.0) * k * (k - 1.0)
+                if x < 0.0
+                    pd[k + 1] *= ((k + 1) % 2 == 0 ? 1 : -1)
+                end
+            end
+        end
+
+        return
+    end
+
+    x0 = abs(1.0 - x * x)
+    pm0 = 1.0
+    pmk = pm0
+    for k in 1:m
+        pmk = (2.0 * k - 1.0) * sqrt(x0) * pm0
+        pm0 = pmk
+    end
+    pm1 = (2.0 * m + 1.0) * x * pm0
+    pm[m + 1] = pmk
+    pm[m + 2] = pm1
+    for k in (m+2):n
+        pm2 = ((2.0 * k - 1.0) * x * pm1 - (k + m - 1.0) * pmk) / (k - m)
+        pm[k + 1] = pm2
+        pmk = pm1
+        pm1 = pm2
+    end
+
+    pd[1] = ((1.0 - m) * pm[2] - x * pm[1]) / (x * x - 1.0)
+    for k in 1:n
+        pd[k + 1] = (k * x * pm[k + 1] - (k + m) * pm[k]) / (x * x - 1.0)
+    end
+    coef = ifelse(m % 2 == 0, 1, -1)
+    for k in 1:n
+        pm[k + 1] *= coef
+        pd[k + 1] *= coef
+    end
 end
 
 """
