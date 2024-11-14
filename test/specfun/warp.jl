@@ -157,6 +157,109 @@ function _eixz(z::ComplexF64)
 end
 
 
+"""Error Functions"""
+#=Error function
+- error
+- cerror
+- cerf
+- cerzo
+- cfc
+- cfs
+- fcs
+- fcszo
+- ffk
+=#
+
+function _erf(x::Float64)
+    err = Ref{Float64}(NaN)
+    # SUBROUTINE ERROR(X,ERR)
+    ccall(f77func(:error), Cvoid, (Ref{Float64}, Ref{Float64},), x, err)
+    err[]
+end
+
+function _erf(z::ComplexF64)
+    cer = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE CERROR(Z,CER)
+    ccall(f77func(:cerror), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, cer)
+    cer[]
+end
+
+function _cerf(z::ComplexF64)
+    cer = Ref{ComplexF64}(NaN + NaN*im)
+    cder = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE CERF(Z,CER,CDER)
+    ccall(f77func(:cerf), Cvoid,
+        (Ref{ComplexF64}, Ref{ComplexF64}, Ref{ComplexF64}),
+        z, cer, cder)
+    cer[], cder[]
+end
+
+function _cerzo(zo::Vector{Complex{Float64}}, nt::Int)
+    # SUBROUTINE CERZO(NT,ZO)
+    ccall(f77func(:cerzo), Cvoid,
+        (Ref{Int32}, Ref{ComplexF64}),
+        nt, zo)
+end
+
+function _cfc(z::ComplexF64)
+    zf = Ref{ComplexF64}(NaN + NaN*im)
+    zd = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE CFC(Z,ZF,ZD)
+    # void specfun_cfc(double complex z, double complex *zf, double complex *zd);
+    ccall(f77func(:cfc), Cvoid,
+        (Ref{ComplexF64}, Ref{ComplexF64}, Ref{ComplexF64}),
+        z, zf, zd)
+    zf[], zd[]
+end
+
+function _cfs(z::ComplexF64)
+    zf = Ref{ComplexF64}(NaN + NaN*im)
+    zd = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE CFS(Z,ZF,ZD)
+    # void specfun_cfs(double complex z, double complex *zf, double complex *zd);
+    ccall(f77func(:cfs), Cvoid,
+        (Ref{ComplexF64}, Ref{ComplexF64}, Ref{ComplexF64}),
+        z, zf, zd)
+    zf[], zd[]
+end
+
+function _fcs(z::Float64)
+    c = Ref{Float64}(NaN)
+    s = Ref{Float64}(NaN)
+    # SUBROUTINE FCS(X,C,S)
+    ccall(f77func(:fcs), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        z, c, s)
+    c[], s[]
+end
+
+function _fcszo(zo::Vector{Complex{Float64}}, kf::Int, nt::Int)
+    # SUBROUTINE FCSZO(KF,NT,ZO)
+    ccall(f77func(:fcszo), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{ComplexF64}),
+        Int32(kf), Int32(nt), zo)
+end
+
+function _ffk(ks::Int, x::Float64)
+    fr, fi, fm, fa, gr, gi, gm, ga = 
+        Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN),
+        Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN) 
+    # SUBROUTINE FFK(KS,X,FR,FI,FM,FA,GR,GI,GM,GA)
+    # void specfun_ffk(int ks, double x, 
+    #   double *fr, double *fi, double *fm, double *fa,
+    #   double *gr, double *gi, double *gm, double *ga);
+    ccall(f77func(:ffk), Cvoid,
+        (Ref{Int32}, Ref{Float64},
+         Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64},
+         Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        Int32(ks), x,
+        fr, fi, fm, fa,
+        gr, gi, gm, ga)
+        
+    fr[],fi[], fm[],fa[], gr[],gi[], gm[],ga[]
+end
+
+
 #= ## Airy functions =#
 """
 Warp fortran `specfun.AIRYB`.
@@ -453,97 +556,6 @@ function _pbvv(vv::Vector{Float64}, vp::Vector{Float64}, x::Float64, v::Float64)
         v, x, vv, vp,
         pvf, pvd)
     pvf[], pvd[]
-end
-
-#= ## Error function =#
-
-function _erf(x::Float64)
-    err = Ref{Float64}(NaN)
-    # SUBROUTINE ERROR(X,ERR)
-    ccall(f77func(:error), Cvoid, (Ref{Float64}, Ref{Float64},), x, err)
-    err[]
-end
-
-function _erf(z::ComplexF64)
-    cer = Ref{ComplexF64}(NaN + NaN*im)
-    # SUBROUTINE CERROR(Z,CER)
-    ccall(f77func(:cerror), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, cer)
-    cer[]
-end
-
-function _cerf(z::ComplexF64)
-    cer = Ref{ComplexF64}(NaN + NaN*im)
-    cder = Ref{ComplexF64}(NaN + NaN*im)
-    # SUBROUTINE CERF(Z,CER,CDER)
-    ccall(f77func(:cerf), Cvoid,
-        (Ref{ComplexF64}, Ref{ComplexF64}, Ref{ComplexF64}),
-        z, cer, cder)
-    cer[], cder[]
-end
-
-function _cerzo(zo::Vector{Complex{Float64}}, nt::Int)
-    # SUBROUTINE CERZO(NT,ZO)
-    ccall(f77func(:cerzo), Cvoid,
-        (Ref{Int32}, Ref{ComplexF64}),
-        nt, zo)
-end
-
-function _cfc(z::ComplexF64)
-    zf = Ref{ComplexF64}(NaN + NaN*im)
-    zd = Ref{ComplexF64}(NaN + NaN*im)
-    # SUBROUTINE CFC(Z,ZF,ZD)
-    # void specfun_cfc(double complex z, double complex *zf, double complex *zd);
-    ccall(f77func(:cfc), Cvoid,
-        (Ref{ComplexF64}, Ref{ComplexF64}, Ref{ComplexF64}),
-        z, zf, zd)
-    zf[], zd[]
-end
-
-function _cfs(z::ComplexF64)
-    zf = Ref{ComplexF64}(NaN + NaN*im)
-    zd = Ref{ComplexF64}(NaN + NaN*im)
-    # SUBROUTINE CFS(Z,ZF,ZD)
-    # void specfun_cfs(double complex z, double complex *zf, double complex *zd);
-    ccall(f77func(:cfs), Cvoid,
-        (Ref{ComplexF64}, Ref{ComplexF64}, Ref{ComplexF64}),
-        z, zf, zd)
-    zf[], zd[]
-end
-
-function _fcs(z::Float64)
-    c = Ref{Float64}(NaN)
-    s = Ref{Float64}(NaN)
-    # SUBROUTINE FCS(X,C,S)
-    ccall(f77func(:fcs), Cvoid,
-        (Ref{Float64}, Ref{Float64}, Ref{Float64}),
-        z, c, s)
-    c[], s[]
-end
-
-function _fcszo(zo::Vector{Complex{Float64}}, kf::Int, nt::Int)
-    # SUBROUTINE FCSZO(KF,NT,ZO)
-    ccall(f77func(:fcszo), Cvoid,
-        (Ref{Int32}, Ref{Int32}, Ref{ComplexF64}),
-        Int32(kf), Int32(nt), zo)
-end
-
-function _ffk(ks::Int, x::Float64)
-    fr, fi, fm, fa, gr, gi, gm, ga = 
-        Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN),
-        Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN) 
-    # SUBROUTINE FFK(KS,X,FR,FI,FM,FA,GR,GI,GM,GA)
-    # void specfun_ffk(int ks, double x, 
-    #   double *fr, double *fi, double *fm, double *fa,
-    #   double *gr, double *gi, double *gm, double *ga);
-    ccall(f77func(:ffk), Cvoid,
-        (Ref{Int32}, Ref{Float64},
-         Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64},
-         Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64}),
-        Int32(ks), x,
-        fr, fi, fm, fa,
-        gr, gi, gm, ga)
-        
-    fr[],fi[], fm[],fa[], gr[],gi[], gm[],ga[]
 end
 
 

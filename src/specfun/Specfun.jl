@@ -9,9 +9,9 @@ module Specfun
 # SUBROUTINE
 include("gamma.jl")
 include("exp.jl")
+include("error.jl")
 include("airy.jl")
 include("bessel_zeros.jl")
-include("error.jl")
 include("parabolic.jl")
 include("kelvin.jl")
 include("hyper.jl")

@@ -1,6 +1,26 @@
 # SPDX-License-Identifier: MIT OR BSD-3-Clause
 #   See also: src/specfun/LICENSE.md
 
+"""Error Functions"""
+#=
+erf_zeros(nt)
+    Compute the first nt zero in the first quadrant, ordered by absolute value.
+    + _specfun.cerzo -> specfun_cerzo
+
+fresnel_zeros(nt)
+    Compute nt complex zeros of sine and cosine Fresnel integrals S(z) and C(z).
+    + _specfun.fcszo -> specfun_fcszo
+
+    fresnelc_zeros(nt)
+        Compute nt complex zeros of cosine Fresnel integral C(z).
+        + _specfun.fcszo(1, nt)
+
+    fresnels_zeros(nt)
+        Compute nt complex zeros of sine Fresnel integral S(z).
+        + _specfun.fcszo(2, nt)
+
+=#
+
 
 """
 Compute error function erf(x)
