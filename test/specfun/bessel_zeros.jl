@@ -135,7 +135,7 @@ end
             fill!(bj, 0.0)
             fill!(by, 0.0)
             
-            r_nm = _jynbh!(x, n, nmin, r_bj, r_by)
+            r_nm = _jynbh(x, n, nmin, r_bj, r_by)
             nm = Specfun.jynbh!(x, n, nmin, bj, by)
 
             @test isequal(r_nm, nm)
@@ -180,7 +180,7 @@ end
         r_j0, r_j1, r_y0, r_y1 = zeros(nt), zeros(nt), zeros(nt), zeros(nt)
         j0, j1, y0, y1 = zeros(nt), zeros(nt), zeros(nt), zeros(nt)
         @testset "jyzo!(n=$n, nt=$nt)" begin
-            _jyzo!(n, nt, r_j0, r_j1, r_y0, r_y1)
+            _jyzo(n, nt, r_j0, r_j1, r_y0, r_y1)
             Specfun.jyzo!(n, nt, j0, j1, y0, y1)
 
             @test isapprox(r_j0, j0)

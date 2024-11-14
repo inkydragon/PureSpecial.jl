@@ -103,8 +103,8 @@ end
         kf in 1:2
         ra,rb,rc,rd = zeros(nt),zeros(nt),zeros(nt),zeros(nt)
         a,b,c,d = zeros(nt),zeros(nt),zeros(nt),zeros(nt)
-        @testset "_airyzo!(nt=$nt, kf=$kf)" begin
-            _airyzo!(nt, kf, ra,rb,rc,rd)
+        @testset "_airyzo(nt=$nt, kf=$kf)" begin
+            _airyzo(nt, kf, ra,rb,rc,rd)
             Specfun.airyzo!(nt, kf, a,b,c,d)
             @test isapprox(ra, a)
             @test isapprox(rb, b)

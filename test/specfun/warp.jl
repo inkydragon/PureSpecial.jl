@@ -139,7 +139,7 @@ Warp fortran `specfun.AIRYZO`.
 - Input: `nt`, `kf`
 - Output: `xa, xb, xc, xd`
 """
-function _airyzo!(
+function _airyzo(
     nt::Int, kf::Int, 
     xa::Vector{Float64}, xb::Vector{Float64},
     xc::Vector{Float64}, xd::Vector{Float64})
@@ -255,7 +255,7 @@ Warp fortran `specfun.JYNBH`.
 - Output: `bj ,by`
 - Return: `nm`
 """
-function _jynbh!(
+function _jynbh(
     x::Float64, n::Int32, nmin::Int32,
     bj::Vector{Float64}, by::Vector{Float64})
     nm = Ref{Int32}(0)
@@ -270,8 +270,8 @@ function _jynbh!(
 
     nm[]
 end
-_jynbh!(x, n::Int64, nmin::Int64, bj, by) =
-    _jynbh!(x, Int32(n), Int32(nmin), bj, by)
+_jynbh(x, n::Int64, nmin::Int64, bj, by) =
+    _jynbh(x, Int32(n), Int32(nmin), bj, by)
 
 """
 Warp fortran `specfun.JYNDD`.
@@ -306,7 +306,7 @@ Warp fortran `specfun.JYZO`.
 - Input: `n, nt`
 - Output: `rj0, rj1, ry0, ry1`
 """
-function _jyzo!(n::Int64, nt::Int64,
+function _jyzo(n::Int64, nt::Int64,
     rj0::Vector{Float64}, rj1::Vector{Float64},
     ry0::Vector{Float64}, ry1::Vector{Float64})
     @assert n >= 0
@@ -380,7 +380,7 @@ function _dvsa(x::Float64, va::Float64)
     pd[]
 end
 
-function _pbdv!(dv::Vector{Float64}, dp::Vector{Float64}, x::Float64, v::Float64)
+function _pbdv(dv::Vector{Float64}, dp::Vector{Float64}, x::Float64, v::Float64)
     pdf, pdd = Ref{Float64}(NaN), Ref{Float64}(NaN)
     # SUBROUTINE PBDV(V,X,DV,DP,PDF,PDD)
     ccall(f77func(:pbdv), Cvoid,
@@ -400,7 +400,7 @@ function _vvsa(x::Float64, va::Float64)
     pv[]
 end
 
-function _pbvv!(vv::Vector{Float64}, vp::Vector{Float64}, x::Float64, v::Float64)
+function _pbvv(vv::Vector{Float64}, vp::Vector{Float64}, x::Float64, v::Float64)
     pvf, pvd = Ref{Float64}(NaN), Ref{Float64}(NaN)
     # SUBROUTINE PBVV(V,X,VV,VP,PVF,PVD)
     ccall(f77func(:pbvv), Cvoid,
@@ -437,7 +437,7 @@ function _cerf(z::ComplexF64)
     cer[], cder[]
 end
 
-function _cerzo!(zo::Vector{Complex{Float64}}, nt::Int)
+function _cerzo(zo::Vector{Complex{Float64}}, nt::Int)
     # SUBROUTINE CERZO(NT,ZO)
     ccall(f77func(:cerzo), Cvoid,
         (Ref{Int32}, Ref{ComplexF64}),
@@ -476,7 +476,7 @@ function _fcs(z::Float64)
     c[], s[]
 end
 
-function _fcszo!(zo::Vector{Complex{Float64}}, kf::Int, nt::Int)
+function _fcszo(zo::Vector{Complex{Float64}}, kf::Int, nt::Int)
     # SUBROUTINE FCSZO(KF,NT,ZO)
     ccall(f77func(:fcszo), Cvoid,
         (Ref{Int32}, Ref{Int32}, Ref{ComplexF64}),
@@ -695,7 +695,7 @@ Warp fortran `specfun.SEGV`.
 - Input: `m,n,c`, `kd`
 - Output: `cv`, `eg`
 """
-function _segv!(m::Int, n::Int, c::Float64, kd::Int, eg::Vector{Float64})
+function _segv(m::Int, n::Int, c::Float64, kd::Int, eg::Vector{Float64})
     cv = Ref{Float64}(NaN)
     @assert length(eg) >= 200
     # SUBROUTINE SEGV(M,N,C,KD,CV,EG)
@@ -716,7 +716,7 @@ end
 
 - Output: `df[]`
 """
-function _sdmn!(m::Int, n::Int, c::Float64, cv::Float64, kd::Int, df::Vector{Float64})
+function _sdmn(m::Int, n::Int, c::Float64, cv::Float64, kd::Int, df::Vector{Float64})
     ccall(f77func(:sdmn), Cvoid,
         (Ref{Int32}, Ref{Int32}, Ref{Float64}, Ref{Float64}, Ref{Int32},
          Ptr{Float64}),
@@ -732,7 +732,7 @@ end
 - Input: `df[]`
 - Output: `ck[]`
 """
-function _sckb!(m::Int, n::Int, c::Float64, df::Vector{Float64}, ck::Vector{Float64})
+function _sckb(m::Int, n::Int, c::Float64, df::Vector{Float64}, ck::Vector{Float64})
     ccall(f77func(:sckb), Cvoid,
         (Ref{Int32}, Ref{Int32}, Ref{Float64},
          Ptr{Float64}, Ptr{Float64}),
@@ -764,7 +764,7 @@ end
 
 - Output: `(sj, dj, nm)`
 """
-function _sphj!(n::Int, x::Float64, sj::Vector{Float64}, dj::Vector{Float64})
+function _sphj(n::Int, x::Float64, sj::Vector{Float64}, dj::Vector{Float64})
     nm = Ref{Int32}(0)
     ccall(f77func(:sphj), Cvoid,
         (Ref{Int32}, Ref{Float64}, Ref{Int32},
@@ -796,7 +796,7 @@ end
 
 - Output: `(sy, dy, nm)`
 """
-function _sphy!(n::Int, x::Float64, sy::Vector{Float64}, dy::Vector{Float64})
+function _sphy(n::Int, x::Float64, sy::Vector{Float64}, dy::Vector{Float64})
     nm = Ref{Int32}(0)
     ccall(f77func(:sphy), Cvoid,
         (Ref{Int32}, Ref{Float64}, Ref{Int32},

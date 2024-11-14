@@ -50,7 +50,7 @@ end
         ref_zo = zeros(ComplexF64, n)
         zo = zeros(ComplexF64, n)
         @testset "cerzo!($n)" begin
-            _cerzo!(ref_zo, n)
+            _cerzo(ref_zo, n)
             Specfun.cerzo!(zo, n)
 
             @test isapprox(ref_zo, zo; nans=true)
@@ -129,7 +129,7 @@ end
         ref_zo = zeros(ComplexF64, n)
         zo = zeros(ComplexF64, n)
         @testset "fcszo!($kf, $n)" begin
-            _fcszo!(ref_zo, kf, n)
+            _fcszo(ref_zo, kf, n)
             Specfun.fcszo!(zo, kf, n)
 
             @test isapprox(ref_zo, zo; nans=true)
