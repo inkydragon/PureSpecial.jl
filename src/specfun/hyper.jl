@@ -1,5 +1,16 @@
 # SPDX-License-Identifier: MIT OR BSD-3-Clause
 #   See also: src/specfun/LICENSE.md
+"""Hypergeometric functions"""
+#=
+hyp1f1(a, b, x)
+    + hyp1f1_double -> hyp1f1_wrap -> <hyp1f1_wrap> -> boost::math::hypergeometric_1F1
+    +               -> hyp1f1_wrap -> specfun_chgm
+    + chyp1f1_wrap -> specfun_cchg
+
+hyperu(a, b, x)
+    + hyperu -> poch -> cephes_poch
+             -> hypU_wrap -> specfun_chgu
+=#
 
 """
     cchg(a::Float64, b::Float64, z::Complex{Float64})

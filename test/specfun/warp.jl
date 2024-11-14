@@ -577,6 +577,52 @@ function _pbvv(vv::Vector{Float64}, vp::Vector{Float64}, x::Float64, v::Float64)
 end
 
 
+"""Hypergeometric functions"""
+#=
+cchg
+chgm
+    chgu
+=#
+
+"""
+Warp fortran `specfun.CCHG`.
+
+- Input: `A,B,Z`
+- Output: `CHG`
+"""
+function _cchg(a::Float64, b::Float64, z::Complex{Float64})
+    chg = Ref{Complex{Float64}}(NaN + NaN*im)
+    # SUBROUTINE CCHG(A,B,Z,CHG)
+    # double complex specfun_cchg(double a, double b, double complex z);
+    ccall(f77func(:cchg), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Complex{Float64}},
+         Ref{Complex{Float64}}),
+        a, b, z,
+        chg)
+
+    chg[]
+end
+
+"""
+Warp fortran `specfun.CHGM`.
+
+- Input: `A,B,X`
+- Output: `HG`
+"""
+function _chgm(a::Float64, b::Float64, x::Float64)
+    hg = Ref{Float64}(NaN)
+    # SUBROUTINE CHGM(A,B,X,HG)
+    # double specfun_chgm(double x, double a, double b);
+    ccall(f77func(:chgm), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64},
+         Ref{Float64}),
+        a, b, x,
+        hg)
+
+    hg[]
+end
+
+
 #= ## Kelvin functions =#
 """
 Warp fortran `specfun.KLVNA`.
@@ -622,43 +668,6 @@ function _klvnzo(nt::Int64, kd::Int64)
     zo
 end
 
-"""
-Warp fortran `specfun.CCHG`.
-
-- Input: `A,B,Z`
-- Output: `CHG`
-"""
-function _cchg(a::Float64, b::Float64, z::Complex{Float64})
-    chg = Ref{Complex{Float64}}(NaN + NaN*im)
-    # SUBROUTINE CCHG(A,B,Z,CHG)
-    # double complex specfun_cchg(double a, double b, double complex z);
-    ccall(f77func(:cchg), Cvoid,
-        (Ref{Float64}, Ref{Float64}, Ref{Complex{Float64}},
-         Ref{Complex{Float64}}),
-        a, b, z,
-        chg)
-
-    chg[]
-end
-
-"""
-Warp fortran `specfun.CHGM`.
-
-- Input: `A,B,X`
-- Output: `HG`
-"""
-function _chgm(a::Float64, b::Float64, x::Float64)
-    hg = Ref{Float64}(NaN)
-    # SUBROUTINE CHGM(A,B,X,HG)
-    # double specfun_chgm(double x, double a, double b);
-    ccall(f77func(:chgm), Cvoid,
-        (Ref{Float64}, Ref{Float64}, Ref{Float64},
-         Ref{Float64}),
-        a, b, x,
-        hg)
-
-    hg[]
-end
 
 
 #=Legendre Functions

@@ -14,7 +14,7 @@ include("bessel_zeros.jl")
 
 include("struve.jl")
 include("parabolic.jl")
-include("kelvin.jl")
 include("hyper.jl")
+include("kelvin.jl")
 include("legendre.jl")
 include("spheroidal.jl")
