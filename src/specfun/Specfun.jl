@@ -48,6 +48,7 @@ include("parabolic.jl")
 include("kelvin.jl")
 include("hyper.jl")
 include("exp.jl")
+include("legendre.jl")
 include("spheroidal.jl")
 
 end # PureSpecial
