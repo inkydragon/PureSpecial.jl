@@ -113,6 +113,50 @@ function _psi(x::Float64)
 end
 
 
+"""Exponential and Trigonometric Integrals"""
+#=
+- e1xb
+- [ ] e1xa
+- [ ] enxb
+- [ ] enxa
+- e1z
+- eix
+- eixz
+=#
+
+function _e1xb(x::Float64)
+    e1 = Ref{Float64}(NaN)
+    # SUBROUTINE E1XB(X,E1)
+    # double specfun_e1xb(double x);
+    ccall(f77func(:e1xb), Cvoid, (Ref{Float64}, Ref{Float64}), x, e1)
+    e1[]
+end
+
+function _e1z(z::ComplexF64)
+    ce1 = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE E1Z(Z,CE1)
+    # double complex specfun_e1z(double complex z);
+    ccall(f77func(:e1z), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, ce1)
+    ce1[]
+end
+
+function _eix(x::Float64)
+    ei = Ref{Float64}(NaN)
+    # SUBROUTINE EIX(X,EI)
+    # double specfun_eix(double x);
+    ccall(f77func(:eix), Cvoid, (Ref{Float64}, Ref{Float64}), x, ei)
+    ei[]
+end
+
+function _eixz(z::ComplexF64)
+    cei = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE EIXZ(Z,CEI)
+    # double complex specfun_eixz(double complex z);
+    ccall(f77func(:eixz), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, cei)
+    cei[]
+end
+
+
 #= ## Airy functions =#
 """
 Warp fortran `specfun.AIRYB`.
@@ -584,41 +628,6 @@ function _chgm(a::Float64, b::Float64, x::Float64)
         hg)
 
     hg[]
-end
-
-
-#= math.jl =#
-
-function _e1xb(x::Float64)
-    e1 = Ref{Float64}(NaN)
-    # SUBROUTINE E1XB(X,E1)
-    # double specfun_e1xb(double x);
-    ccall(f77func(:e1xb), Cvoid, (Ref{Float64}, Ref{Float64}), x, e1)
-    e1[]
-end
-
-function _e1z(z::ComplexF64)
-    ce1 = Ref{ComplexF64}(NaN + NaN*im)
-    # SUBROUTINE E1Z(Z,CE1)
-    # double complex specfun_e1z(double complex z);
-    ccall(f77func(:e1z), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, ce1)
-    ce1[]
-end
-
-function _eix(x::Float64)
-    ei = Ref{Float64}(NaN)
-    # SUBROUTINE EIX(X,EI)
-    # double specfun_eix(double x);
-    ccall(f77func(:eix), Cvoid, (Ref{Float64}, Ref{Float64}), x, ei)
-    ei[]
-end
-
-function _eixz(z::ComplexF64)
-    cei = Ref{ComplexF64}(NaN + NaN*im)
-    # SUBROUTINE EIXZ(Z,CEI)
-    # double complex specfun_eixz(double complex z);
-    ccall(f77func(:eixz), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, cei)
-    cei[]
 end
 
 

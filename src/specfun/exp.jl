@@ -1,10 +1,13 @@
 # SPDX-License-Identifier: MIT OR BSD-3-Clause
 #   See also: src/specfun/LICENSE.md
+"""Exponential and Trigonometric Integrals"""
 #=exp.jl
-    + e1xb
-    + e1z
-    + eix
-    + eixz
+exp1(z)
+    + exp1_wrap -> specfun_e1xb
+    + cexp1_wrap -> specfun_e1z
+expi(x)
+    + expi_wrap -> specfun_eix
+    + cexpi_wrap -> specfun_eixz
 
 Maybe todo:
     - ENXA(N,X,EN)
