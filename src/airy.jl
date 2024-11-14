@@ -25,7 +25,7 @@ function ai_zeros(nt)
     kf = 1
     a, b, c, d = zeros(nt), zeros(nt), zeros(nt), zeros(nt)
 
-    Specfun.airyzo!(nt, kf, a, b, c, d)
+    Specfun.airyzo(nt, kf, a, b, c, d)
 
     a, b, c, d
 end
@@ -45,7 +45,7 @@ function bi_zeros(nt)
     kf = 2
     a, b, c, d = zeros(nt), zeros(nt), zeros(nt), zeros(nt)
 
-    Specfun.airyzo!(nt, kf, a, b, c, d)
+    Specfun.airyzo(nt, kf, a, b, c, d)
 
     a, b, c, d
 end

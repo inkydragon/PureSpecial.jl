@@ -214,7 +214,7 @@ function airyb(x::Float64)
 end
 
 """
-    airyzo!(
+    airyzo(
         nt::Int, kf::Int, 
         xa::Vector{Float64}, xb::Vector{Float64}, xc::Vector{Float64}, xd::Vector{Float64}
     )
@@ -230,7 +230,7 @@ Bi'(b).
 ```jl
 nt = 4;
 a,b,c,d = zeros(nt),zeros(nt),zeros(nt),zeros(nt)
-airyzo!(nt, 1, a,b,c,d)
+airyzo(nt, 1, a,b,c,d)
 @show a b c d;
 ```
 
@@ -252,7 +252,7 @@ airyzo!(nt, 1, a,b,c,d)
 ## Routine called
 AIRYB for computing Airy functions and their derivatives
 """
-function airyzo!(
+function airyzo(
     nt::Int, kf::Int, 
     xa::Vector{Float64}, xb::Vector{Float64},
     xc::Vector{Float64}, xd::Vector{Float64})
