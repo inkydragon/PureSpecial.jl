@@ -109,9 +109,9 @@ end
     
         r_dv, r_dp = zeros(na), zeros(na)
         dv, dp = zeros(na), zeros(na)
-        @testset "pbdv!($x, $v)" begin
+        @testset "pbdv($x, $v)" begin
             r_pdf, r_pdd = _pbdv(r_dv,r_dp, x,v)
-            pdf, pdd = Specfun.pbdv!(dv,dp, x,v)
+            pdf, pdd = Specfun.pbdv(dv,dp, x,v)
     
             @test isapprox(r_dv, dv; nans=true)
             @test isapprox(r_dp, dp; nans=true)
@@ -122,9 +122,9 @@ end
         arr_len = max(na+1, 3)
         r_dv, r_dp = zeros(arr_len), zeros(arr_len)
         dv, dp = zeros(arr_len), zeros(arr_len)
-        @testset "pbvv!($x, $v)" begin
+        @testset "pbvv($x, $v)" begin
             r_pvf, r_pvd = _pbvv(r_dv,r_dp, x,v)
-            pvf, pvd = Specfun.pbvv!(dv,dp, x,v)
+            pvf, pvd = Specfun.pbvv(dv,dp, x,v)
     
             @test isapprox(r_dv, dv; nans=true)
             @test isapprox(r_dp, dp; nans=true)

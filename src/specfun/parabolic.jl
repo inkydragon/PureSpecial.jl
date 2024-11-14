@@ -292,7 +292,7 @@ Routines called:
 (1) DVSA for computing Dv(x) for small |x|
 (2) DVLA for computing Dv(x) for large |x|
 """
-function pbdv!(dv::Vector{Float64}, dp::Vector{Float64}, x::Float64, v::Float64)
+function pbdv(dv::Vector{Float64}, dp::Vector{Float64}, x::Float64, v::Float64)
     xa = abs(x)
     v += copysign(1.0, v)
     nv = trunc(Int, v)
@@ -480,7 +480,7 @@ Routines called:
 (1) VVSA for computing Vv(x) for small |x|
 (2) VVLA for computing Vv(x) for large |x|
 """
-function pbvv!(vv::Vector{Float64}, vp::Vector{Float64}, x::Float64, v::Float64)
+function pbvv(vv::Vector{Float64}, vp::Vector{Float64}, x::Float64, v::Float64)
     xa = abs(x)
     v += copysign(1.0, v)
     nv = trunc(Int, v)
