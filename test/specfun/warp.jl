@@ -622,6 +622,23 @@ function _eixz(z::ComplexF64)
 end
 
 
+#=Legendre Functions
+=#
+
+"""
+    SUBROUTINE LPMV0(V,M,X,PMV)
+    double lpmv0(double v, int m, double x)
+
+- Output: `Pmv(x)`
+"""
+function _lpmv0(v::Float64, m::Int, x::Float64)
+    pmv = Ref{Float64}(NaN)
+    ccall(f77func(:lpmv0), Float64,
+        (Ref{Float64}, Ref{Int32}, Ref{Float64},Ref{Float64}),
+        v, Int32(m), x, pmv)
+    pmv[]
+end
+
 #= Spheroidal Wave Functions
 - specfun_segv
 - specfun_rswfp
