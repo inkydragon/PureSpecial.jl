@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: MIT OR BSD-3-Clause
 #   See also: src/specfun/LICENSE.md
-
-"""Spheroidal Wave Functions
-
+"""Spheroidal Wave Functions"""
+#=
 pro_rad1(m, n, c, x),
 pro_rad2(m, n, c, x)
 + specfun_segv, specfun_rswfp
@@ -28,7 +27,7 @@ obl_cv(m, n, c),
 pro_cv_seq(m, n, c),
 obl_cv_seq(m, n, c)
 + specfun_segv
-"""
+=#
 
 """
 

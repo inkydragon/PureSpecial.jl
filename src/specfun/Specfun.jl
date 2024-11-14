@@ -18,6 +18,7 @@ include("struve.jl")
 include("parabolic.jl")
 include("hyper.jl")
 include("legendre.jl")
+
 include("spheroidal.jl")
 
 end # PureSpecial

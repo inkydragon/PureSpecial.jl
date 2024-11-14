@@ -737,11 +737,15 @@ end
 
 
 """Spheroidal Wave Functions"""
-#= Spheroidal Wave Functions
-- specfun_segv
-- specfun_rswfp
-- specfun_aswfa
-- specfun_rswfo
+#=
+segv
+sdmn
+sckb
+aswfa
+sphj
+rmn1
+sphy
+rmn2l
 =#
 
 """
