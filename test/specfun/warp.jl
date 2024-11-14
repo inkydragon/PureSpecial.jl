@@ -626,6 +626,20 @@ end
 =#
 
 """
+    SUBROUTINE LQMNS(M,N,X,  QM(0:N),QD(0:N))
+    void lqmns(int m, int n, T x,  T *qm, T *qd)
+
+- Output: `Qmn(x), Qmn'(x)`
+"""
+function _lqmns(m::Int, n::Int, x::Float64, qm::Vector{Float64}, qd::Vector{Float64})
+    ccall(f77func(:lqmns), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{Float64},
+         Ptr{Float64}, Ptr{Float64}),
+        Int32(m), Int32(n), x,
+        qm, qd)
+end
+
+"""
     SUBROUTINE LPMV0(V,M,X,PMV)
     double lpmv0(double v, int m, double x)
 
