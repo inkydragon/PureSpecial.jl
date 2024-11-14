@@ -223,11 +223,10 @@ function cgama(z::Complex{Float64}, kf::Int)
         x0 += na
     end
 
-    az0 = abs(complex(x0, y))
+    az0 = sqrt(x0*x0 + y*y)
     th = atan(y / x0)
     gr = (x0 - 0.5)*log(az0) - th*y - x0 + 0.5*log(2.0 * pi)
     gi = th * (x0 - 0.5) + y*log(az0) - y
-
     for k in 1:10
         t = az0 ^ (1 - 2*k)
         gr += _CGAMMA_A[k] * t * cos((2.0*k - 1.0) * th)
@@ -246,11 +245,11 @@ function cgama(z::Complex{Float64}, kf::Int)
     end
 
     if x1 < 0.0
-        az0 = abs(z)
+        az0 = sqrt(x*x + y*y)
         th1 = atan(y / x)
         sr = -sin(pi*x) * cosh(pi*y)
         si = -cos(pi*x) * sinh(pi*y)
-        az1 = abs(complex(sr, si))
+        az1 = sqrt(sr*sr + si*si)
         th2 = atan(si / sr)
         if sr < 0.0
             th2 += pi
@@ -262,12 +261,14 @@ function cgama(z::Complex{Float64}, kf::Int)
 
     if kf == 1
         # Г(z)
-        #= exp(gr) * complex(cos(gi), sin(gi)) =#
-        return exp(gr) * cis(gi)
-    else
-        # ln[ Г(z) ]
-        return complex(gr, gi)
+        # TODO-OPT: return exp(gr) * cis(gi)
+        g0 = exp(gr)
+        gr = g0 * cos(gi)
+        gi = g0 * sin(gi)
     end
+    # else:  ln[ Г(z) ]
+
+    return complex(gr, gi)
 end
 cgama(f::Float64, kf) = cgama(complex(f), kf)
 
