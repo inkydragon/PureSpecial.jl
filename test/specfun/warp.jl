@@ -495,21 +495,16 @@ itsl0
 =#
 
 
-"""Parabolic Cylinder functions
-
-- [ ] _pbwa
-    - _cgama
-
-- [ ] _pbvv
-    - [ ] _gamma2
-    - [ ] _vvla
-    - [ ] _vvsa
-
-- [ ] _pbdv
-    - [ ] _dvsa
-    - [ ] _dvla
-
-"""
+"""Parabolic cylinder functions"""
+#=
+- pbwa
+- pbvv
+    - vvla
+    - vvsa
+- pbdv
+    - dvsa
+    - dvla
+=#
 
 function _pbwa(a::Float64, x::Float64)
     w1f, w2f, w1d, w2d =
