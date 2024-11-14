@@ -442,7 +442,8 @@ function itairy(x::Float64)
                 fx = x
                 r = x
                 for k = 1:40
-                    r *= (3.0 * k - 2.0) / (3.0 * k + 1.0) * x / (3.0 * k) * x / (3.0 * k - 1.0) * x
+                    # NOTE: following f77 version, use `r *= ...` results in minor differences
+                    r = r * (3.0 * k - 2.0) / (3.0 * k + 1.0) * x / (3.0 * k) * x / (3.0 * k - 1.0) * x
                     fx += r
                     if abs(r) < (abs(fx) * EPS)
                         break
@@ -451,7 +452,8 @@ function itairy(x::Float64)
                 gx = 0.5 * x * x
                 r = gx
                 for k = 1:40
-                    r *= (3.0 * k - 1.0) / (3.0 * k + 2.0) * x / (3.0 * k) * x / (3.0 * k + 1.0) * x
+                    # NOTE: following f77 version, use `r *= ...` results in minor differences
+                    r = r * (3.0 * k - 1.0) / (3.0 * k + 2.0) * x / (3.0 * k) * x / (3.0 * k + 1.0) * x
                     gx += r
                     if abs(r) < (abs(gx) * EPS)
                         break
