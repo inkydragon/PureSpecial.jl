@@ -160,6 +160,8 @@ function itsl0(x::Float64)
 
     r = 1.0
     if x <= 20.0
+        # CoSF (11.2.1); DLMF 11.2.2: Power-Series Expansions
+        # CoSF (11.2.13)
         s = 0.5
         for k in 1:100
             rd = ifelse(k == 1, 0.5, 1.0)
@@ -172,6 +174,9 @@ function itsl0(x::Float64)
 
         tl0 = 2.0 / pi * x * x * s
     else
+        # CoSF 11.2.2 Asymptotic Expansions
+        #   When |z| -> ∞, |arg z| < π/2
+        # CoSF (11.2.19)
         s = 1.0
         for k in 1:10
             r = r * k / (k + 1.0) * ((2.0 * k + 1.0) / x)^2
@@ -180,9 +185,12 @@ function itsl0(x::Float64)
                 break
             end
         end
-
-        a = zeros(Float64, 18)
         s0 = -s / (pi * x * x) + 2.0 / pi * (log(2.0 * x) + el)
+
+        # CoSF (7.2.4) Integrals of I0(t) over the Interval (0, z)
+        #   xref: CoSF SUBROUTINE ITIKA(X,TI,TK)
+        # Calculate a(k)
+        a = zeros(Float64, 18)
         a0, a1 = 1.0, 5.0 / 8.0
         a[1] = a1
         for k in 1:10
@@ -190,14 +198,16 @@ function itsl0(x::Float64)
             a[k+1] = af
             a0, a1 = a1, af
         end
-
+        # CoSF (7.2.4)
         ti = 1.0
         r = 1.0
         for k in 1:11
             r /= x
             ti += + a[k] * r
         end
-        tl0 = ti / sqrt(2 * pi * x) * exp(x) + s0
+        ti = ti / sqrt(2 * pi * x) * exp(x)
+
+        tl0 = ti + s0
     end
 
     return tl0
