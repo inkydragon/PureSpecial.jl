@@ -3,6 +3,3 @@
 *.jl.mem
 Manifest.toml
 /docs/build/
-
-# binary
-*.so
