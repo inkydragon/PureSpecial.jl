@@ -22,6 +22,8 @@ function itsh0(x::Float64)
     _EPS = 1e-12
 
     if x <= 30.0
+        # CoSF (11.1.4) Power-Series Expansions
+        # CoSF (11.1.15)
         r = 1.0
         s = 0.5
         for k in 1:100
@@ -36,6 +38,9 @@ function itsh0(x::Float64)
         th0 = 2.0 / pi * x * x * s
         return th0
     else
+        # CoSF 11.1.2 Asymptotic Expansions
+        #   When |z| -> ∞, |arg z| < π
+        # CoSF (11.1.23)
         r = 1.0
         s = 1.0
         for k in 1:12
@@ -49,6 +54,9 @@ function itsh0(x::Float64)
         el = 0.57721566490153
         a = zeros(Float64, 25)
         s0 = s / (pi * x^2) + 2.0 / pi * (log(2.0 * x) + el)
+        # CoSF 7.1.5: integrals of Y0(t)
+        #   xref: CoSF SUBROUTINE ITJYA(X,TJ,TY)
+        # Calculate a(k)
         a0 = 1.0
         a1 = 5.0 / 8.0
         a[1] = a1
@@ -58,25 +66,24 @@ function itsh0(x::Float64)
             a0 = a1
             a1 = af
         end
-
+        # Calculate f(x)
         bf = 1.0
         r = 1.0
         for k in 1:10
             r = -r / (x * x)
             bf += a[2 * k] * r
         end
-
+        # Calculate g(x)
         bg = a[1] / x
         r = 1.0 / x
         for k in 1:10
             r = -r / (x * x)
             bg += a[2 * k + 1] * r
         end
-
         xp = x + 0.25 * pi
         ty = sqrt(2.0 / (pi * x)) * (bg * cos(xp) - bf * sin(xp))
-        th0 = ty + s0
 
+        th0 = ty + s0
         return th0
     end
 end
