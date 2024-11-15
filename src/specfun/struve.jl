@@ -129,3 +129,63 @@ function itth0(x::Float64)
 
     return tth
 end
+
+"""
+Evaluate the integral of modified Struve function
+L0(t) with respect to t from 0 to x
+
+Input :
+- x   --- Upper limit  ( x ≥ 0 )
+
+Output:
+- TL0 --- Integration of L0(t) from 0 to x
+"""
+function itsl0(x::Float64)
+    @assert x >= 0
+    _EPS = 1e-12
+    el = 0.57721566490153
+
+    r = 1.0
+    if x <= 20.0
+        s = 0.5
+        for k in 1:100
+            rd = ifelse(k == 1, 0.5, 1.0)
+            r = r * rd * k / (k + 1.0) * (x / (2.0 * k + 1.0))^2
+            s += r
+            if abs(r / s) < _EPS
+                break
+            end
+        end
+
+        tl0 = 2.0 / pi * x * x * s
+    else
+        s = 1.0
+        for k in 1:10
+            r = r * k / (k + 1.0) * ((2.0 * k + 1.0) / x)^2
+            s += r
+            if abs(r / s) < _EPS
+                break
+            end
+        end
+
+        a = zeros(Float64, 18)
+        s0 = -s / (pi * x * x) + 2.0 / pi * (log(2.0 * x) + el)
+        a0, a1 = 1.0, 5.0 / 8.0
+        a[1] = a1
+        for k in 1:10
+            af = ((1.5 * (k + 0.5) * (k + 5.0 / 6.0) * a1 - 0.5 * (k + 0.5)^2 * (k - 0.5) * a0)) / (k+1)
+            a[k+1] = af
+            a0, a1 = a1, af
+        end
+
+        ti = 1.0
+        r = 1.0
+        for k in 1:11
+            r /= x
+            ti += + a[k] * r
+        end
+        tl0 = ti / sqrt(2 * pi * x) * exp(x) + s0
+    end
+
+    return tl0
+end
