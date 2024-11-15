@@ -570,6 +570,21 @@ function _itth0(x::Float64)
     tth[]
 end
 
+"""
+    SUBROUTINE ITSL0(X,  TL0)
+    double itsl0(double x)
+
+- Output: `(tl0)`
+"""
+function _itsl0(x::Float64)
+    tl0 = Ref{Float64}(NaN)
+    ccall(f77func(:itsl0), Cvoid,
+        (Ref{Float64}, Ref{Float64}),
+        x, tl0)
+    tl0[]
+end
+
+
 """Parabolic cylinder functions"""
 #=
 - pbwa

@@ -36,3 +36,20 @@ end
         end
     end
 end
+
+@testset "itsl0" begin
+    test_x = Float64[
+        eps(0.0),
+        rand(4)...,
+        0:4...,
+        nextfloat(20.0),
+        20:24...,
+    ]
+    for x in test_x
+        th0_ref = _itsl0(x)
+        th0 = Specfun.itsl0(x)
+        @testset "itsl0(x=$x)" begin
+            @test isapprox(th0_ref, th0; nans=true)
+        end
+    end
+end
