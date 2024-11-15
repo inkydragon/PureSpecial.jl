@@ -2,9 +2,9 @@
 #   See also: src/specfun/LICENSE.md
 """Struve Functions"""
 #=
-- itsh0
-- itth0
-- itsl0
+- ✅ itsh0
+- ✅ itth0
+- ✅ itsl0
 =#
 
 """

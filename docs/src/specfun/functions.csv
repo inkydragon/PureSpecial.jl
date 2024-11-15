@@ -94,9 +94,9 @@
 ,itikb,,Integrate Bessel functions I0(t) and K0(t) with respect to t from 0 to x
 ,itjya,,Integrate Bessel functions J0(t) & Y0(t) with respect to t from 0 to x
 ,itjyb,,Integrate Bessel functions J0(t) and Y0(t) with respect to t from 0 to x ( x ≥ 0 )
-,itsh0,,Evaluate the integral of Struve function H0(t) with respect to t from 0 and x
-,itsl0,,Evaluate the integral of modified Struve function L0(t) with respect to t from 0 to x
-,itth0,,Evaluate the integral H0(t)/t with respect to t from x to infinity
+1,itsh0,,Evaluate the integral of Struve function H0(t) with respect to t from 0 and x
+1,itsl0,,Evaluate the integral of modified Struve function L0(t) with respect to t from 0 to x
+1,itth0,,Evaluate the integral H0(t)/t with respect to t from x to infinity
 ,ittika,,"Integrate [I0(t)-1]/t with respect to t from 0 to x, and K0(t)/t with respect to t from x to ∞"
 ,ittikb,,"Integrate [I0(t)-1]/t with respect to t from 0 to x, and K0(t)/t with respect to t from x to ∞"
 ,ittjya,,"Integrate [1-J0(t)]/t with respect to t from 0 to x, and Y0(t)/t with respect to t from x to ∞"
