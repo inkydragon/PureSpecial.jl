@@ -105,6 +105,8 @@ function itth0(x::Float64)
     s = 1.0
     r = 1.0
     if x < 24.5
+        # CoSF (11.1.4) Power-Series Expansions
+        # CoSF (11.1.16)
         for k in 1:60
             r = -r * x * x * (2.0 * k - 1.0) / (2.0 * k + 1.0)^3
             s += r
@@ -115,6 +117,9 @@ function itth0(x::Float64)
 
         tth = pi / 2.0 - 2.0 / pi * x * s
     else
+        # CoSF 11.1.2 Asymptotic Expansions
+        #   When |z| -> ∞, |arg z| < π
+        # CoSF (11.1.24)
         for k in 1:10
             r = -r * (2.0 * k - 1.0)^3 / ((2.0 * k + 1.0) * x * x)
             s += r
@@ -124,13 +129,14 @@ function itth0(x::Float64)
         end
 
         tth = 2.0 / (pi * x) * s
+        # CoSF (7.1.14) Integrals of Y0(t)/t over the Interval (z, +Inf)
+        #   xref: CoSF SUBROUTINE ITTJYB(X,TTJ,TTY)
         t = 8.0 / x
         xt = x + 0.25 * pi
-
         f0 = (((((0.0018118 * t - 0.0091909) * t + 0.017033) * t - 0.0009394) * t - 0.051445) * t - 0.0000011) * t + 0.7978846
         g0 = (((((-0.0023731 * t + 0.0059842) * t + 0.0024437) * t - 0.0233178) * t + 0.0000595) * t + 0.1620695) * t
-
         tty = (f0 * sin(xt) - g0 * cos(xt)) / sqrt(x) / x
+
         tth += tty
     end
 
