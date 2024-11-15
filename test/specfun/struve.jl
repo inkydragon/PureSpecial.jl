@@ -7,6 +7,7 @@
         0:4...,
         nextfloat(30.0),
         30:34...,
+        1e4,
     ]
 
     for x in test_x
@@ -27,6 +28,7 @@ end
         prevfloat(24.5),
         24.5,
         24:28...,
+        1e4,
     ]
     for x in test_x
         th0_ref = _itth0(x)
@@ -44,6 +46,7 @@ end
         0:4...,
         nextfloat(20.0),
         20:24...,
+        1e4,
     ]
     for x in test_x
         th0_ref = _itsl0(x)
