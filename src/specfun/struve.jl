@@ -80,3 +80,52 @@ function itsh0(x::Float64)
         return th0
     end
 end
+
+"""
+Evaluate the integral H0(t)/t with respect to t
+from x to infinity
+
+Input :
+- x   --- Lower limit  ( x ≥ 0 )
+
+Output:
+- TTH --- Integration of H0(t)/t from x to infinity
+"""
+function itth0(x::Float64)
+    @assert x >= 0
+    _EPS = 1e-12
+
+    s = 1.0
+    r = 1.0
+    if x < 24.5
+        for k in 1:60
+            r = -r * x * x * (2.0 * k - 1.0) / (2.0 * k + 1.0)^3
+            s += r
+            if abs(r) < abs(s) * _EPS
+                break
+            end
+        end
+
+        tth = pi / 2.0 - 2.0 / pi * x * s
+    else
+        for k in 1:10
+            r = -r * (2.0 * k - 1.0)^3 / ((2.0 * k + 1.0) * x * x)
+            s += r
+            if abs(r) < abs(s) * _EPS
+                break
+            end
+        end
+
+        tth = 2.0 / (pi * x) * s
+        t = 8.0 / x
+        xt = x + 0.25 * pi
+
+        f0 = (((((0.0018118 * t - 0.0091909) * t + 0.017033) * t - 0.0009394) * t - 0.051445) * t - 0.0000011) * t + 0.7978846
+        g0 = (((((-0.0023731 * t + 0.0059842) * t + 0.0024437) * t - 0.0233178) * t + 0.0000595) * t + 0.1620695) * t
+
+        tty = (f0 * sin(xt) - g0 * cos(xt)) / sqrt(x) / x
+        tth += tty
+    end
+
+    return tth
+end
