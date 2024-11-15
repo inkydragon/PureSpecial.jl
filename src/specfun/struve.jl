@@ -2,6 +2,14 @@
 #   See also: src/specfun/LICENSE.md
 """Struve Functions"""
 #=
+- stvh0
+- stvh1
+- stvhv
+- stvl0
+- stvl1
+- stvlv
+
+Integrals
 - ✅ itsh0
 - ✅ itth0
 - ✅ itsl0
