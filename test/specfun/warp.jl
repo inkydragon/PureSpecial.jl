@@ -589,6 +589,19 @@ function _stvhv(v::Float64, x::Float64)
 end
 
 """
+    SUBROUTINE STVL0(X,SL0)
+
+- Output: `(Hv)`
+"""
+function _stvl0(x::Float64)
+    ret = Ref{Float64}(NaN)
+    ccall(f77func(:stvl0), Cvoid,
+        (Ref{Float64}, Ref{Float64}),
+        x, ret)
+    ret[]
+end
+
+"""
     SUBROUTINE ITSH0(X,  TH0)
     double itsl0(double x)
 
