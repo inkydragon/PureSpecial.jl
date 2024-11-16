@@ -20,6 +20,25 @@
     end
 end
 
+@testset "struve.stvh1" begin
+    test_x = Float64[
+        eps(0.0),
+        # typemax(Float64),
+        # NaN, 
+        rand(4)...,
+        0:4...,
+        nextfloat(20.0),
+        20:24...,
+        1e4,
+    ]
+    for x in test_x
+        ret_ref = _stvh1(x)
+        ret = Specfun.stvh1(x)
+        @testset "stvh1($x)" begin
+            @test isapprox(ret_ref, ret; nans=true)
+        end
+    end
+end
 
 @testset "struve.itsh0" begin
     test_x = Float64[

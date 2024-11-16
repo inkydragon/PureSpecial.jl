@@ -537,8 +537,8 @@ end
 
 """Struve Functions"""
 #=
-    stvh0
-    stvh1
+stvh0
+stvh1
     stvhv
     stvl0
     stvl1
@@ -557,6 +557,19 @@ itsl0
 function _stvh0(x::Float64)
     ret = Ref{Float64}(NaN)
     ccall(f77func(:stvh0), Cvoid,
+        (Ref{Float64}, Ref{Float64}),
+        x, ret)
+    ret[]
+end
+
+"""
+    SUBROUTINE STVH1(X, SH1)
+
+- Output: `(SH1)`
+"""
+function _stvh1(x::Float64)
+    ret = Ref{Float64}(NaN)
+    ccall(f77func(:stvh1), Cvoid,
         (Ref{Float64}, Ref{Float64}),
         x, ret)
     ret[]
