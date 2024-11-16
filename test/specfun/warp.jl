@@ -537,10 +537,30 @@ end
 
 """Struve Functions"""
 #=
+    stvh0
+    stvh1
+    stvhv
+    stvl0
+    stvl1
+    stvlv
+
 itsh0
 itth0
 itsl0
 =#
+
+"""
+    SUBROUTINE STVH0(X, SH0)
+
+- Output: `(SH0)`
+"""
+function _stvh0(x::Float64)
+    ret = Ref{Float64}(NaN)
+    ccall(f77func(:stvh0), Cvoid,
+        (Ref{Float64}, Ref{Float64}),
+        x, ret)
+    ret[]
+end
 
 """
     SUBROUTINE ITSH0(X,  TH0)
