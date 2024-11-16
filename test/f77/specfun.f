@@ -12324,3 +12324,980 @@ C
         EDN=DSQRT(1.0D0-HK*HK*ESN*ESN)
         RETURN
         END
+
+
+
+
+C       ========================================================================
+C        Missing Functions.
+C        The following functions appear in CoSF.
+C
+C        Add by Chengyu HAN (2024)
+C
+C       -----------------------
+C        5.  BESSEL FUNCTIONS
+C       -----------------------
+C
+C           CJY01(Z,  CBJ0,CDJ0,CBJ1,CDJ1, CBY0,CDY0,CBY1,CDY1):
+C                   Compute complex Bessel Functions J0(z), J1(z),
+C                   Y0(z), Y1(z), and their derivatives
+C           CJYNA(N,Z,NM,  CBJ,CDJ,CBY,CDY)
+C                   Compute Bessel functions Jn(z) and Yn(z) and
+C                   their derivatives for a complex argument
+C
+C       ------------------------------------
+C        8.  SPHERICAL BESSEL FUNCTIONS
+C       ------------------------------------
+C
+C           CSPHJY(N,Z,NM,  CSJ,CDJ,CSY,CDY)
+C                   Compute spherical Bessel functions and their
+C                   derivatives with a complex argument
+C           CSPHIK(N,Z,NM,  CSI,CDI,CSK,CDK)
+C                   Compute modified spherical Bessel functions
+C                   and their derivatives with a complex argument
+C
+C       -----------------------
+C        11. STRUVE FUNCTIONS
+C       -----------------------
+C
+C           STVH0(X,SHO):     Compute struve function H0(x)
+C           STVH1(X,SH1):     Compute:struve function H1(x)
+C           STVHV(V,X,HV):    Compute struve function Hv(x) with
+C                 arbitrary order v ( -8.0 ≤ v ≤ 12.5 )
+C           STVL0(X,SL0):     Compute modified struve function L0(x)
+C           STVL1(X,SL1):     Compute modified struve function L1(x)
+C           STVLV(V,X,SLV):   Compute modified struve function Lv(x)
+C
+
+
+C
+C       -----------------------
+C        5.  BESSEL FUNCTIONS
+C       -----------------------
+C
+C
+        SUBROUTINE CJY01(Z, CBJ0,CDJ0,CBJ1,CDJ1, CBY0,CDY0,CBY1,CDY1)
+C
+C       ========================================================
+C        Purpose: Compute complex Bessel Functions J0(z), J1(z),
+C                 Y0(z), Y1(z), and their derivatives
+C        Input  : z    --- Complex argument of Jn(z) and Yn(z)
+C        Output : CBJ0 --- J0(z)
+C                 CDJ0 --- J0'(z)
+C                 CBJ1 --- J1(z)
+C                 CDJ1 --- J1'(z)
+C                 CBY0 --- Y0(z)
+C                 CDY0 --- Y0'(z)
+C                 CBY1 --- Y1(z)
+C                 CDY1 --- Y1'(z)
+C       ========================================================
+C
+         IMPLICIT DOUBLE PRECISION (A,B,E,P,R,W)
+         IMPLICIT COMPLEX*16 (C,Z)
+         DIMENSION A(12),B(12),A1(12),B1(12)
+         PI=3.141592653589793D0
+         EL=0.5772156649015329D0
+         EPS=1.0D-15
+C
+         RP2=2.0D0/PI
+         CI=(0.0D0,1.0D0)
+         A0=CDABS(Z)
+         Z2=Z*Z
+         Z1=Z
+         IF (A0.EQ.0.0D0) THEN
+C                             <<< Treat z=0 as a special case
+            CBJ0=(1.0D0,0.0D0)
+            CBJ1=(0.0D0,0.0D0)
+            CDJ0=(0.0D0,0.0D0)
+            CDJ1=(0.5D0,0.0D0)
+            CBY0=-(1.0D300,0.0D0)
+            CBY1=-(1.0D300,0.0D0)
+            CDY0=(1.0D300,0.0D0)
+            CDY1=(1.0D300,0.0D0)
+            RETURN
+         ENDIF
+C
+C
+         IF(REAL(Z).LT.0.0) Z1=-Z
+         IF (A0.LE.12.0D0) THEN
+C                             <<< Use (5.2.1)-(5.2.4) for |z| ≤ 12
+            CBJ0=(1.0D0,0.0D0)
+            CR=(1.0D0,0.0D0)
+            DO 10 K=1,40
+C                             <<< Cakculate (5.2.1)
+               CR=-0.25D0*CR*Z2/(K*K)
+               CBJ0=CBJ0+CR
+               IF(CDABS(CR).LT.CDABS(CBJ0)*EPS) GO TO 15
+10          CONTINUE
+15          CBJ1=(1.0D0,0.0D0)
+            CR=(1.0D0,0.0D0)
+            DO 20 K=1,40
+C                             <<< Calculate (5_2.2)
+               CR=-0.25D0*CR*Z2/(K*(K+1.0D0))
+               CBJ1=CBJ1+CR
+               IF(CDABS(CR).LT.CDABS(CBJ1)*EPS) GO TO 25
+20          CONTINUE
+25          CBJ1=0.5D0*Z1*CBJ1
+            W0=0.0D0
+            CR=(1.0D0,0.0D0)
+            CS=(0.0D0,0.0D0)
+            DO 30 K=1,40
+C                             <<< Calculate (5.2.3)
+               W0=W0+1.0D0/K
+               CR=-0.25D0*CR/(K*K)*Z2
+               CP=CR*W0
+               CS=CS+CP
+               IF(CDABS(CP).LT.CDABS(CS)*EPS) GO TO 35
+30          CONTINUE
+35          CBY0=RP2*(CDLOG(Z1/2.0D0)+EL)*CBJ0-RP2*CS
+            W1=0.0D0
+            CR=(1.0D0,0.0D0)
+            CS=(1.0D0,0.0D0)
+            DO 40 K=1,40
+C                             <<< Calculate (5.2.4)
+               W1=W1+1.0D0/K
+               CR=-0.25D0*CR/(K*(K+1))*Z2
+               CP=CR*(2.0D0*W1+1.0D0/(K+1.0D0))
+               CS=CS+CP
+               IF(CDABS(CP).LT.CDABS(CS)*EPS)GO TO 45
+40          CONTINUE
+45          CBY1=RP2*((CDLOG(Z1/2.0D0)+EL)*CBJ1-1.0D0/Z1-0.25D0*Z1*CS)
+         ELSE
+C                          <<< Use (5.2.5) and (5.2.6) for |z| > 12
+            DATA A/  -.703125D-01,.112152099609375D+00,
+     &               -.5725014209747314D+00,.6074042001273483D+01,
+     &               -.1100171402692467D+03,.3038090510922384D+04,
+     &               -.1188384262567832D+06,.6252951493434797D+07,
+     &               -.4259392165047669D+09,.3646840080706556D+11,
+     &               -.3833534661393944D+13,.4854014686852901D+15/
+            DATA B/  .732421875D-01,-.2271080017089844D+00,
+     &               .1727727502584457D+01,-.2438052969955606D+02,
+     &               .5513358961220206D+03,-.1825775547429318D+05,
+     &               .8328593040162893D+06,-.5006958953198893D+08,
+     &               .3836255180230433D+10,-.3649010818849833D+12,
+     &               .4218971570284096D+14,-.5827244631566907D+16/
+            DATA A1/ .1171875D+00,-.144195556640625D+00,
+     &               .6765925884246826D+00,-.6883914268109947D+01,
+     &               .1215978918765359D+03,-.3302272294480852D+04,
+     &               .1276412726461746D+06,-.6656367718817688D+07,
+     &               .4502786003050393D+09,-.3833857520742790D+11,
+     &               .4011838599133198D+13,-.5060568503314727D+15/
+            DATA B1/ -.1025390625D+00,.2775764465332031D+00,
+     &               -.1993531733751297D+01,.2724882731126854D+02,
+     &               -.6038440767050702D+03,.1971837591223663D+05,
+     &               -.8902978767070678D+06,.5310411010968522D+08,
+     &               -.4043620325107754D+10,.3827011346598605D+12,
+     &               -.4406481417852278D+14,.6065091351222699D+16/
+            K0=12
+            IF (A0.GE.35.0D0) K0=10
+            IF (A0.GE.50.0D0) K0=8
+            CT1=Z1-0.25D0*PI
+            CP0=(1.0D0,0.0D0)
+            DO 50 K=1,K0
+50             CP0=CP0+A(K)*Z1**(-2*K)
+C                                <<< Cakculate (5.2.9)
+            CQ0=-0.125D0/Z1
+            Do 55 K=1,K0
+55             CQ0=CQ0+B(K)*Z1**(-2*K-1)
+C                                <<< Calculate (5.2.10)
+            CU=CDSQRT(RP2/Z1)
+            CBJ0=CU*(CP0*CDCOS(CT1)-CQ0*CDSIN(CT1))
+            CBY0=CU*(CP0*CDSIN(CT1)+CQ0*CDCOS(CT1))
+
+            CT2=Z1-0.75D0*PI
+            CP1=(1.0D0,0.0D0)
+            DO 60 K=1,K0
+60             CP1=CP1+A1(K)*Z1**(-2*K)
+C                                <<< Calculate (5.2.11)
+            CQ1=0.375D0/Z1
+            DO 65 K=1,K0
+65             CQ1=CQ1+B1(K)*Z1**(-2*K-1)
+C                                <<< Calculate (5.2.12)
+            CBJ1=CU*(CP1*CDCOS(CT2)-CQ1*CDSIN(CT2))
+            CBY1=CU*(CP1*CDSIN(CT2)+CQ1*CDCOS(CT2))
+         ENDIF
+
+         IF (REAL(Z).LT.0.0) THEN
+C                                <<< Apppy (5.4.2)
+            IF(DIMAG(Z).LT.0.0) CBY0=CBY0-2.0D0*CI*CBJ0
+            IF(DIMAG(Z).GT.0.0) CBY0=CBY0+2.0D0*CI*CBJ0
+            IF(DIMAG(Z).LT.0.0) CBY1=-(CBY1-2.0D0*CI*CBJ1)
+            IF(DIMAG(Z).GT.0.0) CBY1=-(CBY1+2.0D0*CI*CBJ1)
+            CBJ1=-CBJ1
+         ENDIF
+C                                <<< Calculate the derivatives
+         CDJ0=-CBJ1
+         CDJ1=CBJ0-1.0D0/Z*CBJ1
+         CDY0=-CBY1
+         CDY1=CBY0-1.0D0/Z*CBY1
+         RETURN
+       END
+C           CJY01(Z, CBJ0,CDJ0,CBJ1,CDJ1, CBY0,CDY0,CBY1,CDY1)
+C
+
+C
+        SUBROUTINE CJYNA(N,Z,  NM,CBJ,CDJ,CBY,CDY)
+C
+C       ========================================================
+C        Purpose: Compute Bessel functions Jn(z) and Yn(z) and
+C                 their derivatives for a complex argument
+C        Input  : z --- Complex argument of Jn(z)and Yn(z)
+C                 n --- order of Jn(z) and Yn(z)
+c        Output : CBJ(n) --- Jn(z)
+C                 CDJ(n) --- Jn'(z)
+C                 CBY(n) --- Yn(z)
+C                 CDY(n) --- Yn'(z)
+C                 NM --- Highest order computed
+C        Routines called:
+C             (1) CJY01 to calculate J0(z), J1(z), Y0(z), Y1(z)
+C             (2) MSTA1 and MSTA2 to calculate the starting
+C                 point for backward recurrence
+C       ========================================================
+C
+         IMPLICIT DOUBLE PRECISION (A,B,E,P,R,W,Y)
+         IMPLICIT COMPLEX*16 (C,Z)
+         DIMENSION CBJ(0:N),CDJ(0:N),CBY(0:N),CDY(0:N)
+         PI=3.141592653589793D0
+
+         A0=CDABS(Z)
+         NM=N
+         IF(A0.LT.1.0D-100) THEN
+C                                <<< Treat z=0 as a special case
+            DO 5 K=0,N
+               CBJ(K)= (0.0D0,0.0D0)
+               CDJ(K)= (0.0D0,0.0D0)
+               CBY(K)=-(1.0D+300,0.0D0)
+               CDY(K)= (1.0D+300,0.0D0)
+5           CONTINUE
+            CBJ(0)=(1.0D0,0.0D0)
+            CDJ(1)=(0.5D0,0.0D0)
+            RETURN
+         ENDIF
+
+
+         CALL CJY01(Z, CBJ0,CDJ0,CBJ1,CDJ1, CBY0,CDY0,CBY1,CDY1)
+C                                <<< Calculate J0, J1, Y0, and Y1
+         CBJ(0)=CBJ0
+         CBJ(1)=CBJ1
+         CBY(0)=CBY0
+         CBY(1)=CBY1
+         CDJ(0)=CDJ0
+         CDJ(1)=CDJ1
+         CDY(0)=CDY0
+         CDY(1)=CDY1
+         IF (N.LE.1) RETURN
+
+C                                <<< Calculate J0 using forward
+C                                    recurrence for N < |z|/4
+         IF (N.LT.INT(0.25*A0)) THEN
+            CJ0=CBJ0
+            CJ1=CBJ1
+            DO 70 K=2,N
+               CJK=2.0D0*(K-1.0D0)/Z*CJ1-CJ0
+               CBJ(K)=CJK
+               CJ0=CJ1
+               CJ1=CJK
+70          CONTINUE
+         ELSE
+C                                <<< Otherwse, use backward recurrence
+            M=MSTA1(A0,200)
+            IF (M.LT.N) THEN
+               NM=M
+            ELSE
+               M=MSTA2(A0,N,15)
+            ENDIF
+            CF2=(0.0D0,0.0D0)
+            CF1=(1.0D-100,0.0D0)
+            DO 75 K=M,0,-1
+               CF=2.0D0*(K+1.0D0)/Z*CF1-CF2
+               IF (K.LE.NM) CBJ(K)=CF
+               CF2=CF1
+               CF1=CF
+75          CONTINUE
+            IF(CDABS(CBJ0).GT.CDABS(CBJ1)) THEN
+               CS=CBJ0/CF
+            ELSE
+               CS=CBJ1/CF2
+            ENDIF
+            DO 80 K=0,NM
+80             CBJ(K)=CS*CBJ(K)
+         ENDIF
+C                                <<< Calculate the derivative of Jn
+         DO 85 K=2,NM
+85          CDJ(K)=CBJ(K-1)-K/Z*CBJ(K)
+C  <<< Note:
+C        The folowing part calcuatas Yn using mixed recurrence described above.
+C        It can be replaced by a simpler aigorithm based on (5.4.19) and (5.4.20)
+C
+         YA0=CDABS(CBY0)
+C                                <<< Determine the turning point B
+C                                      approximatety using fonward recurrence
+         LB=0
+         CG0=CBY0
+         CG1=CBY1
+         DO 90 K=2,NM
+            CYK=2.0D0*(K-1.0D0)/Z*CG1-CG0
+            YAK=CDABS(CYK)
+            YA1=CDABS(CG0)
+            IF ((YAK.LT.YA0).AND.(YAK.LT.YA1)) LB=K
+            CBY(K)=CYK
+            CG0=CG1
+            CG1=CYK
+90       CONTINUE
+         IF((LB.LE.4).OR.(DIMAG(Z).EQ.0.0D0)) GO TO 125
+
+95       IF(LB.EQ.LB0) GO TO 125
+         CH2=(1.0D0,0.0D0)
+         CH1=(0.0D0,0.0D0)
+         LB0=LB
+         DO 100 K=LB,1,-1
+            CH0=2.0D0*K/Z*CH1-CH2
+            CH2=CH1
+            CH1=CH0
+100      CONTINUE
+C                                <<< Calculato Puz and Pz
+         CP12=CH0
+         CP22=CH2
+         CH2=(0.0D0,0.0D0)
+         CH1=(1.0D0,0.0D0)
+         DO 105 K=LB,1,-1
+            CH0=2.0D0*K/Z*CH1-CH2
+            CH2=CH1
+            CH1=CH0
+105      CONTINUE
+C                                <<< Calculate Pi, and Pz
+         CP11=CH0
+         CP21=CH2
+         IF(LB.EQ.NM) CBJ(LB+1) = 2.0D0*LB/Z*CBJ(LB) - CBJ(LB-1)
+         IF( CDABS(CBJ(0)) .GT. CDABS(CBJ(1)) ) THEN
+            CBY(LB+1) = (CBJ(LB+1)*CBY0 - 2.0D0*CP11/(PI*Z)) / CBJ(0)
+            CBY(LB  ) = (CBJ(LB  )*CBY0 + 2.0D0*CP12/(PI*Z)) / CBJ(0)
+         ELSE
+            CBY(LB+1) = (CBJ(LB+1)*CBY1 - 2.0D0*CP21/(PI*Z)) / CBJ(1)
+            CBY(LB  ) = (CBJ(LB  )*CBY1 + 2.0D0*CP22/(PI*Z)) / CBJ(1)
+         ENDIF
+         CYL2=CBY(LB+1)
+         CYL1=CBY(LB)
+C                                <<< Calculate Yk using backward
+C                                      recurronce tor k <= B
+         DO 110 K=LB-1,0,-1
+            CYLK=2.0D0*(K+1.0D0)/Z*CYL1-CYL2
+            CBY(K)=CYLK
+            CYL2=CYL1
+            CYL1=CYLK
+110      CONTINUE
+         CYL1=CBY(LB)
+         CYL2=CBY(LB+1)
+C                                <<< Calculate Yk using forward
+C                                      recurrence for k > B
+         DO 115 K=LB+1,N-1
+            CYLK=2.0D0*K/Z*CYL2-CYL1
+            CBY(K+1)=CYLK
+            CYL1=CYL2
+            CYL2=CYLK
+115      CONTINUE
+C                                <<< Checkif B is accurate
+C                                      If not, use new B and repeat
+         DO 120 K=2,NM
+            WA=CDABS(CBY(K))
+            IF( WA .LT. CDABS(CBY(K-1)) ) LB=K
+120      CONTINUE
+         GO TO 95
+
+125      CONTINUE
+C                                <<< Calculate the derivative of Yn
+         DO 130 K=2,NM
+130         CDY(K)=CBY(K-1)-K/Z*CBY(K)
+         RETURN
+        END
+C           CJYNA(N,Z,  NM,CBJ,CDJ,CBY,CDY)
+C
+
+C
+        SUBROUTINE CSPHIK(N,Z, NM,CSI,CDI,CSK,CDK)
+C
+C       =============================================================
+C        Purpose: Compute modified spherical Bessel functions
+C                 and their derivatives with a complex argument
+C        Input  : Z --- Complex argument
+C                 n --- Order of in(z) & kn(z)  ( n = 0,1,2,... )
+C        output : CSI(n) --- in(z)
+C                 CDI(n) --- in'(z)
+C                 CSK(n) --- kn(z)
+C                 CDK(n) --- kn'(z)
+C                 NM --- Highest order computed
+C        Routines called:
+C                 MSTA1 and MSTA2 to calculate the starting
+C                 point for backward recurrence
+C       =============================================================
+C
+         IMPLICIT COMPLEX*16 (C,Z)
+         DOUBLE PRECISION A0,PI
+         DIMENSION CSI(0:N),CDI(0:N),CSK(0:N),CDK(0:N)
+         PI=3.141592653589793D0
+C
+         A0=CDABS(Z)
+         NM=N
+         IF (A0.LT.1.0D-60) THEN
+C                                <<<  Treat z = 0 as a specal case
+            DO 10 K=0,N
+               CSI(K)=0.0D0
+               CDI(K)=0.0D0
+               CSK(K)=1.0D+300
+               CDK(K)=-1.0D+300
+10          CONTINUE
+            CSI(0)=1.0D0
+            CDI(0)=.33333333333333D0
+            RETURN
+         ENDIF
+C
+
+         CI=CMPLX(0.0D0,1.0D0)
+         CSINH=CDSIN(CI*Z)/CI
+         CCOSH=CDCOS(CI*Z)
+         CSI0=CSINH/Z
+         CSI1=-(CSINH/Z-CCOSH)/Z
+         CSI(0)=CSI0
+         CSI(1)=CSI1
+         IF (N.GE.2) THEN
+            M=MSTA1(A0,200)
+C                                <<< Calculate In(z) by backward recurrence
+            IF (M.LT.N) THEN
+               NM=M
+            ELSE
+               M=MSTA2(A0,N,15)
+            ENDIF
+            CF0=0.0D0
+            CF1=1.0D0-100
+            DO 15 K=M,0,-1
+               CF=(2.0D0*K+3.0D0)*CF1/Z+CF0
+               IF(K.LE.NM) CSI(K)=CF
+               CF0=CF1
+               CF1=CF
+15          CONTINUE
+            IF(CDABS(CSI0).GT.CDABS(CSI1)) CS=CSI0/CF
+            IF(CDABS(CSI0).LE.CDABS(CSI1)) CS=CSI1/CF0
+            DO 20 K=0,NM
+20             CSI(K)=CS*CSI(K)
+         ENDIF
+
+C                                <<< Caiculate the dervatve of In(z)
+         CDI(0)=CSI(1)
+         DO 25 K=1,NM
+25          CDI(K)=CSI(K-1)-(K+1.0D0)/Z*CSI(K)
+         CSK(0)=0.5D0*PI/Z*CDEXP(-Z)
+         CSK(1)=CSK(0)*(1.0D0+1.0D0/Z)
+
+C                                <<< Calculate k0(z) using (8.3.29) or (8.3.30)
+         DO 30 K=2,NM
+            IF(CDABS(CSI(K-1)).GT.CDABS(CSI(K-2))) THEN
+               CSK(K)=(0.5D0*PI/(Z*Z)-CSI(K)*CSK(K-1))/CSI(K-1)
+            ELSE
+               CSK(K)=(CSI(K)*CSK(K-2)+(K-0.5D0)*PI/Z**3)/CSI(K-2)
+            ENDIF
+30       CONTINUE
+         CDK(0)=-CSK(1)
+C                                <<< Calculate the dervatve of kn(z)
+         DO 35 K=1,NM
+35          CDK(K)=-CSK(K-1)-(K+1.0D0)/Z*CSK(K)
+         RETURN
+        END
+C           CSPHIK(N,Z, NM,CSI,CDI,CSK,CDK)
+C
+
+
+C
+C       ------------------------------------
+C        8.  SPHERICAL BESSEL FUNCTIONS
+C       ------------------------------------
+C
+C
+         SUBROUTINE CSPHJY(N,Z, NM,CSJ,CDJ,CSY,CDY)
+C
+C       =======================================================
+C        Purpose: Compute spherical Bessel functions and their
+C                 derivatives with a complex argument
+C        Input :  z --- complex argument
+C                 n --- order of jn(z)
+C        output:  CSJ(n) --- jn(z)
+C                 CDJ(n) --- jn'(z)
+C                 CSY(n) --- yn(z)
+C                 cpx(n) --- yn'(z)
+C                 NM --- Highest order computed
+C        Routines called:
+C                 MSTA1,and MSTA2 to calculate the starting
+C                 point for backward recurrence
+C       =======================================================
+C
+         IMPLICIT COMPLEX*16 (C,Z)
+         DOUBLE PRECISION A0
+         DIMENSION CSJ(0:N),CDJ(0:N),CSY(0:N),CDY(0:N)
+
+         A0=CDABS(Z)
+         NM=N
+         IF (A0.LT.1.0D-60) THEN
+C                             <<<  Treat z=0 as a special case
+            DO 10 K=0,N
+               CSJ(K)=0.0D0
+               CDJ(K)=0.0D0
+               CSY(K)=-1.0D+300
+10             CDY(K)=1.0D+300
+            CSJ(0)=(1.0D0,0.0D0)
+            CDJ(1)=(.3333333333333333D0,0.0D0)
+            RETURN
+         ENDIF
+C
+
+         CSJ(0)=CDSIN(Z)/Z
+         CSJ(1)=(CSJ(0)-CDCOS(Z))/Z
+         IF (N.GE.2) THEN
+C                             <<< Calculate jn(z) by backward recurrence
+            CSA=CSJ(0)
+            CSB=CSJ(1)
+            M=MSTA1(A0,200)
+            IF (M.LT.N) THEN
+               NM=M
+            ELSE
+               M=MSTA2(A0,N,15)
+            ENDIF
+            CF0=0.0D0
+            CF1=1.0D0-100
+            DO 15 K=M,0,-1
+               CF=(2.0D0*K+3.0D0)*CF1/Z-CF0
+               IF (K.LE.NM) CSJ(K)=CF
+               CF0=CF1
+15             CF1=CF
+            IF (CDABS(CSA).GT.CDABS(CSB)) CS=CSA/CF
+            IF (CDABS(CSA).LE.CDABS(CSB)) CS=CSB/CF0
+            DO 20 K=0,NM
+20             CSJ(K)=CS*CSJ(K)
+         ENDIF
+
+         CDJ(0)=(CDCOS(Z)-CDSIN(Z)/Z)/Z
+         DO 25 K=1,NM
+C                             <<< Calculate the derivatve ot jn(z)
+25          CDJ(K)=CSJ(K-1)-(K+1.0D0)*CSJ(K)/Z
+         CSY(0)=-CDCOS(Z)/Z
+         CSY(1)=(CSY(0)-CDSIN(Z))/Z
+         CDY(0)=(CDSIN(Z)+CDCOS(Z)/Z)/Z
+         CDY(1)=(2.0D0*CDY(0)-CDCOS(Z))/Z
+         DO 30 K=2,NM
+C                             <<< Calculate yn(z) using (8.1.31) or (8.1.32)
+            IF (CDABS(CSJ(K-1)).GT.CDABS(CSJ(K-2))) THEN
+               CSY(K)=(CSJ(K)*CSY(K-1)-1.0D0/(Z*Z))/CSJ(K-1)
+            ELSE
+               CSY(K)=(CSJ(K)*CSY(K-2)-(2.0D0*K-1.0D0)/Z**3)/CSJ(K-2)
+            ENDIF
+30       CONTINUE
+         DO 35 K=2,NM
+C                             <<< Calcuiate the derivative ot yn(z)
+35          CDY(K)=CSY(K-1)-(K+1.0D0)*CSY(K)/Z
+         RETURN
+         END
+C           CSPHJY(N,Z, NM,CSJ,CDJ,CSY,CDY)
+C
+
+
+C
+C       -----------------------
+C        11. STRUVE FUNCTIONS
+C       -----------------------
+C
+C
+        SUBROUTINE STVH0(X,SH0)
+C
+C       ==============================================
+C        Purpose: Compute Struve Function H0(x)
+C        Input  : x   --- Argument of H0(x) ( x ≥ 0 )
+C        output : SH0 --- H0(x)
+C       ==============================================
+C
+         IMPLICIT DOUBLE PRECISION (A-H, O-Z)
+         PI=3.141592653589793D0
+         EPS=1.0D-12
+C
+         S=1.0D0
+         R=1.0D0
+         IF (X.LE.20.0D0) THEN
+C                             Use (11.1.4) when x ≤ 20
+            A0=2.0D0*X/PI
+            DO 10 K=1,60
+               R=-R*(X/(2.0D0*K+1.0D0))**2
+               S=S+R
+               IF(DABS(R).LT.DABS(S)*EPS) GO TO 15
+10          CONTINUE
+15          SH0=A0*S
+         ELSE
+C                             Use (11.1.21) when x > 20
+            KM=INT(0.5*(X+1.0))
+            IF (X.GE.50.0D0) KM=25
+            DO 20 K=1,KM
+               R=-R*((2.0D0*K-1.0D0)/X)**2
+               S=S+R
+               IF(DABS(R).LT.DABS(S)*EPS) GO TO 25
+20          CONTINUE
+C                             Calculate Y0(x) using (5.2.18)
+25          T=4.0D0/X
+            T2=T*T
+            P0=  ((((-.37043D-5*T2+.173565D-4)*T2-.487613D-4)
+     &         *T2+.17343D-3)*T2-.1753062D-2)*T2+.3989422793D0
+            Q0=T*(((((.32312D-5*T2-.142078D-4)*T2+.342468D-4)
+     &         *T2-.869791D-4)*T2+.4564324D-3)*T2-.0124669441D0)
+            TA0=X-0.25D0*PI
+            BY0=2.0D0/DSQRT(X)*(P0*DSIN(TA0)+Q0*DCOS(TA0))
+            SH0=2.0D0/(PI*X)*S+BY0
+         ENDIF
+         RETURN
+        END
+C           STVH0(X,SH0)
+C
+
+C
+        SUBROUTINE STVH1(X,SH1)
+C
+C       =============================================
+C        Purpose: Compute Struve Function H1(x)
+C        Input  : x   --- Argument of H1(x) ( x ≥ 0 )
+C        Output : SH1 --- H1(x)
+C       =============================================
+C
+         IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+         PI=3.141592653589793D0
+         EPS=1.0D-12
+C
+         R=1.0D0
+         IF (X.LE.20.0D0) THEN
+C                       <<< Use (11.1.5) when x ≤ 20
+            S=0.0D0
+            AO=-2.0D0/PI
+            DO 10 K=1,60
+               R=-R*X*X/(4.0D0*K*K-1.0D0)
+               S=S+R
+               IF(DABS(R).LT.DABS(S)*EPS) GO TO 15
+10          CONTINUE
+15          SH1=AO*S
+         ELSE
+C                       <<< Use (11.1.22) when x > 20
+            S=1.0D0
+            KM=INT(0.5*X)
+            IF (X.GT.50.0D0) KM=25
+            DO 20 K=1,KM
+               R=-R*(4.0D0*K*K-1.0D0)/(X*X)
+               S=S+R
+               IF(DABS(R).LT.DABS(S)*EPS) GO TO 25
+20          CONTINUE
+25          T=4.0D0/x
+C                       <<< Calcuiate Y1(x) using (5.2.20)
+            T2=T*T
+            P1=  ((((.42414D-5*T2-.20092D-4)*T2+.580759D-4)
+     &         *T2-.223203D-3)*T2+.29218256D-2)*T2+.3989422819D0
+            Q1=T*(((((-.36594D-5*T2+.1622D-4)*T2-.398708D-4)
+     &         *T2+.1064741D-3)*T2-.63904D-3)*T2+.0374008364D0)
+            TA1=X-0.75D0*PI
+            BY1=2.0D0/DSQRT(X)*(P1*DSIN(TA1)+Q1*DCOS(TA1))
+            SH1=2.0/PI*(1.0D0+S/(X*X))+BY1
+         ENDIF
+         RETURN
+        END
+C           STVH1(X,SH1)
+C
+
+C
+        SUBROUTINE STVHV(V,X,HV)
+C
+C       =======================================================
+C        Purpose:  Compute Struve Functions Hv(x) with
+C                  arbitrary order v  ( -8.0 ≤ v ≤ 12.5 )
+C        Input  :  v  --- Order of Hv(x)
+C                  x  --- Argument of Hv(x) ( x ≥ 0 )
+C        Output :  Hv --- Hv(x)
+C        Routine called: GAMMA2 to compute the GAMMA2 function
+C       =======================================================
+C
+         IMPLICIT DOUBLE PRECISION (A-H, O-Z)
+         PI=3.141592653589793D0
+C
+         IF (X.EQ.0.0D0) THEN
+C                          <<< Treat x=0 as a special case
+            IF ((V.GT.-1.0D0).OR.(INT(V)-V.EQ.0.5D0)) THEN
+               HV=0.0D0
+            ELSE IF (V.LT.-1.0D0) THEN
+               HV=(-1)**(INT(0.5D0-V)-1)*1.0D+300
+            ELSE IF (V.EQ.-1.0D0) THEN
+               HV=2.0D0/PI
+            ENDIF
+            RETURN
+         ENDIF
+C
+C
+         IF (X.LE.20.0D0) THEN
+C                          <<< Use (11.1.3) when x ≤ 20
+            VO=V+1.5D0
+            CALL GAMMA2(VO,GA)
+            S=2.0D0/(DSQRT(PI)*GA)
+            R1=1.0D0
+            DO 10 K=1,100
+               VA=K+1.5D0
+               CALL GAMMA2(VA,GA)
+               VB=V+K+1.5D0
+               CALL GAMMA2(VB,GB)
+               R1=-R1*(0.5D0*X)**2
+               R2=R1/(GA*GB)
+               S=S+R2
+               IF(DABS(R2).LT.DABS(S)*1.0D-12) GO TO 15
+10          CONTINUE
+15          HV=(0.5D0*X)**(V+1.0D0)*S
+         ELSE
+C                          <<< Use (11.1.20) when x > 20
+            SA=(0.5D0*X)**(V-1.0D0)/PI
+            O=V+0.5D0
+            CALL GAMMA2(VO,GA)
+            S=DSQRT(PI)/GA
+            R1=1.0D0
+            DO 20 K=1,12
+               VA=K+0.5D0
+               CALL GAMMA2(VA,GA)
+               VB=-K+V+0.5D0
+               CALL GAMMA2(VB,GB)
+               R1=R1/(0.5*X)**2
+               S=S+GA/GB*R1
+20          CONTINUE
+C                          <<< Calculate Y1(x) using forward recurrence
+            S0=SA*S
+            U=DABS(V)
+            N=INT(U)
+            UO=U-N
+            DO 35 L=0,1
+               VT=4.0D0*(U0+L)**2
+               R1=1.0D0
+               PU1=1.0D0
+               DO 25 K=1,12
+                  R1=-0.0078125D0*R1*(VT-(4.D0*K-3.D0)**2)*
+     &               (VT-(4.D0*K-1.D0)**2)/((2.D0*K-1.D0)*K*X*X)
+                  PU1=PU1+R1
+25             CONTINUE
+               QU1=1.0D0
+               R2=1.0D0
+               DO 30 K=1,12
+                  R2=-0.0078125D0*R2*(VT-(4.D0*K-1.D0)**2)*
+     &               (VT-(4.D0*K+1.D0)**2)/((2.D0*K+1.D0)*K*X*X)
+                  QU1=QU1+R2
+30             CONTINUE
+               QU1=0.125D0*(VT-1.0D0)/X*QU1
+               IF (L.EQ.0) THEN
+                  PUO=PO1
+                  QUO=QU1
+               ENDIF
+35          CONTINUE
+            T0=X-(0.5*U0+0.25D0)*PI
+            T1=X-(0.5*U0+0.75D0)*PI
+            SR=DSQRT(2.0D0/(PI*X))
+            BY0=SR*(PU0*DSIN(TO)+QU0*DCOS(TO))
+            BY1=SR*(PU1*DSIN(T1)+QU1*DCOS(T1))
+            BF0=BY0
+            BF1=BY1
+            DO 40 K=2,N
+               BF=2.0D0*(K-1.0+U0)/X*BF1-BF0
+               BF0=BF1
+               BF1=BF
+40          CONTINUE
+            IF (N.EQ.0) BYV=BY0
+            IF (N.EQ.1) BYV=BY1
+            IF (N.GT.1) BYV=BF
+            HV=BYV+S0
+         ENDIF
+         RETURN
+        END
+C           STVHV(V,X,HV)
+C
+
+C
+        SUBROUTINE STVL0(X,SL0)
+C
+C       ===================================================
+C        Purpose: Compute Modified Struve Function L0(x)
+C        Input  : x   --- Argument of L0(x)  ( x ≥ 0 )
+C        output : SL0 --- L0(x)
+C       ===================================================
+C
+         IMPLICIT DOUBLE PRECISION (A-H, O-Z)
+         PI=3.141592653589793D0
+         EPS=1.0D-12
+C
+         S=1.0D0
+         R=1.0D0
+         IF (X.LE.20.0D0) THEN
+C                             <<< Use (11.2.2) when x ≤ 20
+            A0=2.0D0*X/PI
+            DO 10 K=1,60
+               R=R*(X/(2.0D0*K+1.0D0))**2
+               S=S+R
+               IF(DABS(R/S).LT.EPS) GO TO 15
+10          CONTINUE
+15          SL0=A0*S
+         ELSE
+C                             <<< Use (11.2.17) when x > 20
+            KM=INT(0.5*(X+1.0))
+            IF (X.GE.50.0D0) KM=25
+            DO 20 K=1,KM
+               R=R*((2.0D0*K-1.0D0)/X)**2
+               S=S+R
+               IF (DABS(R/S).LT.EPS) GO TO 25
+20          CONTINUE
+25          A1=DEXP(X)/DSQRT(2.0D0*PI*X)
+            R=1.0D0
+            BI0=1.0D0
+C                             <<< Cakculale I0(x) using (6.2.1)
+            DO 30 K=1,16
+               R=0.125D0*R*(2.0D0*K-1.0D0)**2/(K*X)
+               BI0=BI0+R
+               IF(DABS(R/BI0).LT.EPS) GO TO 35
+30          CONTINUE
+35          BI0=A1*BI0
+            SL0=-2.0D0/(PI*X)*S+BI0
+         ENDIF
+         RETURN
+        END
+C           STVL0(X,SL0)
+C
+
+C
+        SUBROUTINE STVL1(X,SL1)
+C
+C       ===================================================
+C        Purpose: Compute modified struve function L1(x)
+C        Input  : x   --- Argument of L1(x)  ( x ≥ 0 )
+C        Output : SL1 --- L1(x)
+C       ===================================================
+C
+         IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+         PI=3.141592653589793D0
+         EPS=1.0D-12
+C
+         R=1.0D0
+         IF (X.LE.20.0D0) THEN
+C                             <<< Use (11.2.3) when x s 20
+            S=0.0D0
+            DO 10 K=1,60
+               R=R*X*X/(4.0D0*K*K-1.0D0)
+               S=S+R
+               IF(DABS(R/S).LT.EPS) GO TO 15
+10          CONTINUE
+15          SL1=2.0D0/PI*S
+         ELSE
+C                             <<< Use (11.2.18) when x > 20
+            S=1.0D0
+            KM=INT(0.5*X)
+            IF (X.GT.50.0D0) KM=25
+            DO 20 K=1,KM
+               R=R*(2.0D0*K+3.0D0)*(2.0D0*K+1.0D0)/(X*X)
+               S=S+R
+               IF(DABS(R/S).LT.EPS) GO TO 25
+20          CONTINUE
+25          SL1=2.0D0/PI*(-1.0D0+1.0D0/(X*X)+3.0D0*S/X**4)
+            A1=DEXP(X)/DSQRT(2.0D0*PI*X)
+            R=10D0
+            BI1=1.0D0
+C                             <<< Calculate I1(x) uslng (6.2.1)
+            DO 30 K=1,16
+               R=-0.125D0*R*(4.0D0-(2.0D0*K-1.0D0)**2)/(K*X)
+               BI1=BI1+R
+               IF(DABS(R).LT.DABS(BI1)*EPS) GO TO 35
+30          CONTINUE
+35          SL1=SL1+A1*BI1
+         ENDIF
+         RETURN
+        END
+C           STVL1(X,SL1)
+C
+
+C
+       SUBROUTINE STVLV(V,X,SLV)
+C
+C       ========================================================
+C        Purpose: Compute Modified Struve Function Lv(x)
+C        Input  : v   --- Order of Lv(x)  ( |v| ≤ 20 )
+C                 x   --- Argument of Lv(x)  ( x ≥ 0 )
+C        output : SLV --- Lv(x)
+C        Routine called: GAMMA2 to compute the gamma function
+C       ========================================================
+C
+         IMPLICIT DOUBLE PRECISION (A-H, O-Z)
+         PI=3.141592653589793D0
+C
+         IF (X.EQ.0.0D0) THEN
+C                             <<<Treat x=0 as a special case
+            IF ((V.GT.-1.0D0).OR.(INT(V)-V.EQ.0.5D0)) THEN
+               SLV=0.0D0
+            ELSE IF (V.LT.-1.0D0) THEN
+               SLV=(-1)**(INT(0.5D0-V)-1)*1.0D+300
+            ELSE IF (V.EQ.-1.0D0) THEN
+               SLV=2.0D0/PI
+            ENDIF
+            RETURN
+         ENDIF
+C
+C
+         IF (X.LE.40.0D0) THEN
+C                             <<<Use (11.2.1)when xs20
+            V0=V+1.5D0
+            CALL GAMMA2(V0,GA)
+            S=2.0D0/(DSQRT(PI)*GA)
+            R1=1.0D0
+            DO 10 K=1,100
+               VA=K+1.5D0
+               CALL GAMMA2(VA,GA)
+               VB=V+K+1.5D0
+               CALL GAMMA2(VB,GB)
+               R1=R1*(0.5D0*X)**2
+               R2=R1/(GA*GB)
+               S=S+R2
+               IF(DABS(R2/S).LT.1.0D-12) GO TO 15
+10          CONTINUE
+15          SLV=(0.5D0*X)**(V+1.0D0)*S
+         ELSE
+C                                <<<Use(11.2.16)when x>20
+            SA=-1.0D0/PI*(0.5D0*X)**(V-1.0D0)
+            V0=V+0.5D0
+            CALL GAMMA2(V0,GA)
+            S=-DSQRT(PI)/GA
+            R1=-1.0D0
+            DO 20 K=1,12
+               VA=K+0.5D0
+               CALL GAMMA2(VA,GA)
+               VB=-K+V+0.5D0
+               CALL GAMMA2(VB,GB)
+               R1=-R1/(0.5*X)**2
+               S=S+R1*GA/GB
+20          CONTINUE
+            S0=SA*S
+            U=DABS(V)
+C                                <<<Calculate 1,(x) using fonward recurence
+            N=INT(U)
+            U0=U-N
+            DO 35 L=0,1
+               VT=U0+L
+               R=1.0D0
+               BIV=1.0D0
+               DO 25 K=1,16
+                  R=-0.125*R*(4.0D0*VT*VT-(2.0D0*K-1.0D0)**2)/(K*X)
+                  BIV=BIV+R
+                  IF(DABS(R).LT.DABS(BIV)*1.0D-15) GO TO 30
+25             CONTINUE
+30             IF (L.EQ.0) BIV0=BIV
+35          CONTINUE
+            BF0=BIV0
+            BF1=BIV
+            DO 40 K=2,N
+               BF=-2.0D0*(K-1.0D0+U0)/X*BF1+BF0
+               BF0=BF1
+               BF1=BF
+40          CONTINUE
+            IF (N.EQ.0) BIV=BIV0
+            IF (N.GT.1) BIV=BF
+            SLV=DEXP(X)/DSQRT(2.0D0*PI*X)*BIV+S0
+         ENDIF
+         RETURN
+        END
+C           STVLV(V,X,SLV)
+C
