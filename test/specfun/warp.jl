@@ -539,7 +539,7 @@ end
 #=
 stvh0
 stvh1
-    stvhv
+stvhv
     stvl0
     stvl1
     stvlv
@@ -572,6 +572,19 @@ function _stvh1(x::Float64)
     ccall(f77func(:stvh1), Cvoid,
         (Ref{Float64}, Ref{Float64}),
         x, ret)
+    ret[]
+end
+
+"""
+    SUBROUTINE STVHV(V,X, HV)
+
+- Output: `(Hv)`
+"""
+function _stvhv(v::Float64, x::Float64)
+    ret = Ref{Float64}(NaN)
+    ccall(f77func(:stvhv), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        v, x, ret)
     ret[]
 end
 
