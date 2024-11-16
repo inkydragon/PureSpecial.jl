@@ -130,6 +130,126 @@ function stvh1(x::Float64)::Float64
 end
 
 """
+Compute Struve Functions Hv(x) with
+arbitrary order v  ( -8.0 ≤ v ≤ 12.5 )
+
+Input  :
+- v  --- Order of Hv(x)
+- x  --- Argument of Hv(x) ( x ≥ 0 )
+
+Output :
+- Hv --- Hv(x)
+
+Required:
+- `gamma2` function to compute the Gamma function
+"""
+function stvhv(v::Float64, x::Float64)::Float64
+    @assert -8.0 <= v <= 12.5
+    @assert x >= 0
+    _EPS = 1.0e-12
+
+    # Special case when x == 0
+    if x == 0.0
+        if (v > -1.0) || (v - trunc(v) == 0.5)
+            return 0.0
+        elseif v < -1.0
+            return (-1.0)^(trunc(0.5 - v) - 1) * 1.0e300
+        elseif v == -1.0
+            return 2.0 / pi
+        end
+    end
+
+    hv = 0.0
+    if x <= 20.0
+        # Use (11.1.3) when x ≤ 20
+        vo = v + 1.5
+        ga = gamma2(vo)
+        s = 2.0 / (sqrt(pi) * ga)
+        r1 = 1.0
+        for k in 1:100
+            va = k + 1.5
+            ga = gamma2(va)
+            vb = v + k + 1.5
+            gb = gamma2(vb)
+            r1 *= -(0.5 * x)^2
+            r2 = r1 / (ga * gb)
+            s += r2
+            if abs(r2 / s) < _EPS
+                break
+            end
+        end
+        hv = (0.5 * x)^(v + 1.0) * s
+    else
+        # Use (11.1.20) when x > 20
+        sa = (0.5 * x)^(v - 1.0) / pi
+        vo = v + 0.5
+        ga = gamma2(vo)
+        s = sqrt(pi) / ga
+        r1 = 1.0
+        for k in 1:12
+            va = k + 0.5
+            ga = gamma2(va)
+            vb = -k + v + 0.5
+            gb = gamma2(vb)
+            r1 = r1 / (0.5 * x)^2
+            s += ga / gb * r1
+        end
+        s0 = sa * s
+
+        # Forward recurrence for Yv(x)
+        u = abs(v)
+        n = trunc(Int, u)
+        u0 = u - n
+        pu0, qu0, pu1, qu1 = 0.0, 0.0, 0.0, 0.0
+        for l in 0:1
+            vt = 4.0 * (u0 + l)^2
+            r1, r2 = 1.0, 1.0
+            pu1 = 1.0
+            for k in 1:12
+                r1 = -0.0078125 * r1 * (vt - (4.0 * k - 3.0)^2) *
+                    (vt - (4.0 * k - 1.0)^2) / ((2.0 * k - 1.0) * k * x^2)
+                pu1 += r1
+            end
+            qu1 = 1.0
+            for k in 1:12
+                r2 = -0.0078125 * r1 * (vt - (4.0 * k - 1.0)^2) *
+                    (vt - (4.0 * k + 1.0)^2) / ((2.0 * k + 1.0) * k * x^2)
+                qu1 += r2
+            end
+            qu1 = 0.125 * (vt - 1.0) / x * qu1
+            if l == 0
+                pu0, qu0 = pu1, qu1
+            end
+        end
+
+        t0 = x - (0.5 * u0 + 0.25) * pi
+        t1 = x - (0.5 * u0 + 0.75) * pi
+        sr = sqrt(2.0 / (pi * x))
+        by0 = sr * (pu0 * sin(t0) + qu0 * cos(t0))
+        by1 = sr * (pu1 * sin(t1) + qu1 * cos(t1))
+
+        bf = 0.0
+        bf0, bf1 = by0, by1
+        for k in 2:n
+            bf = 2.0 * (k - 1.0 + u0) / x * bf1 - bf0
+            bf0, bf1 = bf1, bf
+        end
+
+        byv = if n == 0
+            by0
+        elseif n == 1
+            by1
+        else
+            bf
+        end
+        hv = byv + s0
+    end
+
+    return hv
+end
+
+
+"""
 Evaluate the integral of Struve function
 H0(t) with respect to t from 0 and x
 
