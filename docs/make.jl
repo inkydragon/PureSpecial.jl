@@ -6,17 +6,21 @@ DocMeta.setdocmeta!(PureSpecial, :DocTestSetup, :(using PureSpecial); recursive=
 
 pages = Any[
     "Home" => "index.md",
+    "Docs" => Any[
+        "ref/struve.md"
+    ],
     "impls.md",
     "scipy.special.md",
     "special-functions.md",
 ]
 
 makedocs(;
-    modules=[PureSpecial],
+    modules=[PureSpecial, PureSpecial.Specfun],
     repo=Remotes.GitHub("inkydragon", "PureSpecial.jl"),
     authors="Chengyu HAN <cyhan.dev@outlook.com> and contributors",
     sitename="PureSpecial.jl",
     format=Documenter.HTML(;
+        repolink="https://inkydragon.github.io/PureSpecial.jl",
         canonical="https://inkydragon.github.io/PureSpecial.jl",
         edit_link="main",
         assets=String[],
