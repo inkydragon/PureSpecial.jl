@@ -248,6 +248,63 @@ function stvhv(v::Float64, x::Float64)::Float64
     return hv
 end
 
+"""
+Compute Modified Struve Function L0(x)
+
+Input:
+- x   --- Argument of L0(x)  ( x ≥ 0 )
+
+Output:
+- SL0 --- L0(x)
+"""
+function stvl0(x::Float64)::Float64
+    _EPS = 1.0e-12
+
+    s = 1.0
+    r = 1.0
+    sl0 = 0.0
+    if x <= 20.0
+        # Use (11.2.2) when x ≤ 20
+        a0 = 2.0 * x / pi
+        for k in 1:60
+            r = r * (x / (2.0 * k + 1.0))^2
+            s += r
+            if abs(r / s) < _EPS
+                break
+            end
+        end
+        sl0 = a0 * s
+    else
+        # Use (11.2.17) when x > 20
+        km = trunc(Int, 0.5 * (x + 1.0))
+        if x >= 50.0
+            km = 25
+        end
+        for k in 1:km
+            r = r * ((2.0 * k - 1.0) / x)^2
+            s += r
+            if abs(r / s) < _EPS
+                break
+            end
+        end
+        a1 = exp(x) / sqrt(2.0 * pi * x)
+        r = 1.0
+        bi0 = 1.0
+        # Calculate I0(x) using (6.2.1)
+        for k in 1:16
+            r = r * 0.125 * (2.0 * k - 1.0)^2 / (k * x)
+            bi0 += r
+            if abs(r / bi0) < _EPS
+                break
+            end
+        end
+        bi0 *= a1
+        sl0 = -2.0 / (pi * x) * s + bi0
+    end
+
+    return sl0
+end
+
 
 """
 Evaluate the integral of Struve function
