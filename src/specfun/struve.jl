@@ -72,6 +72,62 @@ function stvh0(x::Float64)::Float64
     return sh0
 end
 
+"""
+Compute Struve Function H1(x)
+
+Input:
+- x   --- Argument of H1(x) ( x ≥ 0 )
+
+Output:
+- SH1 --- H1(x)
+"""
+function stvh1(x::Float64)::Float64
+    @assert x >= 0
+    _EPS = 1.0e-12
+
+    r = 1.0
+    sh1 = 0.0
+    if x <= 20.0
+        # <<< Use (11.1.5) when x ≤ 20
+        s = 0.0
+        ao = -2.0 / pi
+        for k in 1:60
+            r = -r * x^2 / (4.0 * k^2 - 1.0)
+            s += r
+            if abs(r / s) < _EPS
+                break
+            end
+        end
+        sh1 = ao * s
+    else
+        # <<< Use (11.1.22) when x > 20
+        s = 1.0
+        km = trunc(Int, 0.5 * x)
+        if x > 50.0
+            km = 25
+        end
+        for k in 1:km
+            r = -r * (4.0 * k^2 - 1.0) / x^2
+            s += r
+            if abs(r / s) < _EPS
+                break
+            end
+        end
+
+        # <<< Calculate Y1(x) using (5.2.20)
+        t = 4.0 / x
+        t2 = t^2
+        p1 = (((((0.42414e-5 * t2 - 0.20092e-4) * t2 + 0.580759e-4) *
+                 t2 - 0.223203e-3) * t2 + 0.29218256e-2) * t2 + 0.3989422819)
+        q1 = t * ((((((-0.36594e-5 * t2 + 0.1622e-4) * t2 - 0.398708e-4) *
+                     t2 + 0.1064741e-3) * t2 - 0.63904e-3) * t2 + 0.0374008364))
+        ta1 = x - 0.75 * pi
+        by1 = 2.0 / sqrt(x) * (p1 * sin(ta1) + q1 * cos(ta1))
+        sh1 = 2.0 / pi * (1.0 + s / x^2) + by1
+    end
+
+    return sh1
+end
 
 """
 Evaluate the integral of Struve function
