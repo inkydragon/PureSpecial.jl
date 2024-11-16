@@ -16,6 +16,64 @@ Integrals
 =#
 
 """
+Compute Struve Function H0(x)
+
+Input:
+- x   --- Argument of H0(x) ( x ≥ 0 )
+
+Output:
+- SH0 --- H0(x)
+"""
+function stvh0(x::Float64)::Float64
+    @assert x >= 0
+    _EPS = 1.0e-12
+    # TODO: isinf(x), isnan
+
+    s = 1.0
+    r = 1.0
+    sh0 = 0.0
+    if x <= 20.0
+        # Use (11.1.4) when x ≤ 20
+        a0 = 2.0 * x / pi
+        for k in 1:60
+            r = -r * (x / (2.0 * k + 1.0))^2
+            s += r
+            if abs(r / s) < _EPS
+                break
+            end
+        end
+        sh0 = a0 * s
+    else
+        # Use (11.1.21) when x > 20
+        km = trunc(Int, 0.5 * (x + 1.0))
+        if x >= 50.0
+            km = 25
+        end
+        for k in 1:km
+            r = -r * ((2.0 * k - 1.0) / x)^2
+            s += r
+            if abs(r / s) < _EPS
+                break
+            end
+        end
+
+        # Calculate Y0(x) using (5.2.18)
+        t = 4.0 / x
+        t2 = t^2
+        p0 = (((((-0.37043e-5 * t2 + 0.173565e-4) * t2 - 0.487613e-4) *
+                t2 + 0.17343e-3) * t2 - 0.1753062e-2) * t2 + 0.3989422793)
+        q0 = t * ((((((0.32312e-5 * t2 - 0.142078e-4) * t2 + 0.342468e-4) *
+                t2 - 0.869791e-4) * t2 + 0.4564324e-3) * t2 - 0.0124669441))
+        ta0 = x - 0.25 * pi
+        by0 = 2.0 / sqrt(x) * (p0 * sin(ta0) + q0 * cos(ta0))
+        sh0 = 2.0 / (pi * x) * s + by0
+    end
+
+    return sh0
+end
+
+
+"""
 Evaluate the integral of Struve function
 H0(t) with respect to t from 0 and x
 
