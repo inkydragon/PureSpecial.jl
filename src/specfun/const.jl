@@ -26,3 +26,17 @@ julia> 0.57721566490153_28  # imprecise
 ```
 """
 const SF_EULER_GAMMA_28 = 0.5772156649015328
+
+
+"""
+Euler's Constant γ
+
+```jldoctest
+julia> Float64(Base.MathConstants.eulergamma)
+0.5772156649015329
+
+julia> 0.57721566490153_00  # imprecise
+0.57721566490153
+```
+"""
+const SF_EULER_GAMMA_00 = 0.57721566490153

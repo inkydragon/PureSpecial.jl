@@ -350,7 +350,7 @@ function itsh0(x::Float64)
             end
         end
 
-        el = 0.57721566490153
+        el = SF_EULER_GAMMA_00
         a = zeros(Float64, 25)
         s0 = s / (pi * x^2) + 2.0 / pi * (log(2.0 * x) + el)
         # CoSF 7.1.5: integrals of Y0(t)
@@ -455,7 +455,7 @@ Output:
 function itsl0(x::Float64)
     @assert x >= 0
     _EPS = 1e-12
-    el = 0.57721566490153
+    el = SF_EULER_GAMMA_00
 
     r = 1.0
     if x <= 20.0
