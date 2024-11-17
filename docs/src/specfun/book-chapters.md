@@ -116,9 +116,9 @@ CurrentModule = PureSpecial.Specfun
 ## 10 Airy Functions
 
 - AIRYA(AJYIK), 329
-- AIRYB, 330
-- ITAIRY, 334
-- AIRYZO(AIRYB), 336
+- [`Specfun.airyb`](@ref)
+- [`Specfun.itairy`](@ref)
+- [`Specfun.airyzo`](@ref)
 
 ## 11 Struve Functions
 

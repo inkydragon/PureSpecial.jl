@@ -215,7 +215,8 @@ end
 """
     airyzo(
         nt::Int, kf::Int, 
-        xa::Vector{Float64}, xb::Vector{Float64}, xc::Vector{Float64}, xd::Vector{Float64}
+        xa::Vector{Float64}, xb::Vector{Float64},
+        xc::Vector{Float64}, xd::Vector{Float64}
     )
 
 Compute the first NT zeros of Airy functions
@@ -226,6 +227,7 @@ b', and the associated values of Bi(b') and
 Bi'(b).
 
 ## Example
+
 ```jl
 nt = 4;
 a,b,c,d = zeros(nt),zeros(nt),zeros(nt),zeros(nt)
@@ -234,22 +236,22 @@ airyzo(nt, 1, a,b,c,d)
 ```
 
 ## Input
-- NT --- Total number of zeros
-- KF --- Function code
+- `NT` --- Total number of zeros
+- `KF` --- Function code
     - KF=1 for Ai(x) and Ai'(x)
     - KF=2 for Bi(x) and Bi'(x)
 
 ## Output
-- XA(m) --- a, the m-th zero of Ai(x) or
+- `XA(m)` --- a, the m-th zero of Ai(x) or
             b, the m-th zero of Bi(x)
-- XB(m) --- a', the m-th zero of Ai'(x) or
+- `XB(m)` --- a', the m-th zero of Ai'(x) or
             b', the m-th zero of Bi'(x)
-- XC(m) --- Ai(a') or Bi(b')
-- XD(m) --- Ai'(a) or Bi'(b)
+- `XC(m)` --- Ai(a') or Bi(b')
+- `XD(m)` --- Ai'(a) or Bi'(b)
             ( m --- Serial number of zeros )
 
 ## Routine called
-AIRYB for computing Airy functions and their derivatives
+- [`Specfun.airyb`](@ref) for computing Airy functions and their derivatives
 """
 function airyzo(
     nt::Int, kf::Int, 
@@ -391,17 +393,17 @@ end
 """
     itairy(x::Float64)
 
-Compute the integrals of Airy fnctions with
+Compute the integrals of Airy functions with
 respect to t from 0 and x ( x ≥ 0 )
 
 ## Input
-x   --- Upper limit of the integral
+- `x`   --- Upper limit of the integral
 
 ## Output
-apt --- Integration of Ai(t) from 0 and x
-bpt --- Integration of Bi(t) from 0 and x
-ant --- Integration of Ai(-t) from 0 and x
-bnt --- Integration of Bi(-t) from 0 and x
+- `apt` --- Integration of Ai(t) from 0 and x
+- `bpt` --- Integration of Bi(t) from 0 and x
+- `ant` --- Integration of Ai(-t) from 0 and x
+- `bnt` --- Integration of Bi(-t) from 0 and x
 """
 function itairy(x::Float64)
     @assert x >= 0
