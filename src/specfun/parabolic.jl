@@ -2,16 +2,18 @@
 #   See also: src/specfun/LICENSE.md
 """Parabolic cylinder functions"""
 #=
-- ✅ pbwa
+
 - ✅ pbvv
     - ✅ vvsa
     - ✅ vvla
 - ✅ pbdv
     - ✅ dvsa
     - ✅ dvla
+- ✅ pbwa
 - cpbdn
     - cpdla
     - cpdsa
+    - [gaih]
 =#
 
 """
@@ -19,17 +21,18 @@ Compute parabolic cylinder functions W(a,±x)
 and their derivatives
 
 Input
-a --- Parameter  ( 0 ≤ |a| ≤ 5 )
-x --- Argument of W(a,±x)  ( 0 ≤ |x| ≤ 5 )
+- `a` --- Parameter  ( 0 ≤ |a| ≤ 5 )
+- `x` --- Argument of W(a,±x)  ( 0 ≤ |x| ≤ 5 )
 
 Output
-W1F --- W(a,x)
-W1D --- W'(a,x)
-W2F --- W(a,-x)
-W2D --- W'(a,-x)
+- `(w1f, w1d, w2f, w2d)`
+    - `W1F` --- W(a,x)
+    - `W1D` --- W'(a,x)
+    - `W2F` --- W(a,-x)
+    - `W2D` --- W'(a,-x)
 
 Routine called:
-CGAMA for computing complex gamma function
+- [`Specfun.cgama`](@ref) for computing complex gamma function
 """
 function pbwa(a::Float64, x::Float64)
     EPS = 1e-15
@@ -127,15 +130,15 @@ Compute parabolic cylinder function Vv(x)
 for large argument
 
 Input
-x  --- Argument
-va --- Order
+- `x`  --- Argument
+- `va` --- Order
 
 Output
-PV --- Vv(x)
+- Vv(x)
 
 Routines called:
-(1) DVLA for computing Dv(x) for large |x|
-(2) GAMMA2 for computing Г(x)
+- [`Specfun.dvla`](@ref) for computing Dv(x) for large |x|
+- [`Specfun.gamma2`](@ref) for computing Г(x)
 """
 function vvla(x::Float64, va::Float64)
     EPS = 1.0e-12
@@ -171,15 +174,15 @@ Compute parabolic cylinder functions Dv(x)
 for large argument
 
 Input
-x  --- Argument
-va --- Order
+- `x`  --- Argument
+- `va` --- Order
 
 Output
-PD --- Dv(x)
+- Dv(x)
 
 Routines called:
-(1) VVLA for computing Vv(x) for large |x|
-(2) GAMMA2 for computing Г(x)
+- [`Specfun.vvla`](@ref) for computing Vv(x) for large |x|
+- [`Specfun.gamma2`](@ref) for computing Г(x)
 """
 function dvla(x::Float64, va::Float64)
     EPS = 1.0e-12
@@ -214,14 +217,14 @@ Compute parabolic cylinder function Dv(x)
 for small argument
 
 Input
-x  --- Argument
-va --- Order
+- `x`  --- Argument
+- `va` --- Order
 
 Output
-PD --- Dv(x)
+- Dv(x)
 
 Routine called
-GAMMA2 for computing Г(x)
+- [`Specfun.gamma2`](@ref) for computing Г(x)
 """
 function dvsa(x::Float64, va::Float64)
     EPS = 1.0e-12
@@ -269,20 +272,21 @@ Compute parabolic cylinder functions Dv(x)
 and their derivatives
 
 Input
-x --- Argument of Dv(x)
-v --- Order of Dv(x)
+- `x` --- Argument of Dv(x)
+- `v` --- Order of Dv(x)
 
 Output
-DV(na) --- Dn+v0(x)
-DP(na) --- Dn+v0'(x)
+- `DV(na)` --- Dn+v0(x)
+- `DP(na)` --- Dn+v0'(x)
     ( na = |n|, v0 = v-n, |v0| < 1,
     n = 0,±1,±2,… )
-PDF --- Dv(x)
-PDD --- Dv'(x)
+- `(pdf, pdd)`
+    - PDF --- Dv(x)
+    - PDD --- Dv'(x)
 
 Routines called:
-(1) DVSA for computing Dv(x) for small |x|
-(2) DVLA for computing Dv(x) for large |x|
+- [`Specfun.dvsa`](@ref) for computing Dv(x) for small |x|
+- [`Specfun.dvla`](@ref) for computing Dv(x) for large |x|
 """
 function pbdv(dv::Vector{Float64}, dp::Vector{Float64}, x::Float64, v::Float64)
     xa = abs(x)
@@ -401,14 +405,14 @@ Compute parabolic cylinder function Vv(x)
 for small argument
 
 Input
-x  --- Argument
-va --- Order
+- `x`  --- Argument
+- `va` --- Order
 
 Output
-PV --- Vv(x)
+- Vv(x)
 
 Routine called
-GAMMA2 for computing Г(x)
+- [`Specfun.gamma2`](@ref) for computing Г(x)
 """
 function vvsa(x::Float64, va::Float64)
     EPS = 1.0e-12
@@ -457,20 +461,21 @@ Compute parabolic cylinder functions Vv(x)
 and their derivatives
 
 Input
-x --- Argument of Vv(x)
-v --- Order of Vv(x)
+- `x` --- Argument of Vv(x)
+- `v` --- Order of Vv(x)
 
 Output
-VV(na) --- Vv(x)
-VP(na) --- Vv'(x)
+- `VV(na)` --- Vv(x)
+- `VP(na)` --- Vv'(x)
     ( na = |n|, v = n+v0, |v0| < 1
      n = 0,±1,±2,… )
-PVF --- Vv(x)
-PVD --- Vv'(x)
+- `(pvf, pvd)`
+    - `PVF` --- Vv(x)
+    - `PVD` --- Vv'(x)
 
 Routines called:
-(1) VVSA for computing Vv(x) for small |x|
-(2) VVLA for computing Vv(x) for large |x|
+- [`Specfun.vvsa`](@ref) for computing Vv(x) for small |x|
+- [`Specfun.vvla`](@ref) for computing Vv(x) for large |x|
 """
 function pbvv(vv::Vector{Float64}, vp::Vector{Float64}, x::Float64, v::Float64)
     xa = abs(x)

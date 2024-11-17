@@ -146,17 +146,17 @@ CurrentModule = PureSpecial.Specfun
 
 ## 13 Parabolic Cylinder Functions
 
-- PBDV(DVSA,DVLA), 439
-- DVSA(GAMMA), 442
-- DVLA(GAMMA,VVLA), 443
-- PBVV(VVSA,VVLA), 444
-- VVSA(GAMMA), 446
-- VVLA(GAMMA,DVLA), 447
-- PBWA(CGAMA), 448
+- [`Specfun.pbdv`](@ref)
+  - [`Specfun.dvsa`](@ref)
+  - [`Specfun.dvla`](@ref)
+- [`Specfun.pbvv`](@ref)
+  - [`Specfun.vvsa`](@ref)
+  - [`Specfun.vvla`](@ref)
+- [`Specfun.pbwa`](@ref)
 - CPBDN(CPDSA,CPDLA), 451
-- CPDSA(GAIH), 453
-- CPDLA, 454
-- GAIH, 454
+  - CPDSA(GAIH), 453
+  - CPDLA, 454
+  - [`Specfun.gaih`](@ref)
 
 ## 14 Mathieu Functions
 
