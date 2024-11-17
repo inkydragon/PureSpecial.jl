@@ -3,6 +3,19 @@
 """Math Constants"""
 
 """
+The constant π.
+
+Same as: Base.MathConstants.pi
+
+```jldoctest
+julia> Float64(Base.MathConstants.pi)
+3.141592653589793
+```
+"""
+const SF_PI = Float64(Base.MathConstants.pi)
+
+
+"""
 Euler's Constant γ
 
 Same as: Base.MathConstants.eulergamma
