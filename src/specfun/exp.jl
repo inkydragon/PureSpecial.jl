@@ -17,14 +17,6 @@ Trigonometric Integrals:
 =#
 
 """
-Base.MathConstants.eulergamma
-
-note: imprecise
-"""
-const EULER_GAMMA_28 = 0.57721566490153_28
-
-
-"""
     e1xb(x::Float64)
 
 Compute exponential integral E1(x)

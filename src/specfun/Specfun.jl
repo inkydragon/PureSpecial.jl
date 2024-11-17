@@ -21,7 +21,8 @@ C
 """
 module Specfun
 
-# SUBROUTINE
+include("const.jl")
+
 include("gamma.jl")
 include("exp.jl")
 include("error.jl")

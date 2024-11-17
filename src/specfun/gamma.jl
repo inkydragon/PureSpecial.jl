@@ -279,11 +279,6 @@ end
 cgama(f::Float64, kf) = cgama(complex(f), kf)
 
 
-"""
-Euler's Constant γ
-"""
-const SF_CONST_EULER = 0.5772156649015329
-
 const _PSI_A = NTuple{8, Float64}((
     -0.8333333333333e-01,
     0.83333333333333333e-02,
