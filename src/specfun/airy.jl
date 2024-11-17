@@ -27,7 +27,6 @@ Compute Airy functions and their derivatives.
 """
 function airyb(x::Float64)
     eps = 1.0e-15
-    @assert Float64(pi) === 3.141592653589793
     c1 = 0.355028053887817
     c2 = 0.258819403792807
     sr3 = 1.732050807568877
@@ -257,7 +256,6 @@ function airyzo(
     nt::Int, kf::Int, 
     xa::Vector{Float64}, xb::Vector{Float64},
     xc::Vector{Float64}, xd::Vector{Float64})
-    @assert Float64(pi) === 3.141592653589793
     
     # TODO: check params
 
