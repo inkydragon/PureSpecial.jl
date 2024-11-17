@@ -2,11 +2,17 @@
 #   See also: src/specfun/LICENSE.md
 """Gamma Functions"""
 #=
-- ✅ gam0
 - ✅ gamma2
-- ✅ gaih
+- LGAMA
+- BETA
 - ✅ cgama
 - ✅ psi
+- CPSI
+- INCOG
+- INCOB
+
+- ✅ gam0
+- ✅ gaih
 =#
 
 """
@@ -73,20 +79,20 @@ const _GAMMA2_G = Float64[
 """
     gamma2(x::Float64)
 
-Compute gamma function Г(x)
+Compute gamma function Г(x).
 
 Input
-x  --- Argument of Г(x)
-        ( x is not equal to 0,-1,-2,…)
+- `x`  --- Argument of Г(x)
+        ( x is not equal to 0,-1,-2,… )
 
 Output
-ga --- Г(x)
+- Г(x)
 """
 function gamma2(x::Float64)
     ga = NaN
     if isinteger(x)
         if x > 0.0
-            # Whne x is positive integer
+            # When x is positive integer
             #   DLMF 5.4.1:  Г(n+1) = n!
             ga = 1.0
             m1 = trunc(Int64, x) - 1
@@ -184,13 +190,13 @@ Compute the gamma function Г(z) or ln[Г(z)]
 for a complex argument.
 
 Input
-z  --- Complex argument
-kf --- Function code
-       kf=0 for ln[Г(z)]
-       kf=1 for Г(z)
+- `z`  --- Complex argument
+- `kf` --- Function code
+    - `kf=0` for ln[Г(z)]
+    - `kf=1` for Г(z)
 
 Output
-g  --- ln[Г(z)] or Г(z)
+- ln[Г(z)] or Г(z)
 """
 function cgama(z::Complex{Float64}, kf::Int)
     @assert kf in [0, 1] "Only accept `kf=0` or `kf=1`"
@@ -290,13 +296,13 @@ const _PSI_A = NTuple{8, Float64}((
 )) # _PSI_A
 
 """
-Compute Psi function
+Compute Psi function (Digamma Function).
 
 Input:
-- x  --- Argument of psi(x)
+- `x`  --- Argument of psi(x)
 
 Output:
-- PS --- psi(x)
+- psi(x)
 """
 function psi(x::T) where {T<:AbstractFloat}
     @assert isapprox(pi, 3.141592653589793)
