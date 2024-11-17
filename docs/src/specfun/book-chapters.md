@@ -109,9 +109,9 @@ CurrentModule = PureSpecial.Specfun
 
 ## 9 Kelvin Functions
 
-- KLVNA, 315
+- [`Specfun.klvna`](@ref)
 - KLVNB, 318
-- KLVNZO(KLVNA), 321
+- [`Specfun.klvnzo`](@ref)
 
 ## 10 Airy Functions
 

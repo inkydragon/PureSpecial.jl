@@ -3,6 +3,7 @@
 """Kelvin functions"""
 #=
 - ✅ klvna
+- KLVNB
 - ✅ klvnzo
 =#
 
@@ -215,8 +216,8 @@ end
 Compute the zeros of Kelvin functions.
 
 ## Input
-- NT  --- Total number of zeros
-- KD  --- Function code
+- `NT`  --- Total number of zeros
+- `KD`  --- Function code
     - KD=1 to 8 for ber x, bei x, ker x, kei x,
                     ber'x, bei'x, ker'x and kei'x,
                     respectively.
@@ -225,7 +226,7 @@ Compute the zeros of Kelvin functions.
 - ZO(M) --- the M-th zero of Kelvin function for code KD.
 
 ## Routine called
-KLVNA for computing Kelvin functions and their derivatives.
+- [`Specfun.klvna`](@ref) for computing Kelvin functions and their derivatives.
 """
 function klvnzo(nt::Int, kd::Int)
     @assert kd in 1:8
