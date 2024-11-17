@@ -80,32 +80,35 @@ function bjndd(x::Float64, n::Int)
 end
 
 """
-    jdzo(nt::Int, zo::Vector{Float64}, n::Vector{Int}, m::Vector{Int}, p::Vector{Int})
+    jdzo(
+        nt::Int,
+        zo::Vector{Float64}, n::Vector{Int}, m::Vector{Int}, p::Vector{Int}
+    )
 
 Compute the zeros of Bessel functions Jn(x) and
 Jn'(x), and arrange them in the order of their
 magnitudes.
 
 ## Input
-NT    --- Number of total zeros ( NT ≤ 1200 )
+- `NT`    --- Number of total zeros ( NT ≤ 1200 )
 
 ## Output
-ZO(L) --- Value of the L-th zero of Jn(x)
+- `ZO(L)` --- Value of the L-th zero of Jn(x)
           and Jn'(x)
-N(L)  --- n, order of Jn(x) or Jn'(x) associated
+- `N(L)`  --- n, order of Jn(x) or Jn'(x) associated
           with the L-th zero
-M(L)  --- m, serial number of the zeros of Jn(x)
+- `M(L)`  --- m, serial number of the zeros of Jn(x)
           or Jn'(x) associated with the L-th zero
           ( L is the serial number of all the
             zeros of Jn(x) and Jn'(x) )
-P(L)  --- 0 (TM) or 1 (TE), a code for designating the
+- `P(L)`  --- 0 (TM) or 1 (TE), a code for designating the
           zeros of Jn(x)  or Jn'(x).
           In the waveguide applications, the zeros
           of Jn(x) correspond to TM modes and
           those of Jn'(x) correspond to TE modes
 
 ## Routine called
-BJNDD for computing Jn(x), Jn'(x) and Jn''(x)
+- [`Specfun.bjndd`](@ref) for computing Jn(x), Jn'(x) and Jn''(x)
 """
 function jdzo(nt::Int, zo::Vector{Float64}, n::Vector{Int}, m::Vector{Int}, p::Vector{Int})
     #= Array Size const =#
@@ -266,6 +269,8 @@ function jdzo(nt::Int64)
 end
 
 """
+    envj(n, x)
+
 Helper function used in `msta1`, `msta2`
 """
 function envj(n, x)
@@ -280,11 +285,11 @@ recurrence such that the magnitude of
 Jn(x) at that point is about 10^(-MP)
 
 Input
-x     --- Argument of Jn(x)
-MP    --- Value of magnitude
+- `x`     --- Argument of Jn(x)
+- `MP`    --- Value of magnitude
 
 Output
-MSTA1 --- Starting point
+- Starting point
 """
 function msta1(x::Float64, mp::Int)
     a0 = abs(x)
@@ -321,12 +326,12 @@ recurrence such that all Jn(x) has MP
 significant digits
 
 Input
-x  --- Argument of Jn(x)
-n  --- Order of Jn(x)
-MP --- Significant digit
+- `x`  --- Argument of Jn(x)
+- `n`  --- Order of Jn(x)
+- `MP` --- Significant digit
 
 Output
-MSTA2 --- Starting point
+- Starting point
 """
 function msta2(x::Float64, n::Int64, mp::Int64)
     a0 = abs(x)
@@ -373,20 +378,20 @@ end
 Compute Bessel functions Jn(x), Yn(x)
 
 Input
-x --- Argument of Jn(x) and Yn(x) ( x ≥ 0 )
-n --- Highest order of Jn(x) and Yn(x) computed  ( n ≥ 0 )
-nmin -- Lowest order computed  ( nmin ≥ 0 )
+- `x` --- Argument of Jn(x) and Yn(x) ( x ≥ 0 )
+- `n` --- Highest order of Jn(x) and Yn(x) computed  ( n ≥ 0 )
+- `nmin` -- Lowest order computed  ( nmin ≥ 0 )
 
 Output
-BJ(n-NMIN) --- Jn(x)   ; if indexing starts at 0
-BY(n-NMIN) --- Yn(x)   ; if indexing starts at 0
+- `BJ(n-NMIN)` --- Jn(x)   ; if indexing starts at 0
+- `BY(n-NMIN)` --- Yn(x)   ; if indexing starts at 0
 
 Return:
-NM --- Highest order computed
+- `NM` --- Highest order computed
 
 Routines called
-MSTA1 and MSTA2 to calculate the starting
-point for backward recurrence
+- [`Specfun.msta1`](@ref) and [`Specfun.msta2`](@ref)
+    to calculate the startingpoint for backward recurrence
 """
 function jynbh(
     x::Float64, n::Int, nmin::Int,
@@ -546,22 +551,22 @@ end
     jyndd(x::Float64, n::Int)
 
 compute bessel functions jn(x) and yn(x), and
-their first and second derivatives
+their first and second derivatives.
 
 input
-x   ---  argument of jn(x) and yn(x) ( x > 0 )
-n   ---  order of jn(x) and yn(x)
+- `x`   ---  argument of jn(x) and yn(x) ( x > 0 )
+- `n`   ---  order of jn(x) and yn(x)
 
 output
-bjn ---  jn(x)
-djn ---  jn'(x)
-fjn ---  jn"(x)
-byn ---  yn(x)
-dyn ---  yn'(x)
-fyn ---  yn"(x)
+- `bjn` ---  jn(x)
+- `djn` ---  jn'(x)
+- `fjn` ---  jn"(x)
+- `byn` ---  yn(x)
+- `dyn` ---  yn'(x)
+- `fyn` ---  yn"(x)
 
 routines called
-jynbh to compute jn and yn
+- [`Specfun.jynbh`](@ref) to compute jn and yn
 """
 function jyndd(x::Float64, n::Int)
     @assert x > 0.0
@@ -586,15 +591,15 @@ end
 Compute zeros of integer-order Bessel functions Jn.
 
 ## Input
-n  --- Order of Bessel functions  (n >= 0)
-NT --- Number of zeros (roots)
+- `n`  --- Order of Bessel functions  (n >= 0)
+- `NT` --- Number of zeros (roots)
 
 ## Output
-RJ0(L) --- L-th zero of Jn(x),  L=1,2,...,NT
+- `RJ0(L)` --- L-th zero of Jn(x),  L=1,2,...,NT
 
 ## Routine called
-JYNDD for computing Jn(x), and
-its first and second derivatives
+- [`Specfun.jyndd`](@ref) for computing Jn(x), and
+    its first and second derivatives
 """
 function jn_zeros(rj0::Vector{Float64}, n::Int64, nt::Int64)
     @assert n >= 0
@@ -659,16 +664,16 @@ Compute zeros of integer-order Bessel function Jn(x)
 and its derivatives Jn'(x)
 
 ## Input
-n  --- Order of Bessel functions  (n >= 0)
-NT --- Number of zeros (roots)
+- n  --- Order of Bessel functions  (n >= 0)
+- NT --- Number of zeros (roots)
 
 ## Output
-RJ0(L) --- L-th zero of Jn(x), L=1,2,...,NT
-RJ1(L) --- L-th zero of Jn'(x), L=1,2,...,NT
+- RJ0(L) --- L-th zero of Jn(x), L=1,2,...,NT
+- RJ1(L) --- L-th zero of Jn'(x), L=1,2,...,NT
 
 ## Routine called
-JYNDD for computing Jn(x), and
-its first and second derivatives
+- [`Specfun.jyndd`](@ref) for computing Jn(x), and
+    its first and second derivatives
 """
 function djn_zeros(rj0::Vector{Float64}, rj1::Vector{Float64}, n::Int64, nt::Int64)
     @assert n >= 0
@@ -717,15 +722,15 @@ end
 Compute zeros of integer-order Bessel function Yn(x).
 
 ## Input
-n  --- Order of Bessel functions  (n >= 0)
-NT --- Number of zeros (roots)
+- n  --- Order of Bessel functions  (n >= 0)
+- NT --- Number of zeros (roots)
 
 ## Output
-RY0(L) --- L-th zero of Yn(x),  L=1,2,...,NT
+- RY0(L) --- L-th zero of Yn(x),  L=1,2,...,NT
 
 ## Routine called
-JYNDD for computing Yn(x), and
-its first and second derivatives
+- [`Specfun.jyndd`](@ref) for computing Yn(x), and
+    its first and second derivatives
 """
 function yn_zeros(ry0::Vector{Float64}, n::Int64, nt::Int64)
     @assert n >= 0
@@ -791,16 +796,16 @@ Compute zeros of integer-order Bessel function Yn(x)
 and its derivatives Yn'(x)
 
 ## Input
-n  --- Order of Bessel functions  (n >= 0)
-NT --- Number of zeros (roots)
+- n  --- Order of Bessel functions  (n >= 0)
+- NT --- Number of zeros (roots)
 
 ## Output
-RY0(L) --- L-th zero of Yn(x), L=1,2,...,NT
-RY1(L) --- L-th zero of Yn'(x), L=1,2,...,NT
+- RY0(L) --- L-th zero of Yn(x), L=1,2,...,NT
+- RY1(L) --- L-th zero of Yn'(x), L=1,2,...,NT
 
 ## Routine called
-JYNDD for computing Yn(x), and
-its first and second derivatives
+- [`Specfun.jyndd`](@ref) for computing Yn(x), and
+    its first and second derivatives
 """
 function dyn_zeros(ry0::Vector{Float64}, ry1::Vector{Float64}, n::Int64, nt::Int64)
     @assert n >= 0
@@ -842,23 +847,28 @@ function dyn_zeros(ry0::Vector{Float64}, ry1::Vector{Float64}, n::Int64, nt::Int
 end
 
 """
+    jyzo(
+        n::Int64, nt::Int64,
+        rj0::Vector{Float64}, rj1::Vector{Float64},
+        ry0::Vector{Float64}, ry1::Vector{Float64}
+    )
 
 Compute the zeros of Bessel functions Jn(x),
 Yn(x), and their derivatives
 
 ## Input
-n  --- Order of Bessel functions  (n >= 0)
-NT --- Number of zeros (roots)
+- `n`  --- Order of Bessel functions  (n >= 0)
+- `NT` --- Number of zeros (roots)
 
 ## Output
-RJ0(L) --- L-th zero of Jn(x),  L=1,2,...,NT
-RJ1(L) --- L-th zero of Jn'(x), L=1,2,...,NT
-RY0(L) --- L-th zero of Yn(x),  L=1,2,...,NT
-RY1(L) --- L-th zero of Yn'(x), L=1,2,...,NT
+- `RJ0(L)` --- L-th zero of Jn(x),  L=1,2,...,NT
+- `RJ1(L)` --- L-th zero of Jn'(x), L=1,2,...,NT
+- `RY0(L)` --- L-th zero of Yn(x),  L=1,2,...,NT
+- `RY1(L)` --- L-th zero of Yn'(x), L=1,2,...,NT
 
 ## Routine called
-JYNDD for computing Jn(x), Yn(x), and
-their first and second derivatives
+- [`Specfun.jyndd`](@ref) for computing Jn(x), Yn(x), and
+    their first and second derivatives
 """
 function jyzo(n::Int64, nt::Int64,
     rj0::Vector{Float64}, rj1::Vector{Float64},

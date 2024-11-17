@@ -51,9 +51,9 @@ CurrentModule = PureSpecial.Specfun
 
 - JY01A, 134
 - JY01B, 138
-- ENVJ, 142
-- MSTA1(ENVJ), 142
-- MSTA2(ENVJ), 143
+- [`Specfun.envj`](@ref)
+- [`Specfun.msta1`](@ref)
+- [`Specfun.msta2`](@ref)
 - JYNA(JY01B,MSTA1,MSTA2), 144
 - JYNB(MSTA1,MSTA2), 146
 - CJY01, 149
@@ -64,8 +64,8 @@ CurrentModule = PureSpecial.Specfun
 - CJYVB(GAMMA,MSTA1,MSTA2), 172
 - CJK, 173
 - CJYLV(CJK), 174
-- JDZO(BJNDD), 181
-- JYZO(JYNDD), 181
+- [`Specfun.jdzo`](@ref)
+- [`Specfun.jyzo`](@ref)
 - CYZO(CYO1), 182
 - LAMN(MSTA1,MSTA2), 184
 - LAMV(GAMO,MSTA1,MSTA2), 184
