@@ -1,4 +1,4 @@
-# Index of computer programs
+# Function Index in CoSF
 
 > Note: Subsidiary routines called directly by a routine are listed in parentheses
 
