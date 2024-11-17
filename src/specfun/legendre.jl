@@ -38,16 +38,16 @@ lqmn(m, n, z)   + specfun_lqmn
 
 """
 Compute associated Legendre functions Pmn(x)
-and Pmn'(x) for a given order
+and Pmn'(x) for a given order.
 
 Input:
-- m --- Order of Pmn(x),  m = 0,1,2,...,n
-- n --- Degree of Pmn(x), n = 0,1,2,...,N
-- x --- Argument of Pmn(x)
+- `m` --- Order of Pmn(x),  m = 0,1,2,...,n
+- `n` --- Degree of Pmn(x), n = 0,1,2,...,N
+- `x` --- Argument of Pmn(x)
 
 Output:
-- PM(n) --- Pmn(x)
-- PD(n) --- Pmn'(x)
+- Pmn(x)
+- Pmn'(x)
 """
 function lpmns(m::Int, n::Int, x::Float64, pm::Vector{Float64}, pd::Vector{Float64})
     # NOTE: f77:  DIMENSION PM(0:N),PD(0:N)
@@ -115,16 +115,16 @@ end
 
 """
 Compute associated Legendre functions Qmn(x)
-and Qmn'(x) for a given order
+and Qmn'(x) for a given order.
 
 Input:
-- m --- Order of Qmn(x),  m = 0,1,2,...
-- n --- Degree of Qmn(x), n = 1,2,...
-- x --- Argument of Qmn(x)
+- `m` --- Order of Qmn(x),  m = 0,1,2,...
+- `n` --- Degree of Qmn(x), n = 1,2,...
+- `x` --- Argument of Qmn(x)
 
 Output:
-- QM(n) --- Qmn(x)
-- QD(n) --- Qmn'(x)
+- Qmn(x)
+- Qmn'(x)
 """
 function lqmns(m::Int, n::Int, x::Float64, qm::Vector{Float64}, qd::Vector{Float64})
     # NOTE: f77:  DIMENSION QM(0:N),QD(0:N)
@@ -263,18 +263,18 @@ end
 """
 Compute the associated Legendre function
 Pmv(x) with an integer order and an arbitrary
-nonnegative degree v
+nonnegative degree v.
 
 Input:
-- v   --- Degree of Pmv(x),     v >= 0
-- m   --- Order of Pmv(x)
-- x   --- Argument of Pm(x),    -1 ≤ x ≤ 1
+- `v`   --- Degree of Pmv(x),     v >= 0
+- `m`   --- Order of Pmv(x)
+- `x`   --- Argument of Pm(x),    -1 ≤ x ≤ 1
 
 Output:
-- PMV --- Pmv(x)
+- Pmv(x)
 
 Routine called:
-- PSI for computing Psi function
+- [`Specfun.psi`](@ref) for computing Psi function
 """
 function lpmv0(v::T, m::Int, x::T)::T where {T<:AbstractFloat}
     @assert v >= 0
@@ -382,19 +382,19 @@ end
 """
 Compute the associated Legendre function
 Pmv(x) with an integer order and an arbitrary
-degree v, using recursion for large degrees
+degree v, using recursion for large degrees.
 
 Input:
-- v   --- Degree of Pmv(x)
-- m   --- Order of Pmv(x)
-- x   --- Argument of Pm(x), -1 ≤ x ≤ 1
+- `v`   --- Degree of Pmv(x)
+- `m`   --- Order of Pmv(x)
+- `x`   --- Argument of Pm(x), -1 ≤ x ≤ 1
 
 Output:
-- PMV --- Pmv(x)
+- Pmv(x)
 
 Routine called:
-- LPMV0
-- GAMMA2
+- [`lpmv0`](@ref)
+- [`gamma2`](@ref)
 """
 function lpmv(v::T, m::Int, x::T)::T where {T<:AbstractFloat}
     @assert abs(x) <= 1

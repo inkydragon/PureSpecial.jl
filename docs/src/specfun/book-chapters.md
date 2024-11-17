@@ -34,14 +34,18 @@ CurrentModule = PureSpecial.Specfun
 - LPN, 81
 - CLPN, 82
 - LPNI, 82
+
 - LQNA, 86
 - LQNB, 87
 - CLQN, 89
+
 - LPMN, 95
+- [`Specfun.lpmns`](@ref)
 - CLPMN, 96
 - LQMN, 102
+- [`Specfun.lqmns`](@ref)
 - CLQMN, 104
-- LPMV(PSI), 109
+- [`Specfun.lpmv`](@ref)
 
 ## 5 Bessel Functions
 
