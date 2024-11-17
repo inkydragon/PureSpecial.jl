@@ -192,12 +192,15 @@ CurrentModule = PureSpecial.Specfun
 
 ## 16 Error Function and Fresnel Integrals
 
-- ERROR, 622
-- CERROR, 623
-- FCS, 631
-- FFK, 632
-- CERZO(CERF), 635
-- FCSZO(CFC,CFS), 636
+- [`Specfun.erf(::Float64)`](@ref)
+- [`Specfun.erf(::Complex{Float64})`](@ref)
+- [`Specfun.fcs`](@ref)
+- [`Specfun.ffk`](@ref)
+- [`Specfun.cerzo`](@ref)
+  - [`Specfun.cerf`](@ref)
+- [`Specfun.fcszo`](@ref)
+  - [`Specfun.cfc`](@ref)
+  - [`Specfun.cfs`](@ref)
 
 ## 17 Cosine and Sine Integrals
 

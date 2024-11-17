@@ -2,6 +2,7 @@
 #   See also: src/specfun/LICENSE.md
 """Error Functions"""
 #=
+- ✅ erf
 - ✅ cerzo
 - ✅ fcszo
 =#
@@ -9,8 +10,12 @@
 
 """
 Compute error function erf(x)
-Input:  x   --- Argument of erf(x)
-Output: ERR --- erf(x)
+    
+Input:
+- `x`   --- Argument of erf(x)
+
+Output:
+- erf(x)
 """
 function erf(x::Float64)
     EPS = 1.0e-15
@@ -48,8 +53,12 @@ end
 
 """
 Compute error function erf(z) for a complex argument (z=x+iy)
-Input:  z   --- Complex argument
-Output: CER --- erf(z)
+    
+Input:
+- `z`   --- Complex argument
+
+Output:
+- erf(z)
 """
 function erf(z::Complex{Float64})
     EPS = 1.0e-15
@@ -108,11 +117,11 @@ end
 Compute complex Error function erf(z) & erf'(z)
     
 Input
-z   --- Complex argument of erf(z)
+- `z`   --- Complex argument of erf(z)
 
-Output
-CER --- erf(z)
-CDER --- erf'(z)
+Output: `(cer, cder)`
+- CER --- erf(z)
+- CDER --- erf'(z)
 """
 function cerf(z::Complex{Float64})
     EPS = 1.0e-12
@@ -191,6 +200,19 @@ function cerf(z::Complex{Float64})
     return cer, cder
 end
 
+"""
+Evaluate the complex zeros of error function erf(z)
+using the modified Newton's iteration method
+
+Input :
+- `NT` --- Total number of zeros
+
+Output:
+- `ZO(L)` --- L-th zero of erf(z), L=1,2,...,NT
+
+Routine called:
+- [`Specfun.cerf`](@ref) for computing erf(z) and erf'(z)
+"""
 function cerzo(zo::Vector{Complex{Float64}}, nt::Int)
     EPS = 1.0e-11
 
@@ -240,11 +262,11 @@ end
 Compute complex Fresnel integral C(z) and C'(z)
 
 Input
-z --- Argument of C(z)
+- `z` --- Argument of C(z)
 
-Output
-ZF --- C(z)
-ZD --- C'(z)
+Output: `(zf, zd)`
+- C(z)
+- C'(z)
 """
 function cfc(z::Complex{Float64})
     EPS = 1.0e-14
@@ -347,11 +369,11 @@ end
 Compute complex Fresnel Integral S(z) and S'(z)
 
 Input
-z  --- Argument of S(z)
+- `z`  --- Argument of S(z)
 
-Output
-ZF --- S(z)
-ZD --- S'(z)
+Output: `(zf, zd)`
+- S(z)
+- S'(z)
 """
 function cfs(z::Complex{Float64})
     EPS = 1.0e-14
@@ -454,11 +476,11 @@ end
 Compute Fresnel integrals C(x) and S(x)
 
 Input
-x --- Argument of C(x) and S(x)
+- `x` --- Argument of C(x) and S(x)
 
-Output
-C --- C(x)
-S --- S(x)
+Output `(c, s)`
+- C(x)
+- S(x)
 """
 function fcs(x::Float64)
     EPS = 1.0e-15
@@ -544,16 +566,17 @@ Compute the complex zeros of Fresnel integral C(z)
 or S(z) using modified Newton's iteration method
 
 Input
-KF  --- Function code
-    KF=1 for C(z) or KF=2 for S(z)
-NT  --- Total number of zeros
+- `KF`  --- Function code
+    - `KF=1` for C(z)
+    - `KF=2` for S(z)
+- `NT`  --- Total number of zeros
 
 Output
-ZO(L) --- L-th zero of C(z) or S(z)
+- `ZO(L)` --- L-th zero of C(z) or S(z)
 
 Routines called:
-(1) CFC for computing Fresnel integral C(z)
-(2) CFS for computing Fresnel integral S(z)
+- [`Specfun.cfc`](@ref) for computing Fresnel integral C(z)
+- [`Specfun.cfs`](@ref) for computing Fresnel integral S(z)
 """
 function fcszo(zo::Vector{Complex{Float64}}, kf::Int, nt::Int)
     EPS = 1.0e-12
@@ -627,20 +650,20 @@ Compute modified Fresnel integrals F±(x)
 and K±(x)
 
 Input
-x   --- Argument of F±(x) and K±(x)
-KS  --- Sign code
+- x   --- Argument of F±(x) and K±(x)
+- KS  --- Sign code
     KS=0 for calculating F+(x) and K+(x)
     KS=1 for calculating F_(x) and K_(x)
 
 Output
-FR  --- Re[F±(x)]
-FI  --- Im[F±(x)]
-FM  --- |F±(x)|
-FA  --- Arg[F±(x)], Degs.
-GR  --- Re[K±(x)]
-GI  --- Im[K±(x)]
-GM  --- |K±(x)|
-GA  --- Arg[K±(x)], Degs.
+- FR  --- Re[F±(x)]
+- FI  --- Im[F±(x)]
+- FM  --- |F±(x)|
+- FA  --- Arg[F±(x)], Degs.
+- GR  --- Re[K±(x)]
+- GI  --- Im[K±(x)]
+- GM  --- |K±(x)|
+- GA  --- Arg[K±(x)], Degs.
 """
 function ffk(ks::Int, x::Float64)
     srd = 57.29577951308233
