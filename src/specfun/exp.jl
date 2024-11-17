@@ -2,6 +2,7 @@
 #   See also: src/specfun/LICENSE.md
 """Exponential and Trigonometric Integrals"""
 #=
+Exponential Integrals:
 - ✅ e1xb
 - ✅ e1z
 - ✅ eix
@@ -9,6 +10,10 @@
 - E1XA
 - ENXA
 - ENXB
+
+Trigonometric Integrals:
+- CISIA, 647
+- CISIB, 650
 =#
 
 """
@@ -25,10 +30,10 @@ const EULER_GAMMA_28 = 0.57721566490153_28
 Compute exponential integral E1(x)
 
 Input
-x  --- Argument of E1(x)
+- `x`  --- Argument of E1(x)
 
 Output
-e1 --- E1(x)  ( x > 0 )
+- E1(x)  ( x > 0 )
 """
 function e1xb(x::Float64)
     @assert x >= 0
@@ -69,10 +74,10 @@ end
 Compute complex exponential integral E1(z)
 
 Input
-z   --- Argument of E1(z)
+- `z`   --- Argument of E1(z)
 
 Output
-CE1 --- E1(z)
+- E1(z)
 """
 function e1z(z::Complex{Float64})
     @assert isapprox(Base.MathConstants.eulergamma, EULER_GAMMA_28)
@@ -147,10 +152,10 @@ end
 Compute exponential integral Ei(x)
 
 Input
-x  --- Argument of Ei(x)
+- `x`  --- Argument of Ei(x)
 
 Output
-EI --- Ei(x)
+- Ei(x)
 """
 function eix(x::Float64)
     EPS = 1e-15
@@ -195,10 +200,10 @@ end
 Compute exponential integral Ei(x)
 
 Input
-x  --- Complex argument of Ei(x)
+- `x`  --- Complex argument of Ei(x)
 
 Output
-EI --- Ei(x)
+- Ei(x)
 """
 function eixz(z::Complex{Float64})
     cei = -e1z(-z)

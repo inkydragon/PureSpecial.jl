@@ -217,8 +217,8 @@ CurrentModule = PureSpecial.Specfun
 ## 19 Exponential Integrals
 
 - E1XA, 684
-- E1XB, 684
-- E1Z, 685
+- [`Specfun.e1xb`](@ref)
+- [`Specfun.e1z`](@ref)
 - ENXA(E1XB), 686
 - ENXB, 686
-- EIX, 688
+- [`Specfun.eix`](@ref)
