@@ -98,8 +98,8 @@ CurrentModule = PureSpecial.Specfun
 
 ## 8 Spherical Bessel Functions
 
-- SPHJ(MSTA1,MSTA2), 278
-- SPHY, 280
+- [`Specfun.sphj`](@ref)
+- [`Specfun.sphy`](@ref)
 - CSPHJY(MSTA1,MSTA2), 281
 - RCTJ(MSTA1,MSTA2), 284
 - RCTY, 285
@@ -173,22 +173,22 @@ CurrentModule = PureSpecial.Specfun
 
 ## 15 Spheroidal Wave Functions
 
-- SEGV, 570
-- SDMN, 572
+- [`Specfun.segv`](@ref)
 - SCKA, 575
-- SCKB, 577
-- ASWFA(SDMN,SCKB), 578
+- [`Specfun.aswfa`](@ref)
+  - [`Specfun.sdmn`](@ref)
+  - [`Specfun.sckb`](@ref)
 - ASWFB(SDMN,LPMNS), 579
 - RSWFP(SDMN,RMN1,RMN2L,RMN2SP), 580
-- RMN1(SCKB.SPHJ), 581
-- RMN2L(SPHY), 583
+- [`Specfun.rmn1`](@ref)
+- [`Specfun.rmn2l`](@ref)
+  - KMN, 587
 - RMN2SP(LPMNS,LQMNS,KMN), 585
-- KMN, 587
 - RSWFO(SDMN,RMNI,RMN2L,RMN2SO), 589
 - RMN2SO(SCKB,KMN,QSTAR,CBK,GMN,RMN1), 590
-- QSTAR, 591
-- CBK, 592
-- GMN, 593
+  - QSTAR, 591
+  - CBK, 592
+  - GMN, 593
 
 ## 16 Error Function and Fresnel Integrals
 

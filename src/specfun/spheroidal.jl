@@ -20,6 +20,7 @@
     - qstar
     - cbk
     - gmn
+- ASWFB
 + *rswfp -> [sdmn,rmn1,rmn2l,rmn2sp]
 + rswfo -> [sdmn,sckb,rmn2l,rmn2so]
 =#
@@ -29,15 +30,16 @@
 Compute the characteristic values of spheroidal wave functions
 
 Input:  
-m  --- Mode parameter
-n  --- Mode parameter
-c  --- Spheroidal parameter
-KD --- Function code
-    KD=1 for Prolate; KD=-1 for Oblate
+- m  --- Mode parameter
+- n  --- Mode parameter
+- c  --- Spheroidal parameter
+- KD --- Function code
+    - KD=1 for Prolate;
+    - KD=-1 for Oblate
 
 Output:  
-CV --- Characteristic value for given m, n and c
-EG(L) --- Characteristic value for mode m and n'
+- CV --- Characteristic value for given m, n and c
+- EG(L) --- Characteristic value for mode m and n'
         ( L = n' - m + 1 )
 """
 function segv(m::Int, n::Int, c::T, kd::Int, eg::Vector{T}) where {T<:AbstractFloat}
@@ -169,15 +171,16 @@ Compute the expansion coefficients of the
 prolate and oblate spheroidal functions, dk
 
 Input: 
-m  --- Mode parameter
-n  --- Mode parameter
-c  --- Spheroidal parameter
-cv --- Characteristic value
-KD --- Function code
-    KD=1 for prolate; KD=-1 for oblate
+- `m`  --- Mode parameter
+- `n`  --- Mode parameter
+- `c`  --- Spheroidal parameter
+- `cv` --- Characteristic value
+- `KD` --- Function code
+    - `KD= 1` for prolate;
+    - `KD=-1` for oblate
 
 Output: 
-DF(k) --- Expansion coefficients dk;
+- `DF(k)` --- Expansion coefficients dk;
     DF(1), DF(2), ... correspond to
     d0, d2, ... for even n-m and d1,
     d3, ... for odd n-m
@@ -320,13 +323,13 @@ Compute the expansion coefficients of the
 prolate and oblate spheroidal functions
 
 Input:
-m  --- Mode parameter
-n  --- Mode parameter
-c  --- Spheroidal parameter
-DF(k) --- Expansion coefficients dk
+- `m`  --- Mode parameter
+- `n  --- Mode parameter
+- `c`  --- Spheroidal parameter
+- `DF(k)` --- Expansion coefficients dk
 
 Output:  
-CK(k) --- Expansion coefficients ck;
+- `CK(k)` --- Expansion coefficients ck;
     CK(1), CK(2), ... correspond to
     c0, c2, ...
 """
@@ -377,20 +380,23 @@ Compute the prolate and oblate spheroidal angular
 functions of the first kind and their derivatives
 
 Input :  
-m  --- Mode parameter,  m = 0,1,2,...
-n  --- Mode parameter,  n = m,m+1,...
-c  --- Spheroidal parameter
-x  --- Argument of angular function, |x| ≤ 1.0
-KD --- Function code
-    KD=1 for prolate;  KD=-1 for oblate
-cv --- Characteristic value
+- `m`  --- Mode parameter,  m = 0,1,2,...
+- `n`  --- Mode parameter,  n = m,m+1,...
+- `c`  --- Spheroidal parameter
+- `x`  --- Argument of angular function, |x| ≤ 1.0
+- `KD` --- Function code
+    - `KD= 1` for prolate;
+    - `KD=-1` for oblate
+- `cv` --- Characteristic value
 
-Output:  
-s1f --- Angular function of the first kind
-s1d --- Derivative of the angular function of
+Output: `(s1f, s1d)`
+- `s1f` --- Angular function of the first kind
+- `s1d` --- Derivative of the angular function of
         the first kind
 
-Call: sdmn,sckb
+Call:
+  - [`Specfun.sdmn`](@ref)
+  - [`Specfun.sckb`](@ref)
 """
 function aswfa(m::Int, n::Int, c::T, x::T, kd::Int, cv::T) where {T<:AbstractFloat}
     @assert abs(x) <= 1 "Bad x: |x| ≤ 1.0"
@@ -469,8 +475,8 @@ dj --- Array of jn'(x) values
 nm --- Highest order computed
 
 Routines called:
-- msta1
-- msta2
+- [`Specfun.msta1`](@ref)
+- [`Specfun.msta2`](@ref)
 """
 function sphj(n::Int, x::T, sj::Vector{Float64}, dj::Vector{Float64}) where {T<:AbstractFloat}
     @assert n >= 0
@@ -538,8 +544,8 @@ Compute prolate and oblate spheroidal radial
 functions of the first kind for given m, n, c, and x
 
 Routines called:
-- sckb
-- sphj
+- [`Specfun.sckb`](@ref)
+- [`Specfun.sphj`](@ref)
 """
 function rmn1(m::Int, n::Int, c::T, x::T, kd::Int, df::Vector{T}) where {T<:AbstractFloat}
     @assert (1.0 - kd / (x * x)) >= 0 
@@ -666,13 +672,13 @@ Compute spherical Bessel functions yn(x) and
 their derivatives
 
 Input :  
-x --- Argument of yn(x) ( x ≥ 0 )
-n --- Order of yn(x) ( n = 0,1,… )
+- x --- Argument of yn(x) ( x ≥ 0 )
+- n --- Order of yn(x) ( n = 0,1,… )
 
 Output:  
-SY(n) --- yn(x)
-DY(n) --- yn'(x)
-NM --- Highest order computed
+- `SY(n)` --- yn(x)
+- `DY(n)` --- yn'(x)
+- `NM` --- Highest order computed
 """
 function sphy(n::Int, x::T, sy::Vector{Float64}, dy::Vector{Float64}) where {T<:AbstractFloat}
     @assert n >= 0
@@ -723,7 +729,7 @@ functions of the second kind for given m, n,
 c and a large cx
 
 Routine called:
-SPHY for computing the spherical Bessel
+- [`Specfun.sphy`](@ref) for computing the spherical Bessel
 functions of the second kind
 """
 function rmn2l(m::Int, n::Int, c::T, x::T, kd::Int, df::Vector{T}) where {T<:AbstractFloat}
@@ -827,7 +833,7 @@ Input:
 Output:
 - `dn`
 
-Return: (ck1, ck2)
+Return: `(ck1, ck2)`
 """
 function kmn(m::Int, n::Int, c::T, cv::T, kd::Int, df::Vector{T}, dn::Vector{T}) where {T<:AbstractFloat}
     
@@ -837,9 +843,9 @@ end
 Compute prolate spheroidal radial function of the second kind with a small argument
 
 Routines called:
-- KMN for computing expansion coefficients and joining factors
-- LPMNS for computing the associated Legendre functions of the first kind
-- LQMNS for computing the associated Legendre functions of the second kind
+- [`Specfun.kmn`](@ref) for computing expansion coefficients and joining factors
+- [`Specfun.lpmns`](@ref) for computing the associated Legendre functions of the first kind
+- [`Specfun.lqmns`](@ref) for computing the associated Legendre functions of the second kind
 """
 function rmn2sp(m, n, c, x, cv, kd, df)
     
@@ -869,9 +875,9 @@ R2D --- Derivative of the radial function of
         the second kind
 
 Routines called:
-- sdmn
-- rmn1
-- rmn2l
+- [`Specfun.sdmn`](@ref)
+- [`Specfun.rmn1`](@ref)
+- [`Specfun.rmn2l`](@ref)
 - rmn2sp
 """
 function rswfp(m::Int, n::Int, c::T, x::T, cv::T, kf::Int) where {T<:AbstractFloat}
