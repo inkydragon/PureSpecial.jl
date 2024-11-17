@@ -136,8 +136,8 @@ CurrentModule = PureSpecial.Specfun
 
 - HYGFX(GAMMA,PSI), 376
 - HYGFZ(GAMMA,PSI), 380
-- CHGM(GAMMA), 398
-- CCHG(GAMMA), 400
+- [`Specfun.chgm`](@ref)
+- [`Specfun.cchg`](@ref)
 - CHGU(CHGUS,CHGUL,CHGUBI,CHGUIT), 403
 - CHGUS(GAMMA), 405
 - CHGUL, 406

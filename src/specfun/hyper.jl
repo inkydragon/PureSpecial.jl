@@ -2,6 +2,9 @@
 #   See also: src/specfun/LICENSE.md
 """Hypergeometric functions"""
 #=
+- HYGFX(GAMMA,PSI), 376
+- HYGFZ(GAMMA,PSI), 380
+
 - ✅ cchg
 - ✅ chgm
 - ✅ chgm_kernel
@@ -19,15 +22,15 @@ Compute confluent hypergeometric function
 a complex argument `z`.
 
 ## Input
-a --- Parameter
-b --- Parameter
-z --- Complex argument
+- `a` --- Parameter
+- `b` --- Parameter
+- `z` --- Complex argument
 
 ## Output
-CHG --- M(a,b,z)
+- M(a,b,z)
 
 ## Routine called
-CGAMA for computing complex ln[Г(x)]
+- [`Specfun.cgama`](@ref) for computing complex ln[Г(x)]
 
 ## Reference
 - [DLMF C13: Confluent Hypergeometric Functions](https://dlmf.nist.gov/13)
@@ -215,15 +218,15 @@ end
 Compute confluent hypergeometric function M(a,b,x)
 
 Input
-a  --- Parameter
-b  --- Parameter ( b <> 0,-1,-2,... )
-x  --- Argument
-         
+- `a`  --- Parameter
+- `b`  --- Parameter ( b <> 0,-1,-2,... )
+- `x`  --- Argument
+
 Output
-HG --- M(a,b,x)
+- M(a,b,x)
 
 Routine called
-CGAMA for computing complex ln[Г(x)]
+- [`Specfun.cgama`](@ref) for computing complex ln[Г(x)]
 """
 function chgm(a::Float64, b::Float64, x::Float64)
     # TODO: merge chgm && chgm_kernel, when removeing specfun.f tests.
