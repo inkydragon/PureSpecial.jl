@@ -2,8 +2,23 @@
 #   See also: src/specfun/LICENSE.md
 
 """Special functions in pure julia.
-"""
 
+Translated from `specfun.f`
+
+```fortran
+C
+C       COMPUTATION OF SPECIAL FUNCTIONS
+C
+C          Shanjie Zhang and Jianming Jin
+C
+C       Copyrighted but permission granted to use code in programs.
+C       Buy their book "Computation of Special Functions", 1996, John Wiley & Sons, Inc.
+C
+```
+
+
+
+"""
 module Specfun
 
 # SUBROUTINE
