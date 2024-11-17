@@ -2,6 +2,7 @@
 #   See also: src/specfun/LICENSE.md
 """Mathieu Functions"""
 #=
+- CVA1
 - cva2
     -> refine -> cvf
     -> cv0

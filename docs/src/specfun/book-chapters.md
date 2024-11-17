@@ -162,13 +162,13 @@ CurrentModule = PureSpecial.Specfun
 
 - CVA1, 501
 - CVA2(REFINE,CVO,CVQL,CVQM), 504
-- REFINE(CVF), 505
-- CVF, 506
-- CV0(CVQL,CVQM), 507
-- CVQL, 511
-- CVQM, 511
-- FCOEF, 512
+  - REFINE(CVF), 505
+  - CVF, 506
+  - CV0(CVQL,CVQM), 507
+  - CVQL, 511
+  - CVQM, 511
 - MTU0(CVA2,FCOEF), 516
+  - FCOEF, 512
 - MTU12(CVA2,FCOEF,JYNB), 517
 
 ## 15 Spheroidal Wave Functions
