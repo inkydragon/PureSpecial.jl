@@ -19,10 +19,10 @@ Integrals
 Compute Struve Function H0(x)
 
 Input:
-- x   --- Argument of H0(x) ( x ≥ 0 )
+- `x`   --- Argument of H0(x) ( x ≥ 0 )
 
 Output:
-- SH0 --- H0(x)
+- H0(x)
 """
 function stvh0(x::Float64)::Float64
     @assert x >= 0
@@ -76,10 +76,10 @@ end
 Compute Struve Function H1(x)
 
 Input:
-- x   --- Argument of H1(x) ( x ≥ 0 )
+- `x`   --- Argument of H1(x) ( x ≥ 0 )
 
 Output:
-- SH1 --- H1(x)
+- H1(x)
 """
 function stvh1(x::Float64)::Float64
     @assert x >= 0
@@ -134,14 +134,14 @@ Compute Struve Functions Hv(x) with
 arbitrary order v  ( -8.0 ≤ v ≤ 12.5 )
 
 Input  :
-- v  --- Order of Hv(x)
-- x  --- Argument of Hv(x) ( x ≥ 0 )
+- `v`  --- Order of Hv(x)
+- `x`  --- Argument of Hv(x) ( x ≥ 0 )
 
 Output :
-- Hv --- Hv(x)
+- Hv(x)
 
 Required:
-- `gamma2` function to compute the Gamma function
+- [`Specfun.gamma2`](@ref) function to compute the Gamma function
 """
 function stvhv(v::Float64, x::Float64)::Float64
     @assert -8.0 <= v <= 12.5

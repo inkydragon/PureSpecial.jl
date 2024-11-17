@@ -125,12 +125,12 @@ CurrentModule = PureSpecial.Specfun
 - STVH1, 347
 - STVH0, 347
 - STVHV(GAMMA), 349
-- ITSH0, 351
-- ITTH0, 352
+- [`Specfun.itsh0`](@ref)
+- [`Specfun.itth0`](@ref)
 - STVL0, 357
 - STVL1, 358
 - STVLV(GAMMA), 360
-- ITSL0, 361
+- [`Specfun.itsl0`](@ref)
 
 ## 12 Hypergeometric and Confluent Hypergeometric Functions
 
