@@ -11,6 +11,7 @@ pages = Any[
     ],
     "specfun.f" => Any[
         "specfun/index.md"
+        "specfun/book-chapters.md"
         "specfun/book-index.md"
     ],
     "impls.md",
