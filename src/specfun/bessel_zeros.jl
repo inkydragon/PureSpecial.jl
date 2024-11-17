@@ -470,7 +470,7 @@ function jynbh(
         #
         bj0 = f1 / s0
         bj1 = f2 / s0
-        ec = log(x / 2.0) + 0.5772156649015329
+        ec = log(x / 2.0) + SF_EULER_GAMMA
         by0 = r2p * (ec * bj0 - 4.0 * su / s0)
         by1 = r2p * ((ec - 1.0) * bj1 - bj0 / x - 4.0 * sv / s0)
 

@@ -28,7 +28,7 @@ and kei x, and their derivatives  ( x > 0 )
 """
 function klvna(x::Float64)
     @assert Float64(pi) === 3.141592653589793
-    el = 0.5772156649015329
+    el = SF_EULER_GAMMA
     eps = 1.0e-15
 
     ber = 1.0
