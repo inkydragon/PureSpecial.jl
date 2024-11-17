@@ -45,7 +45,7 @@ function e1xb(x::Float64)
                 break
             end
         end
-        e1 = -EULER_GAMMA_28 - log(x) + x*e1
+        e1 = -SF_EULER_GAMMA_28 - log(x) + x*e1
     else
         m = 20 + trunc(Int64, 80.0 / x)
         t0 = 0.0
@@ -72,7 +72,7 @@ Output
 - E1(z)
 """
 function e1z(z::Complex{Float64})
-    @assert isapprox(Base.MathConstants.eulergamma, EULER_GAMMA_28)
+    @assert isapprox(Base.MathConstants.eulergamma, SF_EULER_GAMMA_28)
     EPS = 1e-15
 
     # Continued fraction converges slowly near negative real axis,
@@ -99,9 +99,9 @@ function e1z(z::Complex{Float64})
         if (x <= 0.0) && (imag(z) == 0.0)
             # Careful on the branch cut -- use the sign of the imaginary part
             #   to get the right sign on the factor if pi.
-            ce1 = -EULER_GAMMA_28 - log(-z) + z * ce1 - copysign(pi, imag(z)) * im
+            ce1 = -SF_EULER_GAMMA_28 - log(-z) + z * ce1 - copysign(pi, imag(z)) * im
         else
-            ce1 = -EULER_GAMMA_28 - log(z) + z * ce1
+            ce1 = -SF_EULER_GAMMA_28 - log(z) + z * ce1
         end
     else
         # DLMF 6.9.1:  Continued Fraction
@@ -170,7 +170,7 @@ function eix(x::Float64)
                 break
             end
         end
-        ei = EULER_GAMMA_28 + log(x) + x * ei
+        ei = SF_EULER_GAMMA_28 + log(x) + x * ei
     else # x > 40
         # DLMF 6.12.2:  x > 0, x --> Inf, Asymptotic expansion 
         #   (the series is not convergent)

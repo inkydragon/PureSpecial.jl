@@ -17,6 +17,12 @@ const SF_EULER_GAMMA = Float64(Base.MathConstants.eulergamma)
 """
 Euler's Constant γ
 
-note: imprecise
+```jldoctest
+julia> Float64(Base.MathConstants.eulergamma)
+0.5772156649015329
+
+julia> 0.57721566490153_28  # imprecise
+0.5772156649015328
+```
 """
-const EULER_GAMMA_28 = 0.57721566490153_28
+const SF_EULER_GAMMA_28 = 0.5772156649015328
