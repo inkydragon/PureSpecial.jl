@@ -301,7 +301,7 @@ Output:
 """
 function psi(x::T) where {T<:AbstractFloat}
     @assert isapprox(pi, 3.141592653589793)
-    _EL = SF_CONST_EULER
+    _EL = SF_EULER_GAMMA
     _2LOG2 = 1.386294361119891
     @assert isapprox(2*log(2), _2LOG2)
 

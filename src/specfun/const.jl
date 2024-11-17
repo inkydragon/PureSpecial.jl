@@ -6,8 +6,13 @@
 Euler's Constant γ
 
 Same as: Base.MathConstants.eulergamma
+
+```jldoctest
+julia> Float64(Base.MathConstants.eulergamma)
+0.5772156649015329
+```
 """
-const SF_CONST_EULER = 0.57721566490153_29
+const SF_EULER_GAMMA = Float64(Base.MathConstants.eulergamma)
 
 """
 Euler's Constant γ
