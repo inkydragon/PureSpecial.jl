@@ -9,6 +9,10 @@ pages = Any[
     "Docs" => Any[
         "ref/struve.md"
     ],
+    "specfun.f" => Any[
+        "specfun/index.md"
+        "specfun/book-index.md"
+    ],
     "impls.md",
     "scipy.special.md",
     "special-functions.md",
