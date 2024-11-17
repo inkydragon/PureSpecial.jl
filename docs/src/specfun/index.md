@@ -4,9 +4,6 @@
 CurrentModule = PureSpecial.Specfun
 ```
 
-```@docs
-Specfun
-```
 
 > ref: `test\f77\specfun.f`
 

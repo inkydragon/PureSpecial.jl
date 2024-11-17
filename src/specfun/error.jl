@@ -636,11 +636,11 @@ Output
 FR  --- Re[F±(x)]
 FI  --- Im[F±(x)]
 FM  --- |F±(x)|
-FA  --- Arg[F±(x)]  (Degs.)
+FA  --- Arg[F±(x)], Degs.
 GR  --- Re[K±(x)]
 GI  --- Im[K±(x)]
 GM  --- |K±(x)|
-GA  --- Arg[K±(x)]  (Degs.)
+GA  --- Arg[K±(x)], Degs.
 """
 function ffk(ks::Int, x::Float64)
     srd = 57.29577951308233
