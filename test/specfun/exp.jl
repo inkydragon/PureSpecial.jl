@@ -58,6 +58,22 @@ end
     end
 end
 
+@testset "enxb" begin
+    test_n = Int[
+        1:5...,
+    ]
+    test_x = Float64[
+        0:10...,
+        rand(10)...,
+    ]
+    for n in test_n,
+        x in test_x
+        @testset "enxb(n=$n ,x=$x)" begin
+            @test isapprox(_enxb(n, x), Specfun.enxb(n, x))
+        end
+    end
+end
+
 @testset "eix" begin
     test_x = [
         E1XB_TEST_X...,

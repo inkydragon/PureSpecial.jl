@@ -160,6 +160,17 @@ function _enxa(n::Int, x::Float64)
     en
 end
 
+"""
+    SUBROUTINE ENXB(N,X,EN)
+    DIMENSION EN(0:N)
+"""
+function _enxb(n::Int, x::Float64)
+    en = zeros(n + 1)
+    ccall(f77func(:enxb), Cvoid, (Ref{Int32}, Ref{Float64}, Ptr{Float64}),
+            Int32(n), x, en)
+    en
+end
+
 function _eix(x::Float64)
     ei = Ref{Float64}(NaN)
     # SUBROUTINE EIX(X,EI)
