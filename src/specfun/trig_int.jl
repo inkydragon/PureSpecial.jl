@@ -113,6 +113,10 @@ end
 
 Compute cosine and sine integrals Ci(x) and Si(x).
 
+Using polynomial and rational approximations:
+- `x <= 1`,         `|eps(x)| <= 1e-7`
+- `1 < x <= Inf`,   `|eps_ci(x)| <= 5e-7, |eps_si(x)| <= 3e-7`
+
 Parameters:
 - `x`: Argument of Ci(x) and Si(x), x ≥ 0
 

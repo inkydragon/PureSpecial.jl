@@ -204,8 +204,8 @@ CurrentModule = PureSpecial.Specfun
 
 ## 17 Cosine and Sine Integrals
 
-- CISIA, 647
-- CISIB, 650
+- [`Specfun.cisia`](@ref)
+- [`Specfun.cisib`](@ref)
 
 ## 18 Elliptic Integrals and Jacobian Elliptic Functions
 
