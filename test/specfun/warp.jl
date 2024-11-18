@@ -1025,6 +1025,14 @@ end
 - cisib
 =#
 
+function _cisia(x::Float64)
+    ci, si = Ref{Float64}(NaN), Ref{Float64}(NaN)
+    # SUBROUTINE CISIA(X,  CI,SI)
+    ccall(f77func(:cisia), Cvoid, (Ref{Float64}, Ref{Float64}, Ref{Float64}),
+            x, ci, si)
+    ci[], si[]
+end
+
 function _cisib(x::Float64)
     ci, si = Ref{Float64}(NaN), Ref{Float64}(NaN)
     # SUBROUTINE CISIB(X,  CI,SI)
