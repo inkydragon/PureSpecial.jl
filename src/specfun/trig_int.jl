@@ -2,17 +2,119 @@
 #   See also: src/specfun/LICENSE.md
 """17 Cosine and Sine Integrals"""
 #=
-- CISIA, 647
+- ✅ cisia
 - ✅ cisib
 =#
 
 """
-    cisib(x::Float64)
+    cisia(x::Float64)
 
-Compute cosine and sine integrals Ci(x) and Si(x) for x ≥ 0.
+Compute cosine and sine integrals Ci(x) and Si(x).
 
 Parameters:
-- `x`: Argument of Ci(x) and Si(x)
+- `x`: Argument of Ci(x) and Si(x), x ≥ 0
+
+Returns: `(ci, si)`
+- Ci(x)
+- Si(x)
+"""
+function cisia(x::Float64)
+    p2 = π / 2
+    el = SF_EULER_GAMMA
+    eps = 1.0e-15
+
+    x2 = x * x
+    ci = 0.0
+    si = 0.0
+    if x == 0.0
+        ci = -1.0e300
+        si = 0.0
+    elseif x <= 16.0
+        xr = -0.25 * x2
+        ci = el + log(x) + xr
+        for k in 2:40
+            xr = -0.5 * xr * (k - 1) / (k^2 * (2 * k - 1)) * x2
+            ci += xr
+            if abs(xr) < abs(ci) * eps
+                break
+            end
+        end
+
+        xr = x
+        si = x
+        for k in 1:40
+            xr = -0.5 * xr * (2 * k - 1) / (k * (4 * k^2 + 4 * k + 1)) * x2
+            si += xr
+            if abs(xr) < abs(si) * eps
+                return (ci, si)
+            end
+        end
+    elseif x <= 32.0
+        m = trunc(Int, 47.2 + 0.82 * x)
+        bj = zeros(Float64, m)
+        xa1 = 0.0
+        xa0 = 1.0e-100
+
+        for k in m:-1:1
+            xa = 4.0 * k * xa0 / x - xa1
+            bj[k] = xa
+            xa1, xa0 = xa0, xa
+        end
+
+        xs = bj[1]
+        for k in 3:2:m
+            xs += 2.0 * bj[k]
+        end
+
+        bj .= bj ./ xs
+
+        xr = 1.0
+        xg1 = bj[1]
+        for k in 2:m
+            xr = 0.25 * xr * (2 * k - 3)^2 / ((k - 1) * (2 * k - 1)^2) * x
+            xg1 += bj[k] * xr
+        end
+
+        xr = 1.0
+        xg2 = bj[1]
+        for k in 2:m
+            xr = 0.25 * xr * (2 * k - 5)^2 / ((k - 1) * (2 * k - 3)^2) * x
+            xg2 += bj[k] * xr
+        end
+
+        xcs = cos(x / 2.0)
+        xss = sin(x / 2.0)
+        ci = el + log(x) - x * xss * xg1 + 2 * xcs * xg2 - 2 * xcs^2
+        si = x * xcs * xg1 + 2 * xss * xg2 - sin(x)
+    else
+        xr = 1.0
+        xf = 1.0
+        for k in 1:9
+            xr = -2.0 * xr * k * (2 * k - 1) / x2
+            xf += xr
+        end
+
+        xr = 1.0 / x
+        xg = xr
+        for k in 1:8
+            xr = -2.0 * xr * (2 * k + 1) * k / x2
+            xg += xr
+        end
+
+        ci = xf * sin(x) / x - xg * cos(x) / x
+        si = p2 - xf * cos(x) / x - xg * sin(x) / x
+    end
+
+    return ci, si
+end
+
+"""
+    cisib(x::Float64)
+
+Compute cosine and sine integrals Ci(x) and Si(x).
+
+Parameters:
+- `x`: Argument of Ci(x) and Si(x), x ≥ 0
 
 Returns: `(ci, si)`
 - Ci(x)
