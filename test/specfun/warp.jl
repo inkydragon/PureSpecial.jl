@@ -1018,3 +1018,9 @@ function _rmn2l(m::Int, n::Int, c::Float64, x::Float64, kd::Int, df::Vector{Floa
         r2f, r2d, id)
     r2f[], r2d[], Int(id[])
 end
+
+"""17 Cosine and Sine Integrals"""
+#=
+- CISIA, 647
+- CISIB, 650
+=#

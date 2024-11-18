@@ -19,3 +19,4 @@ include("legendre.jl")
 
 include("mathieu.jl")
 include("spheroidal.jl")
+include("trig_int.jl")
