@@ -3,11 +3,12 @@
 """Exponential and Trigonometric Integrals"""
 #=
 Exponential Integrals:
+- ✅ e1xa
 - ✅ e1xb
 - ✅ e1z
 - ✅ eix
 - ✅ eixz
-- E1XA
+
 - ENXA
 - ENXB
 
@@ -15,6 +16,40 @@ Trigonometric Integrals:
 - CISIA, 647
 - CISIB, 650
 =#
+
+"""
+    e1xa(x::Float64)
+
+Compute exponential integral E1(x)
+
+Using rational approximation:
+- `0 < x <= 1`:   |eps(x)| <= 2e10-7
+- `1 < x`:        |eps(x)| <= 2e10-8
+
+Input:
+- `x`  --- Argument of E1(x)
+
+Output:
+- E1(x) ( x > 0 )
+"""
+function e1xa(x::Float64)
+    if x == 0.0
+        e1 = 1.0e300
+    elseif x <= 1.0
+        # Use CoSF (19.2.1)
+        e1 = -log(x) +
+             ((((1.07857e-3 * x - 9.76004e-3) * x + 5.519968e-2) * x -
+               0.24991055) * x + 0.99999193) * x - 0.57721566
+    else
+        # Use CoSF (19.2.7)
+        es1 = (((x + 8.5733287401) * x + 18.059016973) * x +
+               8.6347608925) * x + 0.2677737343
+        es2 = (((x + 9.5733223454) * x + 25.6329561486) * x +
+               21.0996530827) * x + 3.9584969228
+        e1 = exp(-x) / x * es1 / es2
+    end
+    return e1
+end
 
 """
     e1xb(x::Float64)
