@@ -6,8 +6,8 @@ Exponential Integrals:
 - ✅ e1xa
 - ✅ e1xb
 - ✅ e1z
-- ENXA
-- ENXB
+- ✅ enxa
+- ✅ enxb
 - ✅ eix
 - ✅ eixz
 
@@ -202,6 +202,77 @@ function enxa(n::Int, x::Float64)::Vector{Float64}
     return en
 end
 
+"""
+Compute exponential integral En(x)
+
+Parameters:
+- `n`: Order of En(x), (n = 0,1,2,...)
+- `x`: Argument of En(x), ( x >= 0 )
+
+Returns:
+- En(x)
+"""
+function enxb(n::Int, x::Float64)::Vector{Float64}
+    @assert (n+1) >= 2
+    @assert x >= 0
+    en = zeros(Float64, n + 1)
+
+    if x == 0.0
+        en[1] = 1.0e300
+        en[2] = 1.0e300
+        for k in 2:n
+            en[k+1] = 1.0 / (k - 1.0)
+        end
+        return en
+    elseif x <= 1.0
+        en[1] = exp(-x) / x
+        s0 = 0.0
+        for l in 1:n
+            rp = 1.0
+            for j in 1:(l - 1)
+                rp = -rp * x / j
+            end
+            ps = -0.5772156649015328
+            for m in 1:(l - 1)
+                ps += 1.0 / m
+            end
+
+            ens = rp * (-log(x) + ps)
+            s = 0.0
+            for m in 0:20
+                if m == l - 1
+                    continue
+                end
+
+                r = 1.0
+                for j in 1:m
+                    r = -r * x / j
+                end
+                s += r / (m - l + 1.0)
+                if abs(s - s0) < abs(s) * 1.0e-15
+                    break
+                end
+
+                s0 = s
+            end
+
+            en[l+1] = ens - s
+        end
+    else
+        en[1] = exp(-x) / x
+        m = 15 + trunc(Int, 100.0 / x)
+        for l in 1:n
+            t0 = 0.0
+            for k in m:-1:1
+                t0 = (l + k - 1.0) / (1.0 + k / (x + t0))
+            end
+            t = 1.0 / (x + t0)
+            en[l+1] = exp(-x) * t
+        end
+    end
+
+    return en
+end
 
 """
     eix(x::Float64)
