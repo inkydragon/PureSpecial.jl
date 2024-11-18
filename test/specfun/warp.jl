@@ -34,85 +34,41 @@ gaih
 cgama
 psi (PSI_SPEC)
 =#
-"""
-Warp fortran `specfun.GAM0`.
-- Input: `x`
-- Output: `ga`
-"""
+
 function _gam0(x::Float64)
     ga = Ref{Float64}(NaN)
     # SUBROUTINE GAM0 (X,GA)
-    # double specfun_gam0(double x);
-    ccall(f77func(:gam0), Cvoid,
-        (Ref{Float64}, Ref{Float64}),
-        x, ga)
-
+    ccall(f77func(:gam0), Cvoid, (Ref{Float64}, Ref{Float64}), x, ga)
     ga[]
 end
 
-"""
-Warp fortran `specfun.GAMMA2`.
-- Input: `x`
-- Output: `ga`
-"""
 function _gamma2(x::Float64)
     ga = Ref{Float64}(NaN)
     # SUBROUTINE GAMMA2(X,GA)
-    # double specfun_gamma2(double x);
-    ccall(f77func(:gamma2), Cvoid,
-        (Ref{Float64}, Ref{Float64}),
-        x, ga)
-
+    ccall(f77func(:gamma2), Cvoid, (Ref{Float64}, Ref{Float64}), x, ga)
     ga[]
 end
 
-"""
-Warp fortran `specfun.GAIH`.
-- Input: `x`
-- Output: `ga`
-"""
 function _gaih(x::Float64)
     ga = Ref{Float64}(NaN)
     # SUBROUTINE GAIH(X,GA)
-    # double specfun_gaih(double x);
-    ccall(f77func(:gaih), Cvoid,
-        (Ref{Float64}, Ref{Float64}),
-        x, ga)
-
+    ccall(f77func(:gaih), Cvoid, (Ref{Float64}, Ref{Float64}), x, ga)
     ga[]
 end
 
-"""
-Warp fortran `specfun.CGAMA`.
-- Input: `z, kf`
-- Output: `GR,GI`
-"""
 function _cgama(z::Complex{Float64}, kf::Int)
-    gr = Ref{Float64}(NaN)
-    gi = Ref{Float64}(NaN)
+    gr, gi = Ref{Float64}(NaN), Ref{Float64}(NaN)
     # SUBROUTINE CGAMA(X,Y,KF,GR,GI)
     # double complex specfun_cgama(double complex z, int kf);
     ccall(f77func(:cgama), Cvoid,
-        (Ref{Float64}, Ref{Float64}, Ref{Int32},
-         Ref{Float64}, Ref{Float64}),
-        real(z), imag(z), Int32(kf),
-        gr, gi)
-
+        (Ref{Float64}, Ref{Float64}, Ref{Int32}, Ref{Float64}, Ref{Float64}),
+        real(z), imag(z), Int32(kf), gr, gi)
     complex(gr[], gi[])
 end
 
-"""
-    SUBROUTINE PSI_SPEC(X,  PS)
-    double psi_spec(double x)
-
-- Input: `x`
-- Output: `psi(x)`
-"""
 function _psi(x::Float64)
     psi = Ref{Float64}(NaN)
-    ccall(f77func(:psi_spec), Cvoid,
-        (Ref{Float64}, Ref{Float64}),
-        x, psi)
+    ccall(f77func(:psi_spec), Cvoid, (Ref{Float64}, Ref{Float64}), x, psi)
     psi[]
 end
 
