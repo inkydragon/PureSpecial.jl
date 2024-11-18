@@ -20,7 +20,13 @@ const libspecfun = Libdl.dlopen("libspecfun.so")
 
 
 "Loading symbols from libspecfun."
-f77func(s::Symbol) = Libdl.dlsym(libspecfun, Symbol("$(s)_")) 
+f77func(s::Symbol) = Libdl.dlsym(libspecfun, Symbol("$(s)_"))
+
+function warp_unary(sym::Symbol, x::Float64)::Float64
+    f64 = Ref{Float64}(NaN)
+    ccall(f77func(sym), Cvoid, (Ref{Float64}, Ref{Float64}), x, f64)
+    f64[]
+end
 
 
 # 1. Bernoulli and Euler Numbers
@@ -35,26 +41,14 @@ cgama
 psi (PSI_SPEC)
 =#
 
-function _gam0(x::Float64)
-    ga = Ref{Float64}(NaN)
-    # SUBROUTINE GAM0 (X,GA)
-    ccall(f77func(:gam0), Cvoid, (Ref{Float64}, Ref{Float64}), x, ga)
-    ga[]
-end
+# SUBROUTINE GAM0 (X,  GA)
+_gam0(x::Float64) = warp_unary(:gam0, x)
 
-function _gamma2(x::Float64)
-    ga = Ref{Float64}(NaN)
-    # SUBROUTINE GAMMA2(X,GA)
-    ccall(f77func(:gamma2), Cvoid, (Ref{Float64}, Ref{Float64}), x, ga)
-    ga[]
-end
+# SUBROUTINE GAMMA2(X,  GA)
+_gamma2(x::Float64) = warp_unary(:gamma2, x)
 
-function _gaih(x::Float64)
-    ga = Ref{Float64}(NaN)
-    # SUBROUTINE GAIH(X,GA)
-    ccall(f77func(:gaih), Cvoid, (Ref{Float64}, Ref{Float64}), x, ga)
-    ga[]
-end
+# SUBROUTINE GAIH(X,  GA)
+_gaih(x::Float64) = warp_unary(:gaih, x)
 
 function _cgama(z::Complex{Float64}, kf::Int)
     gr, gi = Ref{Float64}(NaN), Ref{Float64}(NaN)
@@ -66,11 +60,8 @@ function _cgama(z::Complex{Float64}, kf::Int)
     complex(gr[], gi[])
 end
 
-function _psi(x::Float64)
-    psi = Ref{Float64}(NaN)
-    ccall(f77func(:psi_spec), Cvoid, (Ref{Float64}, Ref{Float64}), x, psi)
-    psi[]
-end
+# SUBROUTINE PSI_SPEC(X,  PS)
+_psi(x::Float64) = warp_unary(:psi_spec, x)
 
 
 """4. Legendre Functions"""
@@ -432,31 +423,11 @@ itth0
 itsl0
 =#
 
-"""
-    SUBROUTINE STVH0(X, SH0)
+# SUBROUTINE STVH0(X,  SH0)
+_stvh0(x::Float64) = warp_unary(:stvh0, x)
 
-- Output: `(SH0)`
-"""
-function _stvh0(x::Float64)
-    ret = Ref{Float64}(NaN)
-    ccall(f77func(:stvh0), Cvoid,
-        (Ref{Float64}, Ref{Float64}),
-        x, ret)
-    ret[]
-end
-
-"""
-    SUBROUTINE STVH1(X, SH1)
-
-- Output: `(SH1)`
-"""
-function _stvh1(x::Float64)
-    ret = Ref{Float64}(NaN)
-    ccall(f77func(:stvh1), Cvoid,
-        (Ref{Float64}, Ref{Float64}),
-        x, ret)
-    ret[]
-end
+# SUBROUTINE STVH1(X,  SH1)
+_stvh1(x::Float64) = warp_unary(:stvh1, x)
 
 """
     SUBROUTINE STVHV(V,X, HV)
@@ -471,60 +442,17 @@ function _stvhv(v::Float64, x::Float64)
     ret[]
 end
 
-"""
-    SUBROUTINE STVL0(X,SL0)
+# SUBROUTINE STVL0(X,  SL0)
+_stvl0(x::Float64) = warp_unary(:stvl0, x)
 
-- Output: `(Hv)`
-"""
-function _stvl0(x::Float64)
-    ret = Ref{Float64}(NaN)
-    ccall(f77func(:stvl0), Cvoid,
-        (Ref{Float64}, Ref{Float64}),
-        x, ret)
-    ret[]
-end
+# SUBROUTINE ITSH0(X,  TH0)
+_itsh0(x::Float64) = warp_unary(:itsh0, x)
 
-"""
-    SUBROUTINE ITSH0(X,  TH0)
-    double itsl0(double x)
+# SUBROUTINE ITTH0(X,  TTH)
+_itth0(x::Float64) = warp_unary(:itth0, x)
 
-- Output: `(TH0)`
-"""
-function _itsh0(x::Float64)
-    th0 = Ref{Float64}(NaN)
-    ccall(f77func(:itsh0), Cvoid,
-        (Ref{Float64}, Ref{Float64}),
-        x, th0)
-    th0[]
-end
-
-"""
-    SUBROUTINE ITTH0(X,TTH)
-    double itth0(double x)
-
-- Output: `(tth)`
-"""
-function _itth0(x::Float64)
-    tth = Ref{Float64}(NaN)
-    ccall(f77func(:itth0), Cvoid,
-        (Ref{Float64}, Ref{Float64}),
-        x, tth)
-    tth[]
-end
-
-"""
-    SUBROUTINE ITSL0(X,  TL0)
-    double itsl0(double x)
-
-- Output: `(tl0)`
-"""
-function _itsl0(x::Float64)
-    tl0 = Ref{Float64}(NaN)
-    ccall(f77func(:itsl0), Cvoid,
-        (Ref{Float64}, Ref{Float64}),
-        x, tl0)
-    tl0[]
-end
+# SUBROUTINE ITSL0(X,  TL0)
+_itsl0(x::Float64) = warp_unary(:itsl0, x)
 
 
 """12 Hypergeometric and Confluent Hypergeometric Functions"""
@@ -831,12 +759,8 @@ end
 - ffk
 =#
 
-function _erf(x::Float64)
-    err = Ref{Float64}(NaN)
-    # SUBROUTINE ERROR(X,ERR)
-    ccall(f77func(:error), Cvoid, (Ref{Float64}, Ref{Float64},), x, err)
-    err[]
-end
+# SUBROUTINE ERROR(X,  ERR)
+_erf(x::Float64) = warp_unary(:error, x)
 
 function _erf(z::ComplexF64)
     cer = Ref{ComplexF64}(NaN + NaN*im)
@@ -960,19 +884,11 @@ end
 - eixz
 =#
 
-function _e1xa(x::Float64)
-    f64 = Ref{Float64}(NaN)
-    # SUBROUTINE E1XA(X, E1)
-    ccall(f77func(:e1xa), Cvoid, (Ref{Float64}, Ref{Float64}), x, f64)
-    f64[]
-end
+# SUBROUTINE E1XA(X,  E1)
+_e1xa(x::Float64) = warp_unary(:e1xa, x)
 
-function _e1xb(x::Float64)
-    e1 = Ref{Float64}(NaN)
-    # SUBROUTINE E1XB(X, E1)
-    ccall(f77func(:e1xb), Cvoid, (Ref{Float64}, Ref{Float64}), x, e1)
-    e1[]
-end
+# SUBROUTINE E1XB(X,  E1)
+_e1xb(x::Float64) = warp_unary(:e1xb, x)
 
 function _e1z(z::ComplexF64)
     ce1 = Ref{ComplexF64}(NaN + NaN*im)
@@ -998,12 +914,8 @@ function _enxb(n::Int, x::Float64)
     en
 end
 
-function _eix(x::Float64)
-    ei = Ref{Float64}(NaN)
-    # SUBROUTINE EIX(X, EI)
-    ccall(f77func(:eix), Cvoid, (Ref{Float64}, Ref{Float64}), x, ei)
-    ei[]
-end
+# SUBROUTINE EIX(X,  EI)
+_eix(x::Float64) = warp_unary(:eix, x)
 
 function _eixz(z::ComplexF64)
     cei = Ref{ComplexF64}(NaN + NaN*im)
