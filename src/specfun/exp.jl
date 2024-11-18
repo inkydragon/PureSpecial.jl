@@ -2,7 +2,6 @@
 #   See also: src/specfun/LICENSE.md
 """Exponential and Trigonometric Integrals"""
 #=
-Exponential Integrals:
 - ✅ e1xa
 - ✅ e1xb
 - ✅ e1z
@@ -10,26 +9,22 @@ Exponential Integrals:
 - ✅ enxb
 - ✅ eix
 - ✅ eixz
-
-Trigonometric Integrals:
-- CISIA, 647
-- CISIB, 650
 =#
 
 """
     e1xa(x::Float64)
 
-Compute exponential integral E1(x)
+Compute exponential integral E1(x).
 
 Using rational approximation:
-- `0 < x <= 1`:   |eps(x)| <= 2e10-7
-- `1 < x`:        |eps(x)| <= 2e10-8
+- `0 < x <= 1`:   `|eps(x)| <= 2e10-7`
+- `1 < x`:        `|eps(x)| <= 2e10-8`
 
 Input:
-- `x`  --- Argument of E1(x)
+- `x`: Argument of E1(x), ( x > 0 )
 
 Output:
-- E1(x) ( x > 0 )
+- E1(x)
 """
 function e1xa(x::Float64)
     if x == 0.0
@@ -53,13 +48,13 @@ end
 """
     e1xb(x::Float64)
 
-Compute exponential integral E1(x)
+Compute exponential integral E1(x).
 
 Input
-- `x`  --- Argument of E1(x)
+- `x`: Argument of E1(x), ( x > 0 )
 
 Output
-- E1(x)  ( x > 0 )
+- E1(x)
 """
 function e1xb(x::Float64)
     @assert x >= 0
@@ -97,10 +92,10 @@ end
 """
     e1z(z::Complex{Float64})
 
-Compute complex exponential integral E1(z)
+Compute complex exponential integral E1(z).
 
 Input
-- `z`   --- Argument of E1(z)
+- `z`: Argument of E1(z)
 
 Output
 - E1(z)
@@ -172,17 +167,19 @@ function e1z(z::Complex{Float64})
 end
 
 """
+    enxa(n::Int, x::Float64)
+
 Compute exponential integral En(x).
 
 Parameters:
-- `n` : Order of En(x)
+- `n` : Order of En(x), n >= 1
 - `x` : Argument of En(x), ( 0 < x <= 20 )
 
 Returns:
-- En(x)
+- `[ En(x) for n in 0:n ] :: Vector{Float64}`
 
 Routine called:
-- E1XB for computing E1(x)
+- [`Specfun.e1xb`](@ref) for computing E1(x)
 """
 function enxa(n::Int, x::Float64)::Vector{Float64}
     @assert (n + 1) >= 2
@@ -203,14 +200,16 @@ function enxa(n::Int, x::Float64)::Vector{Float64}
 end
 
 """
-Compute exponential integral En(x)
+    enxb(n::Int, x::Float64)
+
+Compute exponential integral En(x).
 
 Parameters:
-- `n`: Order of En(x), (n = 0,1,2,...)
+- `n`: Order of En(x), n >= 1
 - `x`: Argument of En(x), ( x >= 0 )
 
 Returns:
-- En(x)
+- `[ En(x) for n in 0:n ] :: Vector{Float64}`
 """
 function enxb(n::Int, x::Float64)::Vector{Float64}
     @assert (n+1) >= 2
@@ -277,10 +276,10 @@ end
 """
     eix(x::Float64)
 
-Compute exponential integral Ei(x)
+Compute exponential integral Ei(x).
 
 Input
-- `x`  --- Argument of Ei(x)
+- `x`: Argument of Ei(x)
 
 Output
 - Ei(x)
@@ -325,10 +324,10 @@ end
 """
     eixz(z::Complex{Float64})
 
-Compute exponential integral Ei(x)
+Compute exponential integral Ei(x).
 
 Input
-- `x`  --- Complex argument of Ei(x)
+- `x`: Complex argument of Ei(x)
 
 Output
 - Ei(x)
