@@ -1021,6 +1021,14 @@ end
 
 """17 Cosine and Sine Integrals"""
 #=
-- CISIA, 647
-- CISIB, 650
+- cisia
+- cisib
 =#
+
+function _cisib(x::Float64)
+    ci, si = Ref{Float64}(NaN), Ref{Float64}(NaN)
+    # SUBROUTINE CISIB(X,  CI,SI)
+    ccall(f77func(:cisib), Cvoid, (Ref{Float64}, Ref{Float64}, Ref{Float64}),
+            x, ci, si)
+    ci[], si[]
+end
