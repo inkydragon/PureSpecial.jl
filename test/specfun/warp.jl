@@ -23,12 +23,16 @@ const libspecfun = Libdl.dlopen("libspecfun.so")
 f77func(s::Symbol) = Libdl.dlsym(libspecfun, Symbol("$(s)_")) 
 
 
-#= gamma.jl 
-    + gam0
-    + gamma2
-    + gaih
-    + cgama
-    + psi (PSI_SPEC)
+# 1. Bernoulli and Euler Numbers
+# 2. Orthogonal Polynomials
+
+"""3. Gamma, Beta, and Psi Functions"""
+#=
+gam0
+gamma2
+gaih
+cgama
+psi (PSI_SPEC)
 =#
 """
 Warp fortran `specfun.GAM0`.
@@ -113,243 +117,76 @@ function _psi(x::Float64)
 end
 
 
-"""Exponential and Trigonometric Integrals"""
+"""4. Legendre Functions"""
 #=
-- e1xa
-- e1xb
-- e1z
-- enxa
-- enxb
-- eix
-- eixz
-=#
-
-function _e1xa(x::Float64)
-    f64 = Ref{Float64}(NaN)
-    # SUBROUTINE E1XA(X, E1)
-    ccall(f77func(:e1xa), Cvoid, (Ref{Float64}, Ref{Float64}), x, f64)
-    f64[]
-end
-
-function _e1xb(x::Float64)
-    e1 = Ref{Float64}(NaN)
-    # SUBROUTINE E1XB(X, E1)
-    ccall(f77func(:e1xb), Cvoid, (Ref{Float64}, Ref{Float64}), x, e1)
-    e1[]
-end
-
-function _e1z(z::ComplexF64)
-    ce1 = Ref{ComplexF64}(NaN + NaN*im)
-    # SUBROUTINE E1Z(Z, CE1)
-    # double complex specfun_e1z(double complex z);
-    ccall(f77func(:e1z), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, ce1)
-    ce1[]
-end
-
-function _enxa(n::Int, x::Float64)
-    en = zeros(n + 1)
-    # SUBROUTINE ENXA(N,X, EN(0:N))
-    ccall(f77func(:enxa), Cvoid, (Ref{Int32}, Ref{Float64}, Ptr{Float64}),
-            Int32(n), x, en)
-    en
-end
-
-function _enxb(n::Int, x::Float64)
-    en = zeros(n + 1)
-    # SUBROUTINE ENXB(N,X, EN(0:N))
-    ccall(f77func(:enxb), Cvoid, (Ref{Int32}, Ref{Float64}, Ptr{Float64}),
-            Int32(n), x, en)
-    en
-end
-
-function _eix(x::Float64)
-    ei = Ref{Float64}(NaN)
-    # SUBROUTINE EIX(X, EI)
-    ccall(f77func(:eix), Cvoid, (Ref{Float64}, Ref{Float64}), x, ei)
-    ei[]
-end
-
-function _eixz(z::ComplexF64)
-    cei = Ref{ComplexF64}(NaN + NaN*im)
-    # SUBROUTINE EIXZ(Z, CEI)
-    # double complex specfun_eixz(double complex z);
-    ccall(f77func(:eixz), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, cei)
-    cei[]
-end
-
-
-"""Error Functions"""
-#=Error function
-- error
-- cerror
-- cerf
-- cerzo
-- cfc
-- cfs
-- fcs
-- fcszo
-- ffk
-=#
-
-function _erf(x::Float64)
-    err = Ref{Float64}(NaN)
-    # SUBROUTINE ERROR(X,ERR)
-    ccall(f77func(:error), Cvoid, (Ref{Float64}, Ref{Float64},), x, err)
-    err[]
-end
-
-function _erf(z::ComplexF64)
-    cer = Ref{ComplexF64}(NaN + NaN*im)
-    # SUBROUTINE CERROR(Z,CER)
-    ccall(f77func(:cerror), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, cer)
-    cer[]
-end
-
-function _cerf(z::ComplexF64)
-    cer = Ref{ComplexF64}(NaN + NaN*im)
-    cder = Ref{ComplexF64}(NaN + NaN*im)
-    # SUBROUTINE CERF(Z,CER,CDER)
-    ccall(f77func(:cerf), Cvoid,
-        (Ref{ComplexF64}, Ref{ComplexF64}, Ref{ComplexF64}),
-        z, cer, cder)
-    cer[], cder[]
-end
-
-function _cerzo(zo::Vector{Complex{Float64}}, nt::Int)
-    # SUBROUTINE CERZO(NT,ZO)
-    ccall(f77func(:cerzo), Cvoid,
-        (Ref{Int32}, Ref{ComplexF64}),
-        nt, zo)
-end
-
-function _cfc(z::ComplexF64)
-    zf = Ref{ComplexF64}(NaN + NaN*im)
-    zd = Ref{ComplexF64}(NaN + NaN*im)
-    # SUBROUTINE CFC(Z,ZF,ZD)
-    # void specfun_cfc(double complex z, double complex *zf, double complex *zd);
-    ccall(f77func(:cfc), Cvoid,
-        (Ref{ComplexF64}, Ref{ComplexF64}, Ref{ComplexF64}),
-        z, zf, zd)
-    zf[], zd[]
-end
-
-function _cfs(z::ComplexF64)
-    zf = Ref{ComplexF64}(NaN + NaN*im)
-    zd = Ref{ComplexF64}(NaN + NaN*im)
-    # SUBROUTINE CFS(Z,ZF,ZD)
-    # void specfun_cfs(double complex z, double complex *zf, double complex *zd);
-    ccall(f77func(:cfs), Cvoid,
-        (Ref{ComplexF64}, Ref{ComplexF64}, Ref{ComplexF64}),
-        z, zf, zd)
-    zf[], zd[]
-end
-
-function _fcs(z::Float64)
-    c = Ref{Float64}(NaN)
-    s = Ref{Float64}(NaN)
-    # SUBROUTINE FCS(X,C,S)
-    ccall(f77func(:fcs), Cvoid,
-        (Ref{Float64}, Ref{Float64}, Ref{Float64}),
-        z, c, s)
-    c[], s[]
-end
-
-function _fcszo(zo::Vector{Complex{Float64}}, kf::Int, nt::Int)
-    # SUBROUTINE FCSZO(KF,NT,ZO)
-    ccall(f77func(:fcszo), Cvoid,
-        (Ref{Int32}, Ref{Int32}, Ref{ComplexF64}),
-        Int32(kf), Int32(nt), zo)
-end
-
-function _ffk(ks::Int, x::Float64)
-    fr, fi, fm, fa, gr, gi, gm, ga = 
-        Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN),
-        Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN) 
-    # SUBROUTINE FFK(KS,X,FR,FI,FM,FA,GR,GI,GM,GA)
-    # void specfun_ffk(int ks, double x, 
-    #   double *fr, double *fi, double *fm, double *fa,
-    #   double *gr, double *gi, double *gm, double *ga);
-    ccall(f77func(:ffk), Cvoid,
-        (Ref{Int32}, Ref{Float64},
-         Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64},
-         Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64}),
-        Int32(ks), x,
-        fr, fi, fm, fa,
-        gr, gi, gm, ga)
-        
-    fr[],fi[], fm[],fa[], gr[],gi[], gm[],ga[]
-end
-
-
-"""Airy Functions"""
-#=Airy functions
-- airyb
-- airyzo
-- itairy
+lpmns
+lqmns
+lpmv0
+lpmv
 =#
 
 """
-Warp fortran `specfun.AIRYB`.
+    SUBROUTINE LPMNS(M,N,X,  PM(0:N),PD(0:N))
+    lpmns(int m, int n, T x,  T* pm, T* pd)
 
-## Output
-- `(ai, bi, ad, bd) :: NTuple{4, Float64}`
+- Output: `pm, pd`
 """
-function _airyb(z::Float64)
-    ai, bi, ad, bd = Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN)
-    # AIRYB(X,AI,BI,AD,BD)
-    # void specfun_airyb(double, double *, double *, double *, double *);
-    ret = ccall(f77func(:airyb), Cvoid,
-        (Ref{Float64},
-         Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64}),
-        z,
-        ai, bi, ad, bd)
-
-    ai[], bi[], ad[], bd[]
+function _lpmns(m::Int, n::Int, x::Float64, pm::Vector{Float64}, pd::Vector{Float64})
+    ccall(f77func(:lpmns), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{Float64},
+         Ptr{Float64}, Ptr{Float64}),
+        Int32(m), Int32(n), x,
+        pm, pd)
 end
 
 """
-Warp fortran `specfun.AIRYZO`.
+    SUBROUTINE LQMNS(M,N,X,  QM(0:N),QD(0:N))
+    void lqmns(int m, int n, T x,  T *qm, T *qd)
 
-- Input: `nt`, `kf`
-- Output: `xa, xb, xc, xd`
+- Output: `Qmn(x), Qmn'(x)`
 """
-function _airyzo(
-    nt::Int, kf::Int, 
-    xa::Vector{Float64}, xb::Vector{Float64},
-    xc::Vector{Float64}, xd::Vector{Float64})
-    # AIRYZO(NT,KF,XA,XB,XC,XD)
-    # void specfun_airyzo(int nt, int kf, double *xa, double *xb, double *xc, double *xd);
-    ret = ccall(f77func(:airyzo), Cvoid,
-        (Ref{Int64}, Ref{Int64},
-         Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
-        nt, kf,
-        xa, xb, xc, xd)
+function _lqmns(m::Int, n::Int, x::Float64, qm::Vector{Float64}, qd::Vector{Float64})
+    ccall(f77func(:lqmns), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{Float64},
+         Ptr{Float64}, Ptr{Float64}),
+        Int32(m), Int32(n), x,
+        qm, qd)
 end
 
 """
-Warp fortran `specfun.ITAIRY`.
+    SUBROUTINE LPMV0(V,M,X,PMV)
+    double lpmv0(double v, int m, double x)
 
-- Input: `x`
-- Output: `apt, bpt, ant, bnt`
+- Output: `Pmv(x)`
 """
-function _itairy(x::Float64)
-    @assert x >= 0
-    apt, bpt, ant, bnt =
-        Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN)
-    # SUBROUTINE ITAIRY(X,APT,BPT,ANT,BNT)
-    # void specfun_itairy(double x,
-    #   double *apt, double *bpt, double *ant, double *bnt);
-    ccall(f77func(:itairy), Cvoid,
-        (Ref{Float64},
-         Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
-        x,
-        apt, bpt, ant, bnt)
-    apt[], bpt[], ant[], bnt[]
+function _lpmv0(v::Float64, m::Int, x::Float64)
+    pmv = Ref{Float64}(NaN)
+    ccall(f77func(:lpmv0), Float64,
+        (Ref{Float64}, Ref{Int32}, Ref{Float64},Ref{Float64}),
+        v, Int32(m), x, pmv)
+    pmv[]
+end
+
+"""
+    SUBROUTINE LPMV(V,M,X, PMV)
+    double lpmv(double x, int m, double v)
+
+- Output: `Pmv(x)`
+"""
+function _lpmv(v::Float64, m::Int, x::Float64)
+    pmv = Ref{Float64}(NaN)
+    ccall(f77func(:lpmv), Float64,
+        (Ref{Float64}, Ref{Int32}, Ref{Float64},Ref{Float64}),
+        v, Int32(m), x, pmv)
+    pmv[]
 end
 
 
 """Bessel functions"""
-#= ## Bessel functions
+#= 5~7
+    5 Bessel Functions
+    6 Modified Bessel Functions
+    7 Integrals of Bessel Functions
 =#
 #= ## Zeros of Bessel functions
 bjndd
@@ -507,7 +344,9 @@ function _jyzo(n::Int64, nt::Int64,
         rj0, rj1, ry0, ry1)
 end
 
-#= ## Kelvin functions
+
+"""9 Kelvin Functions"""
+#=
 klvna
 klvnzo
 =#
@@ -556,7 +395,74 @@ function _klvnzo(nt::Int64, kd::Int64)
 end
 
 
-"""Struve Functions"""
+"""10 Airy Functions"""
+#=
+airyb
+airyzo
+itairy
+=#
+
+"""
+Warp fortran `specfun.AIRYB`.
+
+## Output
+- `(ai, bi, ad, bd) :: NTuple{4, Float64}`
+"""
+function _airyb(z::Float64)
+    ai, bi, ad, bd = Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN)
+    # AIRYB(X,AI,BI,AD,BD)
+    # void specfun_airyb(double, double *, double *, double *, double *);
+    ret = ccall(f77func(:airyb), Cvoid,
+        (Ref{Float64},
+         Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        z,
+        ai, bi, ad, bd)
+
+    ai[], bi[], ad[], bd[]
+end
+
+"""
+Warp fortran `specfun.AIRYZO`.
+
+- Input: `nt`, `kf`
+- Output: `xa, xb, xc, xd`
+"""
+function _airyzo(
+    nt::Int, kf::Int, 
+    xa::Vector{Float64}, xb::Vector{Float64},
+    xc::Vector{Float64}, xd::Vector{Float64})
+    # AIRYZO(NT,KF,XA,XB,XC,XD)
+    # void specfun_airyzo(int nt, int kf, double *xa, double *xb, double *xc, double *xd);
+    ret = ccall(f77func(:airyzo), Cvoid,
+        (Ref{Int64}, Ref{Int64},
+         Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
+        nt, kf,
+        xa, xb, xc, xd)
+end
+
+"""
+Warp fortran `specfun.ITAIRY`.
+
+- Input: `x`
+- Output: `apt, bpt, ant, bnt`
+"""
+function _itairy(x::Float64)
+    @assert x >= 0
+    apt, bpt, ant, bnt =
+        Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN)
+    # SUBROUTINE ITAIRY(X,APT,BPT,ANT,BNT)
+    # void specfun_itairy(double x,
+    #   double *apt, double *bpt, double *ant, double *bnt);
+    ccall(f77func(:itairy), Cvoid,
+        (Ref{Float64},
+         Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Float64}),
+        x,
+        apt, bpt, ant, bnt)
+    apt[], bpt[], ant[], bnt[]
+end
+
+
+"""11 Struve Functions"""
 #=
 stvh0
 stvh1
@@ -665,7 +571,53 @@ function _itsl0(x::Float64)
 end
 
 
-"""Parabolic cylinder functions"""
+"""12 Hypergeometric and Confluent Hypergeometric Functions"""
+#=
+cchg
+chgm
+    chgu
+=#
+
+"""
+Warp fortran `specfun.CCHG`.
+
+- Input: `A,B,Z`
+- Output: `CHG`
+"""
+function _cchg(a::Float64, b::Float64, z::Complex{Float64})
+    chg = Ref{Complex{Float64}}(NaN + NaN*im)
+    # SUBROUTINE CCHG(A,B,Z,CHG)
+    # double complex specfun_cchg(double a, double b, double complex z);
+    ccall(f77func(:cchg), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Complex{Float64}},
+         Ref{Complex{Float64}}),
+        a, b, z,
+        chg)
+
+    chg[]
+end
+
+"""
+Warp fortran `specfun.CHGM`.
+
+- Input: `A,B,X`
+- Output: `HG`
+"""
+function _chgm(a::Float64, b::Float64, x::Float64)
+    hg = Ref{Float64}(NaN)
+    # SUBROUTINE CHGM(A,B,X,HG)
+    # double specfun_chgm(double x, double a, double b);
+    ccall(f77func(:chgm), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64},
+         Ref{Float64}),
+        a, b, x,
+        hg)
+
+    hg[]
+end
+
+
+"""13 Parabolic Cylinder Functions"""
 #=
 - pbwa
 - pbvv
@@ -747,118 +699,7 @@ function _pbvv(vv::Vector{Float64}, vp::Vector{Float64}, x::Float64, v::Float64)
 end
 
 
-"""Hypergeometric functions"""
-#=
-cchg
-chgm
-    chgu
-=#
-
-"""
-Warp fortran `specfun.CCHG`.
-
-- Input: `A,B,Z`
-- Output: `CHG`
-"""
-function _cchg(a::Float64, b::Float64, z::Complex{Float64})
-    chg = Ref{Complex{Float64}}(NaN + NaN*im)
-    # SUBROUTINE CCHG(A,B,Z,CHG)
-    # double complex specfun_cchg(double a, double b, double complex z);
-    ccall(f77func(:cchg), Cvoid,
-        (Ref{Float64}, Ref{Float64}, Ref{Complex{Float64}},
-         Ref{Complex{Float64}}),
-        a, b, z,
-        chg)
-
-    chg[]
-end
-
-"""
-Warp fortran `specfun.CHGM`.
-
-- Input: `A,B,X`
-- Output: `HG`
-"""
-function _chgm(a::Float64, b::Float64, x::Float64)
-    hg = Ref{Float64}(NaN)
-    # SUBROUTINE CHGM(A,B,X,HG)
-    # double specfun_chgm(double x, double a, double b);
-    ccall(f77func(:chgm), Cvoid,
-        (Ref{Float64}, Ref{Float64}, Ref{Float64},
-         Ref{Float64}),
-        a, b, x,
-        hg)
-
-    hg[]
-end
-
-
-"""Legendre functions"""
-#=
-lpmns
-lqmns
-lpmv0
-lpmv
-=#
-
-"""
-    SUBROUTINE LPMNS(M,N,X,  PM(0:N),PD(0:N))
-    lpmns(int m, int n, T x,  T* pm, T* pd)
-
-- Output: `pm, pd`
-"""
-function _lpmns(m::Int, n::Int, x::Float64, pm::Vector{Float64}, pd::Vector{Float64})
-    ccall(f77func(:lpmns), Cvoid,
-        (Ref{Int32}, Ref{Int32}, Ref{Float64},
-         Ptr{Float64}, Ptr{Float64}),
-        Int32(m), Int32(n), x,
-        pm, pd)
-end
-
-"""
-    SUBROUTINE LQMNS(M,N,X,  QM(0:N),QD(0:N))
-    void lqmns(int m, int n, T x,  T *qm, T *qd)
-
-- Output: `Qmn(x), Qmn'(x)`
-"""
-function _lqmns(m::Int, n::Int, x::Float64, qm::Vector{Float64}, qd::Vector{Float64})
-    ccall(f77func(:lqmns), Cvoid,
-        (Ref{Int32}, Ref{Int32}, Ref{Float64},
-         Ptr{Float64}, Ptr{Float64}),
-        Int32(m), Int32(n), x,
-        qm, qd)
-end
-
-"""
-    SUBROUTINE LPMV0(V,M,X,PMV)
-    double lpmv0(double v, int m, double x)
-
-- Output: `Pmv(x)`
-"""
-function _lpmv0(v::Float64, m::Int, x::Float64)
-    pmv = Ref{Float64}(NaN)
-    ccall(f77func(:lpmv0), Float64,
-        (Ref{Float64}, Ref{Int32}, Ref{Float64},Ref{Float64}),
-        v, Int32(m), x, pmv)
-    pmv[]
-end
-
-"""
-    SUBROUTINE LPMV(V,M,X, PMV)
-    double lpmv(double x, int m, double v)
-
-- Output: `Pmv(x)`
-"""
-function _lpmv(v::Float64, m::Int, x::Float64)
-    pmv = Ref{Float64}(NaN)
-    ccall(f77func(:lpmv), Float64,
-        (Ref{Float64}, Ref{Int32}, Ref{Float64},Ref{Float64}),
-        v, Int32(m), x, pmv)
-    pmv[]
-end
-
-
-"""Mathieu Functions"""
+"""14 Mathieu Functions"""
 #=
 - fcoef
 - cva2
@@ -870,7 +711,7 @@ end
 =#
 
 
-"""Spheroidal Wave Functions"""
+"""15 Spheroidal Wave Functions"""
 #=
 segv
 sdmn
@@ -1019,6 +860,111 @@ function _rmn2l(m::Int, n::Int, c::Float64, x::Float64, kd::Int, df::Vector{Floa
     r2f[], r2d[], Int(id[])
 end
 
+
+
+"""16 Error Functions"""
+#=Error function
+- error
+- cerror
+- cerf
+- cerzo
+- cfc
+- cfs
+- fcs
+- fcszo
+- ffk
+=#
+
+function _erf(x::Float64)
+    err = Ref{Float64}(NaN)
+    # SUBROUTINE ERROR(X,ERR)
+    ccall(f77func(:error), Cvoid, (Ref{Float64}, Ref{Float64},), x, err)
+    err[]
+end
+
+function _erf(z::ComplexF64)
+    cer = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE CERROR(Z,CER)
+    ccall(f77func(:cerror), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, cer)
+    cer[]
+end
+
+function _cerf(z::ComplexF64)
+    cer = Ref{ComplexF64}(NaN + NaN*im)
+    cder = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE CERF(Z,CER,CDER)
+    ccall(f77func(:cerf), Cvoid,
+        (Ref{ComplexF64}, Ref{ComplexF64}, Ref{ComplexF64}),
+        z, cer, cder)
+    cer[], cder[]
+end
+
+function _cerzo(zo::Vector{Complex{Float64}}, nt::Int)
+    # SUBROUTINE CERZO(NT,ZO)
+    ccall(f77func(:cerzo), Cvoid,
+        (Ref{Int32}, Ref{ComplexF64}),
+        nt, zo)
+end
+
+function _cfc(z::ComplexF64)
+    zf = Ref{ComplexF64}(NaN + NaN*im)
+    zd = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE CFC(Z,ZF,ZD)
+    # void specfun_cfc(double complex z, double complex *zf, double complex *zd);
+    ccall(f77func(:cfc), Cvoid,
+        (Ref{ComplexF64}, Ref{ComplexF64}, Ref{ComplexF64}),
+        z, zf, zd)
+    zf[], zd[]
+end
+
+function _cfs(z::ComplexF64)
+    zf = Ref{ComplexF64}(NaN + NaN*im)
+    zd = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE CFS(Z,ZF,ZD)
+    # void specfun_cfs(double complex z, double complex *zf, double complex *zd);
+    ccall(f77func(:cfs), Cvoid,
+        (Ref{ComplexF64}, Ref{ComplexF64}, Ref{ComplexF64}),
+        z, zf, zd)
+    zf[], zd[]
+end
+
+function _fcs(z::Float64)
+    c = Ref{Float64}(NaN)
+    s = Ref{Float64}(NaN)
+    # SUBROUTINE FCS(X,C,S)
+    ccall(f77func(:fcs), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        z, c, s)
+    c[], s[]
+end
+
+function _fcszo(zo::Vector{Complex{Float64}}, kf::Int, nt::Int)
+    # SUBROUTINE FCSZO(KF,NT,ZO)
+    ccall(f77func(:fcszo), Cvoid,
+        (Ref{Int32}, Ref{Int32}, Ref{ComplexF64}),
+        Int32(kf), Int32(nt), zo)
+end
+
+function _ffk(ks::Int, x::Float64)
+    fr, fi, fm, fa, gr, gi, gm, ga = 
+        Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN),
+        Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN) 
+    # SUBROUTINE FFK(KS,X,FR,FI,FM,FA,GR,GI,GM,GA)
+    # void specfun_ffk(int ks, double x, 
+    #   double *fr, double *fi, double *fm, double *fa,
+    #   double *gr, double *gi, double *gm, double *ga);
+    ccall(f77func(:ffk), Cvoid,
+        (Ref{Int32}, Ref{Float64},
+         Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64},
+         Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        Int32(ks), x,
+        fr, fi, fm, fa,
+        gr, gi, gm, ga)
+        
+    fr[],fi[], fm[],fa[], gr[],gi[], gm[],ga[]
+end
+
+
 """17 Cosine and Sine Integrals"""
 #=
 - cisia
@@ -1039,4 +985,74 @@ function _cisib(x::Float64)
     ccall(f77func(:cisib), Cvoid, (Ref{Float64}, Ref{Float64}, Ref{Float64}),
             x, ci, si)
     ci[], si[]
+end
+
+
+"""18 Elliptic Integrals and Jacobian Elliptic Functions"""
+#=
+=#
+
+
+"""19 Exponential Integrals"""
+#=
+- e1xa
+- e1xb
+- e1z
+- enxa
+- enxb
+- eix
+- eixz
+=#
+
+function _e1xa(x::Float64)
+    f64 = Ref{Float64}(NaN)
+    # SUBROUTINE E1XA(X, E1)
+    ccall(f77func(:e1xa), Cvoid, (Ref{Float64}, Ref{Float64}), x, f64)
+    f64[]
+end
+
+function _e1xb(x::Float64)
+    e1 = Ref{Float64}(NaN)
+    # SUBROUTINE E1XB(X, E1)
+    ccall(f77func(:e1xb), Cvoid, (Ref{Float64}, Ref{Float64}), x, e1)
+    e1[]
+end
+
+function _e1z(z::ComplexF64)
+    ce1 = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE E1Z(Z, CE1)
+    # double complex specfun_e1z(double complex z);
+    ccall(f77func(:e1z), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, ce1)
+    ce1[]
+end
+
+function _enxa(n::Int, x::Float64)
+    en = zeros(n + 1)
+    # SUBROUTINE ENXA(N,X, EN(0:N))
+    ccall(f77func(:enxa), Cvoid, (Ref{Int32}, Ref{Float64}, Ptr{Float64}),
+            Int32(n), x, en)
+    en
+end
+
+function _enxb(n::Int, x::Float64)
+    en = zeros(n + 1)
+    # SUBROUTINE ENXB(N,X, EN(0:N))
+    ccall(f77func(:enxb), Cvoid, (Ref{Int32}, Ref{Float64}, Ptr{Float64}),
+            Int32(n), x, en)
+    en
+end
+
+function _eix(x::Float64)
+    ei = Ref{Float64}(NaN)
+    # SUBROUTINE EIX(X, EI)
+    ccall(f77func(:eix), Cvoid, (Ref{Float64}, Ref{Float64}), x, ei)
+    ei[]
+end
+
+function _eixz(z::ComplexF64)
+    cei = Ref{ComplexF64}(NaN + NaN*im)
+    # SUBROUTINE EIXZ(Z, CEI)
+    # double complex specfun_eixz(double complex z);
+    ccall(f77func(:eixz), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, cei)
+    cei[]
 end
