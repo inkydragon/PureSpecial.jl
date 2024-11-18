@@ -3,7 +3,7 @@
 """Kelvin functions"""
 #=
 - ✅ klvna
-- KLVNB
+- ⛔ klvnb
 - ✅ klvnzo
 =#
 
@@ -208,6 +208,14 @@ function klvna(x::Float64)
 
     return ber, bei, ger, gei, der, dei, her, hei
 end
+
+"""
+Compute Kelvin functions and their derivatives
+using polynomial approximation.
+
+Use [`Specfun.klvna`](@ref) instead.
+"""
+function klvnb end
 
 """
     klvnzo(nt::Int, kd::Int)

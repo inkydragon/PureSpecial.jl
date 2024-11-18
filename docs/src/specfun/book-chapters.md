@@ -110,7 +110,7 @@ CurrentModule = PureSpecial.Specfun
 ## 9 Kelvin Functions
 
 - [`Specfun.klvna`](@ref)
-- KLVNB, 318
+- KLVNB, 318: SKIP, use `klvna`
 - [`Specfun.klvnzo`](@ref)
 
 ## 10 Airy Functions
