@@ -5,6 +5,14 @@ const E1XB_TEST_X = Float64[
     rand(10)...,
 ]
 
+@testset "e1xa" begin
+    for x in E1XB_TEST_X
+        @testset "e1xa($x)" begin
+            @test isapprox(_e1xa(x), Specfun.e1xa(x))
+        end
+    end
+end
+
 @testset "_e1xb" begin
     for x in E1XB_TEST_X
         @testset "e1xb($x)" begin

@@ -115,6 +115,7 @@ end
 
 """Exponential and Trigonometric Integrals"""
 #=
+- e1xa
 - e1xb
 - [ ] e1xa
 - [ ] enxb
@@ -123,6 +124,15 @@ end
 - eix
 - eixz
 =#
+
+"""
+    SUBROUTINE E1XA(X,E1)
+"""
+function _e1xa(x::Float64)
+    f64 = Ref{Float64}(NaN)
+    ccall(f77func(:e1xa), Cvoid, (Ref{Float64}, Ref{Float64}), x, f64)
+    f64[]
+end
 
 function _e1xb(x::Float64)
     e1 = Ref{Float64}(NaN)
