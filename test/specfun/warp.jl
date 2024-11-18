@@ -117,10 +117,9 @@ end
 #=
 - e1xa
 - e1xb
-- [ ] e1xa
-- [ ] enxb
-- [ ] enxa
 - e1z
+- enxa
+- ENXB
 - eix
 - eixz
 =#
@@ -148,6 +147,17 @@ function _e1z(z::ComplexF64)
     # double complex specfun_e1z(double complex z);
     ccall(f77func(:e1z), Cvoid, (Ref{ComplexF64}, Ref{ComplexF64}), z, ce1)
     ce1[]
+end
+
+"""
+    SUBROUTINE ENXA(N,X,EN)
+    DIMENSION EN(0:N)
+"""
+function _enxa(n::Int, x::Float64)
+    en = zeros(n + 1)
+    ccall(f77func(:enxa), Cvoid, (Ref{Int32}, Ref{Float64}, Ptr{Float64}),
+            Int32(n), x, en)
+    en
 end
 
 function _eix(x::Float64)

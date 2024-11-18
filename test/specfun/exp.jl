@@ -42,6 +42,21 @@ end
     end
 end
 
+@testset "enxa" begin
+    test_n = Int[
+        1:5...,
+    ]
+    test_x = Float64[
+        1:10...,
+        rand(10)...,
+    ]
+    for n in test_n,
+        x in test_x
+        @testset "enxa(n=$n ,x=$x)" begin
+            @test isapprox(_enxa(n, x), Specfun.enxa(n, x))
+        end
+    end
+end
 
 @testset "eix" begin
     test_x = [
