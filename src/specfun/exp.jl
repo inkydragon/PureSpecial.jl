@@ -6,11 +6,10 @@ Exponential Integrals:
 - ✅ e1xa
 - ✅ e1xb
 - ✅ e1z
-- ✅ eix
-- ✅ eixz
-
 - ENXA
 - ENXB
+- ✅ eix
+- ✅ eixz
 
 Trigonometric Integrals:
 - CISIA, 647
@@ -170,6 +169,37 @@ function e1z(z::Complex{Float64})
     end
 
     return ce1
+end
+
+"""
+Compute exponential integral En(x).
+
+Parameters:
+- `n` : Order of En(x)
+- `x` : Argument of En(x), ( 0 < x <= 20 )
+
+Returns:
+- En(x)
+
+Routine called:
+- E1XB for computing E1(x)
+"""
+function enxa(n::Int, x::Float64)::Vector{Float64}
+    @assert (n + 1) >= 2
+    @assert 0 < x <= 20
+    en = zeros(Float64, n + 1)
+
+    en[1] = exp(-x) / x
+    e1 = e1xb(x)
+    en[2] = e1
+    for k in 2:n
+        # Use CoSF (19.1.8)
+        ek = (exp(-x) - x * e1) / (k - 1)
+        en[k+1] = ek
+        e1 = ek
+    end
+
+    return en
 end
 
 
