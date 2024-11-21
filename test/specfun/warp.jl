@@ -37,7 +37,7 @@ end
 gamma2
 lgama
 cgama
-    BETA
+beta
 psi (PSI_SPEC)
     CPSI
     INCOG
@@ -72,6 +72,15 @@ function _cgama(z::Complex{Float64}, kf::Int)
         (Ref{Float64}, Ref{Float64}, Ref{Int32}, Ref{Float64}, Ref{Float64}),
         real(z), imag(z), Int32(kf), gr, gi)
     complex(gr[], gi[])
+end
+
+function _beta(p::Float64, q::Float64)
+    bt = Ref{Float64}(NaN)
+    # SUBROUTINE BETA(P,Q, BT)
+    ccall(f77func(:beta), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        p, q, bt)
+    bt[]
 end
 
 # SUBROUTINE PSI_SPEC(X,  PS)
