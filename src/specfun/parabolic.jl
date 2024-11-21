@@ -2,7 +2,6 @@
 #   See also: src/specfun/LICENSE.md
 """Parabolic cylinder functions"""
 #=
-
 - ✅ pbvv
     - ✅ vvsa
     - ✅ vvla
@@ -10,9 +9,9 @@
     - ✅ dvsa
     - ✅ dvla
 - ✅ pbwa
-- cpbdn
+- ✅ cpbdn
     - ✅ cpdla
-    - cpdsa
+    - ✅ cpdsa
     - [gaih]
 =#
 
@@ -640,7 +639,7 @@ Routine called:
 - [`Specfun.gaih`](@ref) for computing Г(x), x = n/2 (n = 1, 2, ...)
 """
 function cpdsa(n::Int, z::Complex{Float64})
-    @assert real(z) <= 3
+    @assert real(z) <= 7  # `<=7` from cpbdn
     @assert (-n) >= 0
     _EPS = 1.0e-15
     cdn = 0.0 + 0im
@@ -681,4 +680,100 @@ function cpdsa(n::Int, z::Complex{Float64})
     end
 
     return cdn
+end
+
+"""
+Compute the parabolic cylinder functions
+Dn(z) and Dn'(z) for a complex argument
+
+Input:
+- z --- Complex argument of Dn(z)
+- n --- Order of Dn(z)  ( n=0, ±1, ±2, … )
+
+Output:
+- cpb --- Array containing Dn(z)
+- cpd --- Array containing Dn'(z)
+"""
+function cpbdn(n::Int, z::Complex{Float64})
+    zarr_len = abs(n) + 2
+    cpb = zeros(ComplexF64, zarr_len)
+    cpd = zeros(ComplexF64, zarr_len)
+
+    x = real(z)
+    a0 = abs(z)
+    ca0 = exp(-0.25 * z * z)
+    n0 = abs(n)
+    if n >= 0
+        cf0 = ca0
+        cf1 = z * ca0
+        cpb[1] = cf0
+        cpb[2] = cf1
+        for k in 2:n
+            cf = z * cf1 - (k - 1) * cf0
+            cpb[k+1] = cf
+            cf0, cf1 = cf1, cf
+        end
+    else
+        n0 = -n
+        if x <= 0.0 || a0 == 0.0
+            cf0 = ca0
+            cpb[1] = cf0
+
+            z1 = -z
+            if a0 <= 7.0
+                cf1 = cpdsa(-1, z1)
+            else
+                cf1 = cpdla(-1, z1)
+            end
+            cf1 = sqrt(2.0 * pi) / ca0 - cf1
+
+            cpb[2] = cf1
+            for k in 2:n0
+                cf = (-z * cf1 + cf0) / (k - 1)
+                cpb[k+1] = cf
+                cf0, cf1 = cf1, cf
+            end
+        elseif a0 <= 3.0
+            cfa = cpdsa(-n0, z)
+            cpb[n0 + 1] = cfa
+            n1 = n0 + 1
+            cfb = cpdsa(-n1, z)
+            cpb[n1 + 1] = cfb
+            nm1 = n0 - 1
+            for k in nm1:-1:0
+                cf = z * cfa + (k + 1) * cfb
+                cpb[k+1] = cf
+                cfb, cfa = cfa, cf
+            end
+        else
+            m = 100 + abs(n)
+            cfa = 0.0 + 0.0im
+            cfb = 1.0e-30 + 0.0im
+            for k in m:-1:0
+                cf = z * cfb + (k + 1) * cfa
+                if k <= n0
+                    cpb[k+1] = cf
+                end
+                cfa, cfb = cfb, cf
+            end
+
+            cs0 = ca0 / cfb
+            for k in 0:n0
+                cpb[k+1] = cs0 * cpb[k+1]
+            end
+        end
+    end
+
+    cpd[1] = -0.5 * z * cpb[1]
+    if n >= 0
+        for k in 1:n
+            cpd[k+1] = -0.5 * z * cpb[k+1] + k * cpb[(k - 1)+1]
+        end
+    else
+        for k in 1:n0
+            cpd[k+1] = 0.5 * z * cpb[k+1] - cpb[(k - 1)+1]
+        end
+    end
+
+    return cpb, cpd
 end
