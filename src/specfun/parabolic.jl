@@ -598,14 +598,14 @@ end
 
 """
 Compute complex parabolic cylinder function Dn(z)
-for large argument
+for large argument.
 
 Input:
-- z   --- Complex argument of Dn(z), Re(z) > 0, |z| >> n, z -> +Inf 
-- n   --- Order of Dn(z) (n = 0, ±1, ±2,…)
+- `z`   --- Complex argument of Dn(z), Re(z) > 0, |z| >> n, z -> +Inf 
+- `n`   --- Order of Dn(z) (n = 0, ±1, ±2,…)
 
 Output:
-- cdn --- Dn(z)
+- `cdn` --- Dn(z)
 """
 function cpdla(n::Int, z::Complex{Float64})
     _EPS = 1e-12
@@ -626,14 +626,14 @@ end
 
 """
 Compute complex parabolic cylinder function Dn(z)
-for small argument
+for small argument.
 
 Input:
-- z   --- Complex argument of Dn(z), Re(z) <= 3
-- n   --- Order of Dn(z) (n = 0, -1, -2,…)
+- `z`   --- Complex argument of Dn(z), Re(z) <= 7
+- `n`   --- Order of Dn(z) (n = 0, -1, -2,…)
 
 Output:
-- cdn --- Dn(z)
+- `cdn` --- Dn(z)
 
 Routine called:
 - [`Specfun.gaih`](@ref) for computing Г(x), x = n/2 (n = 1, 2, ...)
@@ -684,15 +684,19 @@ end
 
 """
 Compute the parabolic cylinder functions
-Dn(z) and Dn'(z) for a complex argument
+Dn(z) and Dn'(z) for a complex argument.
 
 Input:
-- z --- Complex argument of Dn(z)
-- n --- Order of Dn(z)  ( n=0, ±1, ±2, … )
+- `z` --- Complex argument of Dn(z)
+- `n` --- Order of Dn(z)  ( n=0, ±1, ±2, … )
 
-Output:
-- cpb --- Array containing Dn(z)
-- cpd --- Array containing Dn'(z)
+Output: `(cpb, cpd)`
+- `CPB(|n|)` --- Dn(z)
+- `CPD(|n|)` --- Dn'(z)
+
+Routine called:
+- [`Specfun.cpdsa`](@ref) for computing Dn(z) for a small |z|
+- [`Specfun.cpdla`](@ref) for computing Dn(z) for a large |z|
 """
 function cpbdn(n::Int, z::Complex{Float64})
     zarr_len = abs(n) + 2

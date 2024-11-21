@@ -153,9 +153,9 @@ CurrentModule = PureSpecial.Specfun
   - [`Specfun.vvsa`](@ref)
   - [`Specfun.vvla`](@ref)
 - [`Specfun.pbwa`](@ref)
-- CPBDN(CPDSA,CPDLA), 451
-  - CPDSA(GAIH), 453
-  - CPDLA, 454
+- [`Specfun.cpbdn`](@ref)
+  - [`Specfun.cpdsa`](@ref)
+  - [`Specfun.cpdla`](@ref)
   - [`Specfun.gaih`](@ref)
 
 ## 14 Mathieu Functions
