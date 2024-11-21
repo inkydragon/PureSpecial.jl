@@ -48,6 +48,21 @@ const _GAMMA2_TEST_X = Float64[
     end
 end
 
+@testset "lgama" begin
+    test_x = Float64[
+        1:10...,
+        rand(10)...,
+    ]
+    for x in test_x,
+        kf in 0:1
+        @testset "lgama(kf=$kf; x=$x)" begin
+            ref = _lgama(kf, x)
+            res = Specfun.lgama(kf, x)
+            @test isapprox(ref, res)
+        end
+    end
+end
+
 @testset "_gaih" begin
     test_x = Float64[
         0.1,
