@@ -63,7 +63,7 @@ function e1xb(x::Float64)
     e1 = NaN
     if x == 0.0
         # Inf
-        e1 = 1e300
+        e1 = SF_INF300
     elseif x <= 1.0
         e1 = 1.0
         r = 1.0
@@ -108,7 +108,7 @@ function e1z(z::Complex{Float64})
     #   so use power series in a wedge around it until radius 40.0
     a0 = abs(z)
     if a0 == 0.0
-        return complex(1e300)
+        return complex(SF_INF300)
     end
 
     x = real(z)

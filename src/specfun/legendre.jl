@@ -73,7 +73,7 @@ function lpmns(m::Int, n::Int, x::Float64, pm::Vector{Float64}, pd::Vector{Float
                     pd[k + 1] *= ((k + 1) % 2 == 0 ? 1 : -1)
                 end
             elseif m == 1
-                pd[k + 1] = 1e300
+                pd[k + 1] = SF_INF300
             elseif m == 2
                 pd[k + 1] = -0.25 * (k + 2.0) * (k + 1.0) * k * (k - 1.0)
                 if x < 0.0
@@ -134,7 +134,7 @@ function lqmns(m::Int, n::Int, x::Float64, qm::Vector{Float64}, qd::Vector{Float
     @assert length(qm) >= 2
     @assert length(qd) >= (n+1)
 
-    val = ifelse(abs(x) == 1.0, 1e300, 0.0)
+    val = ifelse(abs(x) == 1.0, SF_INF300, 0.0)
     for k in 0:n
         qm[k+1] = val
         qd[k+1] = val

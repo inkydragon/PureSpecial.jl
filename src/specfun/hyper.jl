@@ -48,7 +48,7 @@ function cchg(a::Float64, b::Float64, z::Complex{Float64})
     # b = 0, -1, -2, ...
     if isinteger(b) && b <= 0.0
         # TODO: warp and ret Inf
-        return complex(1e300)
+        return complex(SF_INF300)
     end
     # a = 0 OR z = 0
     if a == 0.0 || z == complex(0.0)
@@ -484,7 +484,7 @@ function chgus(a::Float64, b::Float64, x::Float64)
     r2 = hu0 * x^(1.0 - b) / (ga * gb2)
     hu = r1 - r2
     hmax = 0.0
-    hmin = 1e300
+    hmin = SF_INF300
     h0 = 0.0
     for j in 1:150
         r1 = r1 * (a + j - 1.0) / (j * (b + j - 1.0)) * x
@@ -563,7 +563,7 @@ function chgubi(a::Float64, b::Float64, x::Float64)
     r = 1.0
     hm1 = 1.0
     hmax = 0.0
-    hmin = 1e300
+    hmin = SF_INF300
     h0 = 0.0
     for k in 1:150
         r = r * (a0 + k - 1) * x / ((n + k) * k)

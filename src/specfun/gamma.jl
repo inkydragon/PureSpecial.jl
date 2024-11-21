@@ -103,7 +103,7 @@ function gamma2(x::Float64)
             end
         else
             # Inf
-            ga = 1e300
+            ga = SF_INF300
         end
     else
         r = 1.0
@@ -258,7 +258,7 @@ function cgama(z::Complex{Float64}, kf::Int)
     # Check if z is a negative real integer
     if y == 0.0 && x <= 0.0 && isinteger(x)
         # Inf
-        return complex(1e300)
+        return complex(SF_INF300)
     end
 
     x1 = x
@@ -375,7 +375,7 @@ function psi(x::T) where {T<:AbstractFloat}
     @assert isapprox(2*log(2), _2LOG2)
 
     if (x == trunc(Int, x)) && (x <= 0.0)
-        return T(1e300)
+        return T(SF_INF300)
     end
 
     xa = abs(x)
