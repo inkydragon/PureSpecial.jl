@@ -12,6 +12,8 @@ const SF_EPS14 = Float64(1e-14)
 const SF_EPS12 = Float64(1e-12)
 const SF_EPS11 = Float64(1e-11)
 const SF_EPS10 = Float64(1e-10)
+const SF_EPS09 = Float64(1e-9)
+
 
 """
 The constant π.

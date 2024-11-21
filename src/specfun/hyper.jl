@@ -697,7 +697,7 @@ Routine called:
 function chguit(a::Float64, b::Float64, x::Float64)
     @assert a > 0
     @assert x > 0
-    _EPS = 1e-9
+    _EPS = SF_EPS09
     t = _CHGUIT_T
     w = _CHGUIT_W
 
