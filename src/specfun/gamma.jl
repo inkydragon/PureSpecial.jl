@@ -3,10 +3,10 @@
 """Gamma Functions"""
 #=
 - ✅ gamma2
-- LGAMA
+- ✅ lgama
 - ✅ cgama
 
-- BETA
+- ✅ beta
 - ✅ psi
 - CPSI
 
@@ -329,6 +329,29 @@ function cgama(z::Complex{Float64}, kf::Int)
 end
 cgama(f::Float64, kf) = cgama(complex(f), kf)
 
+"""
+Compute the beta function B(p, q)
+
+Input :
+- p  --- Parameter  ( p > 0 )
+- q  --- Parameter  ( q > 0 )
+
+Output:
+- B(p, q)
+
+Routine called:
+gamma for computing Γ(x)
+"""
+function beta(p::Float64, q::Float64)
+    @assert p > 0
+    @assert q < 0
+    gp = gamma2(p)
+    gq = gamma2(q)
+    ppq = p + q
+    gpq = gamma2(ppq)
+    bt = gp * gq / gpq
+    return bt
+end
 
 const _PSI_A = NTuple{8, Float64}((
     -0.8333333333333e-01,
