@@ -172,7 +172,7 @@ function gaih(x::Float64)
 
     return ga
 end
-
+gaih(x::Integer) = gaih(float(x))
 
 "Coefficients for the series expansion"
 const _CGAMMA_A = Float64[

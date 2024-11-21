@@ -602,7 +602,7 @@ Compute complex parabolic cylinder function Dn(z)
 for large argument
 
 Input:
-- z   --- Complex argument of Dn(z)
+- z   --- Complex argument of Dn(z), Re(z) > 0, |z| >> n, z -> +Inf 
 - n   --- Order of Dn(z) (n = 0, ±1, ±2,…)
 
 Output:
@@ -623,4 +623,62 @@ function cpdla(n::Int, z::Complex{Float64})
     end
 
     return cdn * cb0
+end
+
+"""
+Compute complex parabolic cylinder function Dn(z)
+for small argument
+
+Input:
+- z   --- Complex argument of Dn(z), Re(z) <= 3
+- n   --- Order of Dn(z) (n = 0, -1, -2,…)
+
+Output:
+- cdn --- Dn(z)
+
+Routine called:
+- [`Specfun.gaih`](@ref) for computing Г(x), x = n/2 (n = 1, 2, ...)
+"""
+function cpdsa(n::Int, z::Complex{Float64})
+    @assert real(z) <= 3
+    @assert (-n) >= 0
+    _EPS = 1.0e-15
+    cdn = 0.0 + 0im
+
+    ca0 = exp(-0.25 * z*z)
+    va0 = 0.5 * (1.0 - n)
+    if n == 0
+        cdn = ca0
+    elseif abs(z) == 0.0
+        if (va0 <= 0.0) && (va0 == trunc(Int, va0))
+            # TODO: unreachable, when n <= 0
+            cdn = 0.0 + 0im
+        else
+            ga0 = gaih(va0)
+            pd = sqrt(pi) / (2.0^(-0.5 * n) * ga0)
+            cdn = complex(pd, 0.0)
+        end
+    else
+        xn = -n
+        g1 = gaih(xn)
+        cb0 = 2.0^(-0.5 * n - 1.0) * ca0 / g1
+        vt = -0.5 * n
+        g0 = gaih(vt)
+
+        cdn = complex(g0, 0.0)
+        cr = 1.0 + 0im
+        for m in 1:250
+            vm = 0.5 * (m - n)
+            gm = gaih(vm)
+            cr = - cr * sqrt(2.0) * z / m
+            cdw = gm * cr
+            cdn = cdw + cdn
+            if abs(cdw) < abs(cdn) * _EPS
+                break
+            end
+        end
+        cdn = cb0 * cdn
+    end
+
+    return cdn
 end
