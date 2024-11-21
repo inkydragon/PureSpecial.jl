@@ -483,6 +483,10 @@ _itsl0(x::Float64) = warp_unary(:itsl0, x)
 cchg
 chgm
     chgu
+- chgu
+    - chgubi
+    - chgus,chguit
+    - chgul
 =#
 
 """
@@ -521,6 +525,18 @@ function _chgm(a::Float64, b::Float64, x::Float64)
         hg)
 
     hg[]
+end
+
+"""SUBROUTINE CHGUL(A,B,X,  HU,ID)"""
+function _chgul(a::Float64, b::Float64, x::Float64)
+    hu = Ref{Float64}(NaN)
+    id = Ref{Int32}(-1)
+    ccall(f77func(:chgul), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64},
+         Ref{Float64}, Ref{Int32}),
+        a, b, x,
+        hu, id)
+    hu[], id[]
 end
 
 
