@@ -11,7 +11,7 @@
     - ✅ dvla
 - ✅ pbwa
 - cpbdn
-    - cpdla
+    - ✅ cpdla
     - cpdsa
     - [gaih]
 =#
@@ -595,4 +595,32 @@ function pbvv(vv::Vector{Float64}, vp::Vector{Float64}, x::Float64, v::Float64)
     pvf = vv[na]
     pvd = vp[na]
     return pvf, pvd
+end
+
+"""
+Compute complex parabolic cylinder function Dn(z)
+for large argument
+
+Input:
+- z   --- Complex argument of Dn(z)
+- n   --- Order of Dn(z) (n = 0, ±1, ±2,…)
+
+Output:
+- cdn --- Dn(z)
+"""
+function cpdla(n::Int, z::Complex{Float64})
+    _EPS = 1e-12
+    cb0 = z^n * exp(-0.25 * z*z)
+
+    cr = 1.0 + 0im
+    cdn = 1.0 + 0im
+    for k in 1:16
+        cr = -0.5 * cr * (2*k - n - 1) * (2*k - n - 2) / (k*z*z)
+        cdn += cr
+        if abs(cr) < abs(cdn) * _EPS
+            break
+        end
+    end
+
+    return cdn * cb0
 end
