@@ -34,11 +34,16 @@ end
 
 """3. Gamma, Beta, and Psi Functions"""
 #=
-gam0
 gamma2
-gaih
+lgama
 cgama
+    BETA
 psi (PSI_SPEC)
+    CPSI
+    INCOG
+    INCOB
+gam0
+gaih
 =#
 
 # SUBROUTINE GAM0 (X,  GA)
@@ -46,6 +51,15 @@ _gam0(x::Float64) = warp_unary(:gam0, x)
 
 # SUBROUTINE GAMMA2(X,  GA)
 _gamma2(x::Float64) = warp_unary(:gamma2, x)
+
+function _lgama(kf::Int, x::Float64)
+    gl = Ref{Float64}(NaN)
+    # SUBROUTINE LGAMA(KF,X,GL)
+    ccall(f77func(:lgama), Cvoid,
+        (Ref{Int32}, Ref{Float64}, Ref{Float64}),
+        Int32(kf), x, gl)
+    gl[]
+end
 
 # SUBROUTINE GAIH(X,  GA)
 _gaih(x::Float64) = warp_unary(:gaih, x)
