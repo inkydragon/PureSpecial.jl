@@ -499,3 +499,150 @@ function chgus(a::Float64, b::Float64, x::Float64)
     id = trunc(Int, 15 - abs(d1 - d2))
     return hu, id
 end
+
+"""
+Purpose: Compute confluent hypergeometric function
+U(a,b,x) with integer b ( b = ±1,±2,... )
+
+Input:
+- a  --- Parameter
+- b  --- Parameter
+- x  --- Argument
+
+Output:
+- HU --- U(a,b,x)
+- ID --- Estimated number of significant digits
+
+Routines called:
+- GAMMA2 for computing gamma function Г(x)
+- psi for computing psi function
+"""
+function chgubi(a::Float64, b::Float64, x::Float64)
+    # (a + m - 1) > 0 && m >= 1
+    @assert a > 0
+    @assert isinteger(b)
+    _EPS = 1e-15
+
+    id = -100
+    n = trunc(Int, abs(b - 1))
+    rn = 1.0
+    rn1 = 1.0
+    for j in 1:n
+        rn *= j
+        if j == (n - 1)
+            rn1 = rn
+        end
+    end
+
+    ps = psi(a)
+    ga = gamma2(a)
+    ua, ub = 0.0, 0.0
+    if b > 0.0
+        a0 = a
+        a1 = a - n
+        a2 = a1
+        ga1 = gamma2(a1)
+        ua = (-1)^(n - 1) / (rn * ga1)
+        ub = rn1 / ga * x^(-n)
+    else
+        a0 = a + n
+        a1 = a0
+        a2 = a
+        ga1 = gamma2(a1)
+        ua = (-1)^(n - 1) / (rn * ga) * x^n
+        ub = rn1 / ga1
+    end
+
+    r = 1.0
+    hm1 = 1.0
+    hmax = 0.0
+    hmin = 1e300
+    h0 = 0.0
+    for k in 1:150
+        r = r * (a0 + k - 1) * x / ((n + k) * k)
+        hm1 += r
+        hu1 = abs(hm1)
+        hmax = max(hmax, hu1)
+        hmin = min(hmin, hu1)
+        if abs(hm1 - h0) < abs(hm1) * _EPS
+            break
+        end
+        h0 = hm1
+    end
+
+    da1 = log10(hmax)
+    da2 = ifelse(hmin != 0.0, log10(hmin), 0.0)
+    id = trunc(Int, 15 - abs(da1 - da2))
+    hm1 *= log(x)
+
+    s0 = 0.0
+    for m in 1:n
+        if b >= 0
+            s0 -= 1.0 / m
+        else
+            s0 += (1.0 - a) / (m * (a + m - 1))
+        end
+    end
+
+    hm2 = ps + 2 * SF_EULER_GAMMA + s0
+    r = 1.0
+    hmax = 0.0
+    hmin = 1.0e+300
+    for k in 1:150
+        s1 = 0.0
+        s2 = 0.0
+        if b > 0
+            for m in 1:k
+                s1 -= (m + 2 * a - 2) / (m * (m + a - 1))
+            end
+            for m in 1:n
+                s2 += 1.0 / (k + m)
+            end
+        else
+            for m in 1:(k + n)
+                s1 += (1.0 - a) / (m * (m + a - 1))
+            end
+            for m in 1:k
+                s2 += 1.0 / m
+            end
+        end
+
+        hw = 2 * SF_EULER_GAMMA + ps + s1 - s2
+        r = r * (a0 + k - 1) * x / ((n + k) * k)
+        hm2 += r * hw
+        hu2 = abs(hm2)
+        hmax = max(hmax, hu2)
+        hmin = min(hmin, hu2)
+        if abs(hm2 - h0) < abs(hm2) * _EPS
+            break
+        end
+        h0 = hm2
+    end
+
+    db1 = log10(hmax)
+    db2 = ifelse(hmin != 0.0, log10(hmin), 0.0)
+    id1 = trunc(Int, 15 - abs(db1 - db2))
+    id = min(id, id1)
+
+    r = 1.0
+    hm3 = ifelse(n == 0, 0.0, 1.0)
+    for k in 1:(n - 1)
+        r *= (a2 + k - 1.0) / ((k - n) * k) * x
+        hm3 += r
+    end
+
+    sa = ua * (hm1 + hm2)
+    sb = ub * hm3
+    hu = sa + sb
+    if sa != 0.0
+        id1 = trunc(Int, log10(abs(sa)))
+    end
+    if hu != 0.0
+        id2 = trunc(Int, log10(abs(hu)))
+    end
+    if (sa * sb) < 0.0
+        id -= abs(id1 - id2)
+    end
+
+    return hu, id
+end
