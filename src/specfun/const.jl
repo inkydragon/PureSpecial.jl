@@ -3,7 +3,7 @@
 """Math Constants"""
 
 """
-`+Inf` in `specfun.f`
+`1e300` used as `+Inf` in `specfun.f`
 """
 const SF_INF300 = Float64(1e300)
 
