@@ -386,3 +386,64 @@ function chgm_kernel(a::Float64, b::Float64, x::Float64)
 
     return hg
 end
+
+"""
+Purpose: Compute the confluent hypergeometric function
+U(a,b,x) for large argument x
+
+Input:
+- `a`  --- Parameter
+- `b`  --- Parameter
+- `x`  --- Argument, x > 0
+
+Output: `(hu, id)`
+- `HU` --- U(a,b,x)
+- `ID` --- Estimated number of significant digits
+"""
+function chgul(a::Float64, b::Float64, x::Float64)
+    @assert x > 0
+    _EPS = 1e-15
+
+    id = -100
+    aa = a - b + 1.0
+    il1 = (a == trunc(Int, a)) && (a <= 0.0)
+    il2 = (aa == trunc(Int, aa)) && (aa <= 0.0)
+    nm = 0
+    if il1
+        nm = trunc(Int, abs(a))
+    elseif il2
+        nm = trunc(Int, abs(aa))
+    end
+
+    if il1 || il2
+        # IL1: DLMF 13.2.7 with k = -s-a
+        # IL2: DLMF 13.2.8
+        r = 1.0
+        hu = 1.0
+        for k in 1:nm
+            r = - r * (a + k - 1.0) * (a - b + k) / (k * x)
+            hu += r
+        end
+        hu = x^(-a) * hu
+        id = 10
+    else
+        r = 1.0
+        hu = 1.0
+        ra = NaN
+        r0 = NaN
+        # DLMF 13.7.3
+        for k in 1:25
+            r = - r * (a + k - 1.0) * (a - b + k) / (k * x)
+            ra = abs(r)
+            if ((k > 5) && (ra >= r0)) || (ra < _EPS)
+                break
+            end
+            r0 = ra
+            hu += r
+        end
+        hu = x^(-a) * hu
+        id = trunc(Int, abs(log10(ra)))
+    end
+
+    return hu, id
+end
