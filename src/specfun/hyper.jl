@@ -756,3 +756,92 @@ function chguit(a::Float64, b::Float64, x::Float64)
     hu = hu1 + hu2
     return hu, id
 end
+
+"""
+Compute the confluent hypergeometric function U(a,b,x)
+
+Input:
+- a  --- Parameter
+- b  --- Parameter
+- x  --- Argument  ( x > 0 )
+
+Output: `(hu, md, isfer)`
+- HU --- U(a,b,x)
+- MD --- Method code
+- ISFER --- Error flag
+
+Routines called:
+- (1) chgus for small x ( MD=1 )
+- (2) chgul for large x ( MD=2 )
+- (3) chgubi for integer b ( MD=3 )
+- (4) chguit for numerical integration ( MD=4 )
+"""
+function chgu(a::Float64, b::Float64, x::Float64)
+    aa = a - b + 1.0
+    md = 0
+    isfer = 0
+
+    il1 = (a == trunc(Int, a)) && (a <= 0.0)
+    il2 = (aa == trunc(Int, aa)) && (aa <= 0.0)
+    il3 = abs(a * (a - b + 1.0)) / x <= 2.0
+    bl1 = (x <= 5.0) || ((x <= 10.0) && (a <= 2.0))
+    bl2 = (x > 5.0) && (x <= 12.5) && ((a >= 1.0) && (b >= a + 4.0))
+    bl3 = (x > 12.5) && (a >= 5.0) && (b >= a + 5.0)
+    bn = (b == trunc(Int, b)) && (b != 0.0)
+
+    id = 0
+    hu = 0.0
+    id1 = -100
+    hu1 = 0.0
+    if b != trunc(Int, b)
+        hu, id1 = chgus(a, b, x)
+        md = 1
+        if id1 >= 9
+            return hu, md, isfer
+        end
+
+        hu1 = hu
+    end
+
+    if il1 || il2 || il3
+        hu, id = chgul(a, b, x)
+        md = 2
+        if id >= 9
+            return hu, md, isfer
+        end
+
+        if id1 > id
+            md = 1
+            id = id1
+            hu = hu1
+        end
+    end
+
+    if a >= 1.0
+        if bn && (bl1 || bl2 || bl3)
+            hu, id = chgubi(a, b, x)
+            md = 3
+        else
+            hu, id = chguit(a, b, x)
+            md = 4
+        end
+    else
+        if b <= a
+            b00 = b
+            a = a - b + 1.0
+            b = 2.0 - b
+            hu, id = chguit(a, b, x)
+            hu = x^(1.0 - b00) * hu
+            md = 4
+        elseif bn && (!il1)
+            hu, id = chgubi(a, b, x)
+            md = 3
+        end
+    end
+
+    if id < 6
+        isfer = 6
+    end
+
+    return hu, md, isfer
+end
