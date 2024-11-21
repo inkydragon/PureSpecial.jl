@@ -8,7 +8,7 @@
 
 - ✅ beta
 - ✅ psi
-- CPSI
+- ✅ cpsi
 
 - INCOG
 - INCOB
@@ -354,14 +354,10 @@ function beta(p::Float64, q::Float64)
 end
 
 const _PSI_A = NTuple{8, Float64}((
-    -0.8333333333333e-01,
-    0.83333333333333333e-02,
-    -0.39682539682539683e-02,
-    0.41666666666666667e-02,
-    -0.75757575757575758e-02,
-    0.21092796092796093e-01,
-    -0.83333333333333333e-01,
-    0.4432598039215686
+    -0.8333333333333e-01,       0.83333333333333333e-02,
+    -0.39682539682539683e-02,   0.41666666666666667e-02,
+    -0.75757575757575758e-02,   0.21092796092796093e-01,
+    -0.83333333333333333e-01,   0.4432598039215686
 )) # _PSI_A
 
 """
@@ -417,4 +413,78 @@ function psi(x::T) where {T<:AbstractFloat}
     end
 
     return T(ps)
+end
+
+"""
+    cpsi(z::ComplexF64)
+
+Compute the psi function for a complex argument
+
+Input :
+- `x`   --- Real part of z
+- `y`   --- Imaginary part of z
+
+Output: `(PSR, PSI)`
+- `PSR` --- Real part of psi(z)
+- `PSI` --- Imaginary part of psi(z)
+"""
+function cpsi(z::ComplexF64)
+    psr, psi = NaN, NaN
+    x, y = real(z), imag(z)
+
+    if y == 0.0 && x == trunc(Int, x) && x <= 0.0
+        return complex(1.0e300, 0.0)
+    end
+
+    x1 = x
+    y1 = y
+    if x < 0.0
+        x = -x
+        y = -y
+    end
+    x0 = x
+    n = 0
+    if x < 8.0
+        n = 8 - trunc(Int, x)
+        x0 += n
+    end
+
+    th = 0.0
+    if x0 == 0.0 && y != 0.0
+        # TODO: Unreachable
+        th = 0.5 * pi
+    elseif x0 != 0.0
+        th = atan(y / x0)
+    end
+    z2 = x0*x0 + y*y
+    z0 = sqrt(z2)
+    psr = log(z0) - 0.5 * x0 / z2
+    psi = th + 0.5 * y / z2
+    for k in 1:8
+        psr += _PSI_A[k] * z2^(-k) * cos(2.0 * k * th)
+        psi -= _PSI_A[k] * z2^(-k) * sin(2.0 * k * th)
+    end
+
+    if x < 8.0
+        rr = 0.0
+        ri = 0.0
+        for k in 1:n
+            rr += (x0 - k) / ((x0 - k)^2 + y*y)
+            ri += y / ((x0 - k)^2 + y*y)
+        end
+        psr -= rr
+        psi += ri
+    end
+
+    if x1 < 0.0
+        tn = tan(pi * x)
+        tm = tanh(pi * y)
+        ct2 = tn*tn + tm*tm
+        psr = psr + x / (x*x + y*y) + pi * (tn - tn * tm*tm) / ct2
+        psi = psi - y / (x*x + y*y) - pi * tm * (1.0 + tn*tn) / ct2
+        x = x1
+        y = y1
+    end
+
+    return complex(psr, psi)
 end
