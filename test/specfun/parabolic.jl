@@ -148,3 +148,18 @@ end
         end
     end
 end
+
+@testset "cpdsa" begin
+    test_z = ComplexF64[
+        -3:3...,
+        rand(ComplexF64, 5)...,
+        (2*rand(ComplexF64, 5))...,
+        (3*rand(ComplexF64, 5))...,
+    ]
+    for n in -10:0,
+        z in test_z
+        @testset "cpdsa(n=$n; z=$z)" begin
+            @test isapprox(_cpdsa(n,z), Specfun.cpdsa(n,z); nans=true)
+        end
+    end
+end
