@@ -198,3 +198,39 @@ end
         end
     end
 end
+
+@testset "chgul" begin
+    test_ab = Tuple{Float64, Float64}[
+        # (il1,il2) = (T, T)
+        (0.0, 1.0),
+        (-10, 20),
+        # (il1,il2) = (T, F)
+        (0.0, 0.0),
+        (0.0, 3.5),
+        (-10, -20),
+        # (il1,il2) = (F, T)
+        (1.0, 1.0),
+        (1.0, 2.0),
+        (10, 20),
+        # (il1,il2) = (F, F)
+        (1.0, 0.0),
+        (1.1, 1.2),
+        (1.0, -2.0),
+        (10, -20),
+        (20, 10),
+    ]
+    test_x = Float64[
+        1:20...,
+        rand(5)...,
+        (rand(1:1000)*rand(5))...,
+    ]
+    for (a, b) in test_ab,
+        x in test_x
+        @testset "chgul(a=$a; b=$b; x=$x)" begin
+            hu_ref, id_ref = _chgul(a, b, x)
+            hu, id = Specfun.chgul(a, b, x)
+            @test isapprox(hu_ref, hu)
+            @test isapprox(id_ref, id)
+        end
+    end
+end
