@@ -48,7 +48,7 @@ function segv(m::Int, n::Int, c::T, kd::Int, eg::Vector{T}) where {T<:AbstractFl
     @assert eg_len > 0 "Bad (m, n)"
     @assert length(eg) >= 200 "eg[] too small, need length(eg) >= 200"
 
-    if c < T(1e-10)
+    if c < T(SF_EPS10)
         for i in 1:eg_len
             eg[i] = (i + m) * (i + m - 1)
         end
@@ -192,7 +192,7 @@ function sdmn(m::Int, n::Int, c::T, cv::T, kd::Int, df::Vector{T}) where {T<:Abs
     nm = 25 + trunc(Int, 0.5*(n-m) + c)
     @assert nm <= length(df) "(n-m) too large"
     @assert ((n-m)÷2 + 1) <= length(df) "((n-m)÷2 + 1) too large"
-    if c < 1e-10
+    if c < SF_EPS10
         for i in 1:nm
             df[i] = 0
         end

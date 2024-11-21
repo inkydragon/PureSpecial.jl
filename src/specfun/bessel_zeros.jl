@@ -167,7 +167,7 @@ function jdzo(nt::Int, zo::Vector{Float64}, n::Vector{Int}, m::Vector{Int}, p::V
                     if x1 > xm
                         @goto _line15
                     end
-                    if abs(x-x0) <= 1e-10
+                    if abs(x-x0) <= SF_EPS10
                         break
                     end
                 end
@@ -200,7 +200,7 @@ function jdzo(nt::Int, zo::Vector{Float64}, n::Vector{Int}, m::Vector{Int}, p::V
                     # Need to "continue;" twice hence goto is simpler
                     @goto _line30
                 end
-                if abs(x-x0) <= 1e-10
+                if abs(x-x0) <= SF_EPS10
                     break
                 end
             end
