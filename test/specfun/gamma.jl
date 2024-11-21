@@ -102,6 +102,25 @@ end
     end
 end
 
+@testset "beta" begin
+    test_p = Float64[
+        1:5...,
+        rand(5)...,
+    ]
+    test_q = Float64[
+        -10:-1...,
+        -rand(5)...,
+    ]
+    for p in test_p,
+        q in test_q
+        @testset "beta(p=$p; q=$q)" begin
+            ref = _beta(p, q)
+            res = Specfun.beta(p, q)
+            @test isapprox(ref, res)
+        end
+    end
+end
+
 @testset "psi" begin
     test_x = Float64[
         # negative int: `(x == trunc(Int, x)) && (x <= 0.0)`
