@@ -608,7 +608,7 @@ Output:
 - `cdn` --- Dn(z)
 """
 function cpdla(n::Int, z::Complex{Float64})
-    _EPS = 1e-12
+    _EPS = SF_EPS12
     cb0 = z^n * exp(-0.25 * z*z)
 
     cr = 1.0 + 0im

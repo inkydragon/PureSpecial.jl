@@ -9,6 +9,8 @@ const SF_INF300 = Float64(1e300)
 
 const SF_EPS15 = Float64(1e-15)
 const SF_EPS14 = Float64(1e-14)
+const SF_EPS12 = Float64(1e-12)
+
 
 """
 The constant π.

@@ -318,7 +318,7 @@ Output:
 """
 function itsh0(x::Float64)
     @assert x >= 0
-    _EPS = 1e-12
+    _EPS = SF_EPS12
 
     if x <= 30.0
         # CoSF (11.1.4) Power-Series Expansions
@@ -399,7 +399,7 @@ Output:
 """
 function itth0(x::Float64)
     @assert x >= 0
-    _EPS = 1e-12
+    _EPS = SF_EPS12
 
     s = 1.0
     r = 1.0
@@ -454,7 +454,7 @@ Output:
 """
 function itsl0(x::Float64)
     @assert x >= 0
-    _EPS = 1e-12
+    _EPS = SF_EPS12
     el = SF_EULER_GAMMA_00
 
     r = 1.0
