@@ -138,11 +138,11 @@ CurrentModule = PureSpecial.Specfun
 - HYGFZ(GAMMA,PSI), 380
 - [`Specfun.chgm`](@ref)
 - [`Specfun.cchg`](@ref)
-- CHGU(CHGUS,CHGUL,CHGUBI,CHGUIT), 403
-- CHGUS(GAMMA), 405
-- CHGUL, 406
-- CHGUBI(GAMMA,PSI), 407
-- CHGUIT(GAMMA), 409
+- [`Specfun.chgu`](@ref)
+  - [`Specfun.chgus`](@ref)
+  - [`Specfun.chgul`](@ref)
+  - [`Specfun.chgubi`](@ref)
+  - [`Specfun.chguit`](@ref)
 
 ## 13 Parabolic Cylinder Functions
 

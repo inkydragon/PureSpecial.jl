@@ -5,21 +5,21 @@
 - HYGFX(GAMMA,PSI), 376
 - HYGFZ(GAMMA,PSI), 380
 
-- ✅ cchg
 - ✅ chgm
-- ✅ chgm_kernel
-- chgu
-    - chgubi
-    - chgus,chguit
-    - chgul
+    - ✅ chgm_kernel
+- ✅ cchg
+- ✅ chgu
+    - ✅ chgus
+    - ✅ chgul
+    - ✅ chgubi
+    - ✅ chguit
 =#
 
 """
     cchg(a::Float64, b::Float64, z::Complex{Float64})
 
-Compute confluent hypergeometric function
-`M(a,b,z)` with real parameters `a`, `b` and
-a complex argument `z`.
+Compute confluent hypergeometric function `M(a, b, z)`
+with real parameters `a`, `b` and a complex argument `z`.
 
 ## Input
 - `a` --- Parameter
@@ -215,11 +215,11 @@ end
 """
     chgm(a::Float64, b::Float64, x::Float64)
 
-Compute confluent hypergeometric function M(a,b,x)
+Compute confluent hypergeometric function `M(a, b, x)`.
 
 Input
 - `a`  --- Parameter
-- `b`  --- Parameter ( b <> 0,-1,-2,... )
+- `b`  --- Parameter ( b != 0,-1,-2,... )
 - `x`  --- Argument
 
 Output
@@ -281,6 +281,8 @@ function chgm(a::Float64, b::Float64, x::Float64)
 end
 
 """
+    chgm_kernel(a::Float64, b::Float64, x::Float64)
+
 F77 impl in scipy, without input check.
 """
 function chgm_kernel(a::Float64, b::Float64, x::Float64)
@@ -388,8 +390,10 @@ function chgm_kernel(a::Float64, b::Float64, x::Float64)
 end
 
 """
-Purpose: Compute the confluent hypergeometric function
-U(a,b,x) for large argument x
+    chgul(a::Float64, b::Float64, x::Float64)
+
+Compute the confluent hypergeometric function `U(a, b, x)`
+for large argument `x`.
 
 Input:
 - `a`  --- Parameter
@@ -449,20 +453,21 @@ function chgul(a::Float64, b::Float64, x::Float64)
 end
 
 """
-Compute confluent hypergeometric function
-U(a,b,x) for small argument x
+    chgus(a::Float64, b::Float64, x::Float64)
 
-Input  :
-a  --- Parameter
-b  --- Parameter ( b ≠ 0, -1, -2, ...)
-x  --- Argument
+Compute confluent hypergeometric function `U(a, b, x)` for small argument `x`.
 
-Output:
-HU --- U(a,b,x)
-ID --- Estimated number of significant digits
+Input:
+- `a`  --- Parameter
+- `b`  --- Parameter ( b ≠ 0, -1, -2, ...)
+- `x`  --- Argument
+
+Output: `(hu, id)`
+- `HU` --- U(a,b,x)
+- `ID` --- Estimated number of significant digits
 
 Routine called:
-GAMMA2 for computing gamma function
+- [`Specfun.gamma2`](@ref) for computing gamma function
 """
 function chgus(a::Float64, b::Float64, x::Float64)
     @assert !isinteger(b)
@@ -501,21 +506,23 @@ function chgus(a::Float64, b::Float64, x::Float64)
 end
 
 """
-Purpose: Compute confluent hypergeometric function
-U(a,b,x) with integer b ( b = ±1,±2,... )
+    chgubi(a::Float64, b::Float64, x::Float64)
+
+Compute confluent hypergeometric function `U(a, b, x)`
+with integer `b` ( b = ±1,±2,... ).
 
 Input:
-- a  --- Parameter
-- b  --- Parameter
-- x  --- Argument
+- `a`  --- Parameter
+- `b`  --- Parameter
+- `x`  --- Argument
 
-Output:
-- HU --- U(a,b,x)
-- ID --- Estimated number of significant digits
+Output: `(hu, id)`
+- `HU` --- U(a,b,x)
+- `ID` --- Estimated number of significant digits
 
 Routines called:
-- GAMMA2 for computing gamma function Г(x)
-- psi for computing psi function
+- [`Specfun.gamma2`](@ref) for computing gamma function Г(x)
+- [`Specfun.psi`](@ref) for computing psi function
 """
 function chgubi(a::Float64, b::Float64, x::Float64)
     # (a + m - 1) > 0 && m >= 1
@@ -670,20 +677,22 @@ const _CHGUIT_W = NTuple{30, Float64}((
 ))
 
 """
-Compute hypergeometric function U(a,b,x) by
-using Gaussian-Legendre integration (n=60)
+    chguit(a::Float64, b::Float64, x::Float64)
+
+Compute hypergeometric function `U(a, b, x)` by
+using Gaussian-Legendre integration (`n = 60`).
 
 Input:
-- a  --- Parameter ( a > 0 )
-- b  --- Parameter
-- x  --- Argument ( x > 0 )
+- `a`  --- Parameter ( a > 0 )
+- `b`  --- Parameter
+- `x`  --- Argument ( x > 0 )
 
-Output: (hu, id)
-- HU --- U(a,b,z)
-- ID --- Estimated number of significant digits
+Output: `(hu, id)`
+- `HU` --- U(a,b,z)
+- `ID` --- Estimated number of significant digits
 
 Routine called:
-- GAMMA2 for computing Г(x)
+- [`Specfun.gamma2`](@ref) for computing Г(x)
 """
 function chguit(a::Float64, b::Float64, x::Float64)
     @assert a > 0
@@ -758,23 +767,25 @@ function chguit(a::Float64, b::Float64, x::Float64)
 end
 
 """
-Compute the confluent hypergeometric function U(a,b,x)
+    chgu(a::Float64, b::Float64, x::Float64)
+
+Compute the confluent hypergeometric function `U(a, b, x)`.
 
 Input:
-- a  --- Parameter
-- b  --- Parameter
-- x  --- Argument  ( x > 0 )
+- `a`  --- Parameter
+- `b`  --- Parameter
+- `x`  --- Argument  ( x > 0 )
 
 Output: `(hu, md, isfer)`
-- HU --- U(a,b,x)
-- MD --- Method code
-- ISFER --- Error flag
+- `HU` --- U(a,b,x)
+- `MD` --- Method code
+- `ISFER` --- Error flag
 
 Routines called:
-- (1) chgus for small x ( MD=1 )
-- (2) chgul for large x ( MD=2 )
-- (3) chgubi for integer b ( MD=3 )
-- (4) chguit for numerical integration ( MD=4 )
+- [`Specfun.chgus`](@ref) for small x ( MD=1 )
+- [`Specfun.chgul`](@ref) for large x ( MD=2 )
+- [`Specfun.chgubi`](@ref) for integer b ( MD=3 )
+- [`Specfun.chguit`](@ref) for numerical integration ( MD=4 )
 """
 function chgu(a::Float64, b::Float64, x::Float64)
     aa = a - b + 1.0
