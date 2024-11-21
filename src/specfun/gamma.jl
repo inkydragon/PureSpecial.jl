@@ -4,10 +4,12 @@
 #=
 - ✅ gamma2
 - LGAMA
-- BETA
 - ✅ cgama
+
+- BETA
 - ✅ psi
 - CPSI
+
 - INCOG
 - INCOB
 
@@ -141,6 +143,63 @@ function gamma2(x::Float64)
 end
 
 """
+Coefficients for the series expansion
+"""
+const _LGAMA_A = NTuple{10, Float64}((
+    8.333333333333333e-02, -2.777777777777778e-03,
+    7.936507936507937e-04, -5.952380952380952e-04,
+    8.417508417508418e-04, -1.917526917526918e-03,
+    6.410256410256410e-03, -2.955065359477124e-02,
+    1.796443723688307e-01, -1.392432216905900e+00
+))
+
+"""
+    lgama(kf::Int, x::Float64)
+
+Compute gamma function Γ(x) or ln[Γ(x)]
+
+Input:
+- `x`  --- Argument of Γ(x) ( x > 0 )
+- `kf` --- Function code
+    - kf=1 for Γ(x);
+    - kf=0 for ln[Γ(x)]
+
+Output:
+- Γ(x) or ln[Γ(x)]
+"""
+function lgama(kf::Int, x::Float64)
+    @assert kf in [1, 0]
+    @assert x > 0
+
+    x0 = x
+    n = 0
+    if x == 1.0 || x == 2.0
+        gl = 0.0
+        return ifelse(kf == 1, exp(gl), gl)
+    elseif x <= 7.0
+        n = trunc(Int, 7 - x)
+        x0 = x + n
+    end
+
+    x2 = 1.0 / (x0 * x0)
+    xp = 6.283185307179586477
+    gl0 = _LGAMA_A[10]
+    for k in 9:-1:1
+        gl0 = gl0 * x2 + _LGAMA_A[k]
+    end
+    gl = gl0 / x0 + 0.5 * log(xp) + (x0 - 0.5) * log(x0) - x0
+
+    if x <= 7.0
+        for k in 1:n
+            gl -= log(x0 - 1.0)
+            x0 -= 1.0
+        end
+    end
+
+    return ifelse(kf == 1, exp(gl), gl)
+end
+
+"""
     gaih(x::Float64)
 
 Compute gamma function Г(x)
@@ -174,15 +233,6 @@ function gaih(x::Float64)
     return ga
 end
 gaih(x::Integer) = gaih(float(x))
-
-"Coefficients for the series expansion"
-const _CGAMMA_A = Float64[
-    8.333333333333333e-02, -2.777777777777778e-03,
-    7.936507936507937e-04, -5.952380952380952e-04,
-    8.417508417508418e-04, -1.917526917526918e-03,
-    6.410256410256410e-03, -2.955065359477124e-02,
-    1.796443723688307e-01, -1.392432216905900e+00
-]
 
 """
     cgama(z::Complex{Float64}, kf::Int)
@@ -236,8 +286,8 @@ function cgama(z::Complex{Float64}, kf::Int)
     gi = th * (x0 - 0.5) + y*log(az0) - y
     for k in 1:10
         t = az0 ^ (1 - 2*k)
-        gr += _CGAMMA_A[k] * t * cos((2.0*k - 1.0) * th)
-        gi -= _CGAMMA_A[k] * t * sin((2.0*k - 1.0) * th)
+        gr += _LGAMA_A[k] * t * cos((2.0*k - 1.0) * th)
+        gi -= _LGAMA_A[k] * t * sin((2.0*k - 1.0) * th)
     end
 
     if x <= 7.0
