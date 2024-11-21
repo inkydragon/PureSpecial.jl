@@ -86,6 +86,15 @@ end
 # SUBROUTINE PSI_SPEC(X,  PS)
 _psi(x::Float64) = warp_unary(:psi_spec, x)
 
+function _cpsi(z::ComplexF64)
+    psr, psi = Ref{Float64}(NaN), Ref{Float64}(NaN)
+    # SUBROUTINE CPSI(X,Y,  PSR,PSI)
+    ccall(f77func(:cpsi), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        real(z), imag(z), psr, psi)
+    complex(psr[], psi[])
+end
+
 
 """4. Legendre Functions"""
 #=
