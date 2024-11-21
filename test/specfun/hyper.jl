@@ -294,3 +294,33 @@ end
         end
     end
 end
+
+@testset "chguit" begin
+    test_ab = Tuple{Float64, Float64}[
+        # a == b
+        (1, 1),
+        (7, 7),
+        # a < b
+        (2, 7),
+        (3.14, 7),
+        # a > b
+        (7, 1),
+        (3.14, 1),
+        (7, -1),
+        # (100, 50),
+    ]
+    test_x = Float64[
+        1:20...,
+        rand(5)...,
+        (rand(1:1000)*rand(5))...,
+    ]
+    for (a, b) in test_ab,
+        x in test_x
+        @testset "chguit(a=$a; b=$b; x=$x)" begin
+            hu_ref, id_ref = _chguit(a, b, x)
+            hu, id = Specfun.chguit(a, b, x)
+            @test isapprox(hu_ref, hu)
+            @test isapprox(id_ref, id)
+        end
+    end
+end
