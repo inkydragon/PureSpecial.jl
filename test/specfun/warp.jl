@@ -575,6 +575,18 @@ function _chguit(a::Float64, b::Float64, x::Float64)
     hu[], id[]
 end
 
+"""SUBROUTINE CHGU(A,B,X,  HU,MD,ISFER)"""
+function _chgu(a::Float64, b::Float64, x::Float64)
+    hu = Ref{Float64}(NaN)
+    md, isfer = Ref{Int32}(-1), Ref{Int32}(-1)
+    ccall(f77func(:chgu), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64},
+         Ref{Float64}, Ref{Int32}, Ref{Int32}),
+        a, b, x,
+        hu, md, isfer)
+    hu[], md[], isfer[]
+end
+
 """13 Parabolic Cylinder Functions"""
 #=
 - pbwa
