@@ -234,3 +234,33 @@ end
         end
     end
 end
+
+@testset "chgus" begin
+    test_ab = Tuple{Float64, Float64}[
+        # a == b
+        (3.14, 3.14),
+        # a < b
+        (-1, 0.1),
+        (-1, -0.1),
+        (1.0, 2.1),
+        # a > b
+        (1, 0.1),
+        (1, -0.1),
+        (10, 1.1),
+        (10, -3.1),
+    ]
+    test_x = Float64[
+        1:20...,
+        rand(5)...,
+        (rand(1:1000)*rand(5))...,
+    ]
+    for (a, b) in test_ab,
+        x in test_x
+        @testset "chgus(a=$a; b=$b; x=$x)" begin
+            hu_ref, id_ref = _chgus(a, b, x)
+            hu, id = Specfun.chgus(a, b, x)
+            @test isapprox(hu_ref, hu)
+            @test isapprox(id_ref, id)
+        end
+    end
+end
