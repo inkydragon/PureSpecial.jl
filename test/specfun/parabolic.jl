@@ -163,3 +163,20 @@ end
         end
     end
 end
+
+@testset "cpbdn" begin
+    test_z = ComplexF64[
+        -10:10...,
+        rand(ComplexF64, 5)...,
+        (rand(2:100)*rand(ComplexF64, 5))...,
+    ]
+    for n in -5:5,
+        z in test_z
+        @testset "cpbdn(n=$n; z=$z)" begin
+            cpb_ref, cpd_ref = _cpbdn(n,z)
+            cpb, cpd = Specfun.cpbdn(n,z)
+            @test isapprox(cpb_ref, cpb; nans=true)
+            @test isapprox(cpd_ref, cpd; nans=true)
+        end
+    end
+end
