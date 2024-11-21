@@ -25,7 +25,7 @@ Ref
 
 TODO: TThe coefficients are not consistent with those in the paper
 """
-const _GAM0_G = Float64[
+const _GAM0_G = NTuple{25, Float64}((
 #= 01 =#
     1.0e0, 0.57721_56649_01532_9e0,
     #                    9
@@ -46,7 +46,7 @@ const _GAM0_G = Float64[
     -0.36968e-11, 0.51e-12, 
     -0.206e-13, -0.54e-14,
     0.14e-14
-]
+))
 
 """
     gam0(x)
@@ -71,10 +71,10 @@ function gam0(x::Float64)
     return 1.0 / (gr * x)
 end
 
-const _GAMMA2_G = Float64[
+const _GAMMA2_G = NTuple{26, Float64}((
     _GAM0_G...,
     0.1e-15,
-]
+))
 
 """
     gamma2(x::Float64)
@@ -105,6 +105,7 @@ function gamma2(x::Float64)
         end
     else
         r = 1.0
+        z = 0.0
         if abs(x) > 1.0
             # When |x| > 1, DLMF 5.5.1:
             #   Г(z+1) = z*Г(z)
@@ -121,7 +122,7 @@ function gamma2(x::Float64)
 
         # Calculate 1/Г(x), DLMF 5.7.1:
         gr = _GAMMA2_G[26]
-        for k = 25:-1:1
+        @inbounds for k = 25:-1:1
             gr = gr*z + _GAMMA2_G[k]
         end
         ga = 1.0 / (gr * z)
