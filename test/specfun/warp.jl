@@ -626,6 +626,18 @@ function _cpdsa(n::Int, z::ComplexF64)
     cf64[]
 end
 
+"""
+    CPBDN(N,Z,  CPB,CPD)
+    DIMENSION CPB(0:*),CPD(0:*)
+"""
+function _cpbdn(n::Int, z::ComplexF64)
+    arr_len = abs(n) + 2
+    cpb, cpd = zeros(ComplexF64, arr_len), zeros(ComplexF64, arr_len)
+    ccall(f77func(:cpbdn), Cvoid,
+        (Ref{Int32}, Ref{ComplexF64}, Ptr{Float64}, Ptr{Float64}),
+        Int32(n), z, cpb, cpd)
+    cpb, cpd
+end
 
 """14 Mathieu Functions"""
 #=
