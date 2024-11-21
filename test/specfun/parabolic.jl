@@ -135,3 +135,16 @@ end
         end
     end
 end
+
+@testset "cpdla" begin
+    test_z = ComplexF64[
+        0:100...,
+        rand(ComplexF64, 10)...,
+    ]
+    for n in -4:4,
+        z in test_z
+        @testset "cpdla(n=$n; z=$z)" begin
+            @test isapprox(_cpdla(n,z), Specfun.cpdla(n,z); nans=true)
+        end
+    end
+end
