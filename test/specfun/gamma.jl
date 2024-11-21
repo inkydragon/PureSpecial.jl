@@ -146,3 +146,23 @@ end
         end   
     end
 end
+
+@testset "cpsi" begin
+    test_z = [
+        0.0 + im,
+        1.0 + im,
+        1.0 - im,
+        -1.0 + im,
+        -1.0 - im,
+        -1.0 + 0im,
+        -2.0 + 1im,
+        2.0 + 3im,
+    ]
+    for z in test_z
+        @testset "cpsi($z)" begin
+            ref = _cpsi(z)
+            res = Specfun.cpsi(z)
+            @test isapprox(ref, res)
+        end
+    end
+end
