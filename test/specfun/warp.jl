@@ -539,6 +539,17 @@ function _chgul(a::Float64, b::Float64, x::Float64)
     hu[], id[]
 end
 
+"""SUBROUTINE CHGUS(A,B,X,  HU,ID)"""
+function _chgus(a::Float64, b::Float64, x::Float64)
+    hu = Ref{Float64}(NaN)
+    id = Ref{Int32}(-1)
+    ccall(f77func(:chgus), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64},
+         Ref{Float64}, Ref{Int32}),
+        a, b, x,
+        hu, id)
+    hu[], id[]
+end
 
 """13 Parabolic Cylinder Functions"""
 #=
