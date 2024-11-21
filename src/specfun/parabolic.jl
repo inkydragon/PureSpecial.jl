@@ -34,7 +34,7 @@ Routine called:
 - [`Specfun.cgama`](@ref) for computing complex gamma function
 """
 function pbwa(a::Float64, x::Float64)
-    EPS = 1e-15
+    EPS = SF_EPS15
     p0 = 0.59460355750136
     h = Vector{Float64}(undef, 100)
     d = Vector{Float64}(undef, 80)

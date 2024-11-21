@@ -121,7 +121,7 @@ function cchg(a::Float64, b::Float64, z::Complex{Float64})
             for j in 1:500
                 crg *= (a + j - 1.0) / (j * (b + j - 1.0)) * z
                 chg += crg
-                if abs((chg - chw) / chg) < 1e-15
+                if abs((chg - chw) / chg) < SF_EPS15
                     break
                 end
 
@@ -322,7 +322,7 @@ function chgm_kernel(a::Float64, b::Float64, x::Float64)
             for j = 1:500
                 rg *= (a + j - 1.0) / (j * (b + j - 1.0)) * x
                 hg += rg
-                if hg != 0.0 && abs(rg / hg) < 1e-15
+                if hg != 0.0 && abs(rg / hg) < SF_EPS15
                     # DLMF 13.2.39:  M(a,b,z) = exp(z)*M(b-a,b,-z)
                     #   (cf. above)
                     if x0 < 0.0
@@ -406,7 +406,7 @@ Output: `(hu, id)`
 """
 function chgul(a::Float64, b::Float64, x::Float64)
     @assert x > 0
-    _EPS = 1e-15
+    _EPS = SF_EPS15
 
     id = -100
     aa = a - b + 1.0
@@ -471,7 +471,7 @@ Routine called:
 """
 function chgus(a::Float64, b::Float64, x::Float64)
     @assert !isinteger(b)
-    _EPS = 1e-15
+    _EPS = SF_EPS15
     # DLMF 13.2.42 with prefactors rewritten according to
     # DLMF 5.5.3, M(a, b, x) with DLMF 13.2.2
     ga = gamma2(a)
@@ -528,7 +528,7 @@ function chgubi(a::Float64, b::Float64, x::Float64)
     # (a + m - 1) > 0 && m >= 1
     @assert a > 0
     @assert isinteger(b)
-    _EPS = 1e-15
+    _EPS = SF_EPS15
 
     id = -100
     n = trunc(Int, abs(b - 1))

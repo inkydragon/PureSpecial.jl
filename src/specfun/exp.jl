@@ -58,7 +58,7 @@ Output
 """
 function e1xb(x::Float64)
     @assert x >= 0
-    EPS = 1e-15
+    EPS = SF_EPS15
 
     e1 = NaN
     if x == 0.0
@@ -102,7 +102,7 @@ Output
 """
 function e1z(z::Complex{Float64})
     @assert isapprox(Base.MathConstants.eulergamma, SF_EULER_GAMMA_28)
-    EPS = 1e-15
+    EPS = SF_EPS15
 
     # Continued fraction converges slowly near negative real axis,
     #   so use power series in a wedge around it until radius 40.0
@@ -285,7 +285,7 @@ Output
 - Ei(x)
 """
 function eix(x::Float64)
-    EPS = 1e-15
+    EPS = SF_EPS15
 
     ei = NaN
     if x == 0.0

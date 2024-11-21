@@ -407,7 +407,7 @@ function itairy(x::Float64)
     @assert x >= 0
 
     # Constants
-    EPS = 1e-15
+    EPS = SF_EPS15
     C1 = 0.355028053887817
     C2 = 0.258819403792807
     SR3 = 1.732050807568877
