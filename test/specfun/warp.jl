@@ -533,6 +533,9 @@ end
 - pbdv
     - dvsa
     - dvla
+- cpbdn
+    - cpdla
+    - cpdsa
 =#
 
 function _pbwa(a::Float64, x::Float64)
@@ -603,6 +606,15 @@ function _pbvv(vv::Vector{Float64}, vp::Vector{Float64}, x::Float64, v::Float64)
         v, x, vv, vp,
         pvf, pvd)
     pvf[], pvd[]
+end
+
+function _cpdla(n::Int, z::ComplexF64)
+    cf64 = Ref{ComplexF64}(NaN+im*NaN)
+    # SUBROUTINE CPDLA(N,Z,  CDN)
+    ccall(f77func(:cpdla), Cvoid,
+        (Ref{Int32}, Ref{ComplexF64}, Ref{ComplexF64}),
+        Int32(n), z, cf64)
+    cf64[]
 end
 
 
