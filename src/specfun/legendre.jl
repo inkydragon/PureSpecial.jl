@@ -280,7 +280,7 @@ function lpmv0(v::T, m::Int, x::T)::T where {T<:AbstractFloat}
     @assert v >= 0
     @assert abs(x) <= 1
     el = SF_EULER_GAMMA
-    _EPS = 1e-14
+    _EPS = SF_EPS14
 
     nv = trunc(Int, v)
     v0 = v - nv

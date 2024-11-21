@@ -124,7 +124,7 @@ function segv(m::Int, n::Int, c::T, kd::Int, eg::Vector{T}) where {T<:AbstractFl
             while true
                 x1 = (b[k] + h[k]) / T(2.0)
                 cv0[k] = x1
-                if abs((b[k] - h[k]) / x1) < 1e-14
+                if abs((b[k] - h[k]) / x1) < SF_EPS14
                     break
                 end
 
@@ -293,7 +293,7 @@ function sdmn(m::Int, n::Int, c::T, cv::T, kd::Int, df::Vector{T}) where {T<:Abs
             r1 = -r1 * (k+m+ip-1.5) / (k-1.0)
         end
         su2 += r1 * df[k]
-        if abs(sw - su2) < abs(su2)*T(1e-14)
+        if abs(sw - su2) < abs(su2)*T(SF_EPS14)
             break
         end
 
@@ -400,7 +400,7 @@ Call:
 """
 function aswfa(m::Int, n::Int, c::T, x::T, kd::Int, cv::T) where {T<:AbstractFloat}
     @assert abs(x) <= 1 "Bad x: |x| ≤ 1.0"
-    _EPS = T(1e-14)
+    _EPS = T(SF_EPS14)
     ip = ((n - m) % 2 == 0) ? 0 : 1
     nm = trunc(Int, 40 + (n - m) / 2 + c)
     nm2 = nm ÷ 2 - 2
@@ -549,7 +549,7 @@ Routines called:
 """
 function rmn1(m::Int, n::Int, c::T, x::T, kd::Int, df::Vector{T}) where {T<:AbstractFloat}
     @assert (1.0 - kd / (x * x)) >= 0 
-    _EPS = 1e-14
+    _EPS = SF_EPS14
     ck = zeros(T, 200)
 
     nm1 = trunc(Int, (n - m) / 2)
