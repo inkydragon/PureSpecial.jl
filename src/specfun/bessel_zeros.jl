@@ -622,7 +622,7 @@ function jn_zeros(rj0::Vector{Float64}, n::Int64, nt::Int64)
         x0 = x
         bjn, djn, _, _, _, _ = jyndd(x, n)
         x -= bjn / djn
-        if abs(x - x0) > 1e-11
+        if abs(x - x0) > SF_EPS11
             # GOTO L10
             continue
         end
@@ -698,7 +698,7 @@ function djn_zeros(rj0::Vector{Float64}, rj1::Vector{Float64}, n::Int64, nt::Int
         x0 = x
         _, djn, fjn, _, _, _ = jyndd(x, n)
         x -= djn / fjn
-        if abs(x - x0) > 1e-11
+        if abs(x - x0) > SF_EPS11
             # GOTO L15
             continue
         end
