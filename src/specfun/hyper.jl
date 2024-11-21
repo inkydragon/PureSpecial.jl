@@ -447,3 +447,55 @@ function chgul(a::Float64, b::Float64, x::Float64)
 
     return hu, id
 end
+
+"""
+Compute confluent hypergeometric function
+U(a,b,x) for small argument x
+
+Input  :
+a  --- Parameter
+b  --- Parameter ( b ≠ 0, -1, -2, ...)
+x  --- Argument
+
+Output:
+HU --- U(a,b,x)
+ID --- Estimated number of significant digits
+
+Routine called:
+GAMMA2 for computing gamma function
+"""
+function chgus(a::Float64, b::Float64, x::Float64)
+    @assert !isinteger(b)
+    _EPS = 1e-15
+    # DLMF 13.2.42 with prefactors rewritten according to
+    # DLMF 5.5.3, M(a, b, x) with DLMF 13.2.2
+    ga = gamma2(a)
+    gb = gamma2(b)
+    gab = gamma2(1.0 + a - b)
+    gb2 = gamma2(2.0 - b)
+    hu0 = pi / sin(pi * b)
+
+    r1 = hu0 / (gab * gb)
+    r2 = hu0 * x^(1.0 - b) / (ga * gb2)
+    hu = r1 - r2
+    hmax = 0.0
+    hmin = 1e300
+    h0 = 0.0
+    for j in 1:150
+        r1 = r1 * (a + j - 1.0) / (j * (b + j - 1.0)) * x
+        r2 = r2 * (a - b + j) / (j * (1.0 - b + j)) * x
+        hu = hu + r1 - r2
+        hua = abs(hu)
+        hmax = max(hmax, hua)
+        hmin = min(hmin, hua)
+        if abs(hu - h0) < abs(hu) * _EPS
+            break
+        end
+        h0 = hu
+    end
+
+    d1 = log10(hmax)
+    d2 = ifelse(hmin != 0.0, log10(hmin), 0.0)
+    id = trunc(Int, 15 - abs(d1 - d2))
+    return hu, id
+end
