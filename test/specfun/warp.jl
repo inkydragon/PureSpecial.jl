@@ -617,6 +617,15 @@ function _cpdla(n::Int, z::ComplexF64)
     cf64[]
 end
 
+function _cpdsa(n::Int, z::ComplexF64)
+    cf64 = Ref{ComplexF64}(NaN+im*NaN)
+    # SUBROUTINE CPDSA(N,Z,  CDN)
+    ccall(f77func(:cpdsa), Cvoid,
+        (Ref{Int32}, Ref{ComplexF64}, Ref{ComplexF64}),
+        Int32(n), z, cf64)
+    cf64[]
+end
+
 
 """14 Mathieu Functions"""
 #=
