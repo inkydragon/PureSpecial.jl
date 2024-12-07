@@ -111,18 +111,17 @@ end
 """
     cisib(x::Float64)
 
-Compute cosine and sine integrals Ci(x) and Si(x).
-
-Using polynomial and rational approximations:
+Compute cosine and sine integrals `Ci(x)` and `Si(x)`,
+using polynomial and rational approximations:
 - `x <= 1`,         `|eps(x)| <= 1e-7`
 - `1 < x <= Inf`,   `|eps_ci(x)| <= 5e-7, |eps_si(x)| <= 3e-7`
 
 Parameters:
-- `x`: Argument of Ci(x) and Si(x), x ≥ 0
+- `x`: Argument of `Ci(x)` and `Si(x)`, `x ≥ 0`
 
 Returns: `(ci, si)`
-- Ci(x)
-- Si(x)
+- `Ci(x)`
+- `Si(x)`
 """
 function cisib(x::Float64)
     x2 = x * x
