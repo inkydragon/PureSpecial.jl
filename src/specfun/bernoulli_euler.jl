@@ -2,10 +2,10 @@
 #   See also: src/specfun/LICENSE.md
 """Bernoulli and Euler Numbers"""
 #=
-BERNOA
-BERNOB
-EULERA
-EULERB
+- ✅ bernoa
+- ✅ bernob
+- ✅ eulera
+- ✅ eulerb
 =#
 
 function bernoa(n::Int, bn::Vector{Float64})
@@ -13,6 +13,7 @@ function bernoa(n::Int, bn::Vector{Float64})
     bn[2] = -0.5
 
     for m = 2:n
+        # CoSF (1.1.5)
         s = -(1.0/(m+1) - 0.5)
         for k = 2:(m-1)
             r = 1.0
@@ -25,6 +26,7 @@ function bernoa(n::Int, bn::Vector{Float64})
     end
 
     for m = 3:2:n
+        # Set B(2n+1) = 0, n=1,2,3,...
         bn[m+1] = 0.0
     end
 
@@ -32,7 +34,8 @@ function bernoa(n::Int, bn::Vector{Float64})
 end
 
 """
-Compute Bernoulli number Bn
+Compute Bernoulli number `Bn`, using recurrence relation.
+Not work for large `n`.
 
 Input :
 - `n` --- Serial number, `n >= 2`
@@ -56,6 +59,8 @@ function bernob(n::Int, bn::Vector{Float64})
     bn[2] = -0.5
     bn[3] = 1.0 / 6.0
 
+    # DLMF 24.8.1, with x = 0
+    # CoSF (1.1.16)
     r1 = (2.0 / tpi)^2
     for m in 4:2:n
         r1 = -r1 * (m - 1) * m / (tpi * tpi)
@@ -75,7 +80,8 @@ function bernob(n::Int, bn::Vector{Float64})
 end
 
 """
-Compute Bernoulli number Bn
+Compute Bernoulli number `Bn`,
+using series expression (DLMF 24.8.1).
 
 Input :
 - `n` --- Serial number, `n >= 2`
@@ -92,6 +98,7 @@ end
 function eulera(n::Int, en::Vector{Float64})
     en[1] = 1.0
 
+    # CoSF (1.2.5)
     half_n = trunc(Int, n / 2)
     for m in 1:half_n
         s = 1.0
@@ -110,7 +117,8 @@ function eulera(n::Int, en::Vector{Float64})
 end
 
 """
-Compute Euler number En
+Compute Euler number `En`, using recurrence relation.
+Not work for large `n`.
 
 Input :
 - `n` --- Serial number, `n >= 2`
@@ -130,6 +138,8 @@ function eulerb(n::Int, en::Vector{Float64})
     en[1] = 1.0
     en[3] = -1.0
 
+    # DLMF 24.8.4, with x = pi/2
+    # CoSF (1.2.13)
     hpi = 2.0 / pi
     r1 = -4.0 * hpi^3
     for m in 4:2:n
@@ -152,7 +162,8 @@ function eulerb(n::Int, en::Vector{Float64})
 end
 
 """
-Compute Euler number En
+Compute Euler number `En`,
+using series expression (DLMF 24.8.4).
 
 Input :
 - `n` --- Serial number, `n >= 2`

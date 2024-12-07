@@ -6,10 +6,10 @@ CurrentModule = PureSpecial.Specfun
 
 ## 1 Bernoulli and Euler Numbers
 
-- [`Specfun.bernoa`](@ref)
-- [`Specfun.bernob`](@ref)
-- [`Specfun.eulera`](@ref)
-- [`Specfun.eulerb`](@ref)
+- [`Specfun.bernoa`](@ref) - Compute Bernoulli number `Bn`, using recurrence relation.
+- [`Specfun.bernob`](@ref) - Compute Bernoulli number `Bn`, using series expression.
+- [`Specfun.eulera`](@ref) - Compute Euler number `En`, using recurrence relation.
+- [`Specfun.eulerb`](@ref) - Compute Euler number `En`, using series expression.
 
 ## 2 Orthogonal Polynomials
 

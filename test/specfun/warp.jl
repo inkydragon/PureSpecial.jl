@@ -33,6 +33,8 @@ end
 #=
 bernoa
 bernob
+eulera
+eulerb
 =#
 
 function _bernoa(n::Int)
