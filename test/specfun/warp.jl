@@ -53,6 +53,15 @@ function _bernob(n::Int)
     bn
 end
 
+function _eulerb(n::Int)
+    en = zeros(Float64, n+1)
+    # SUBROUTINE EULERB(N,  EN)
+    ccall(f77func(:eulerb), Cvoid,
+        (Ref{Int32}, Ptr{Float64}),
+        Int32(n), en)
+    en
+end
+
 # 2. Orthogonal Polynomials
 
 """3. Gamma, Beta, and Psi Functions"""

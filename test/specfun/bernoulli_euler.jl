@@ -28,6 +28,17 @@ end
     end
 end
 
-@testset "euler" begin
 
+@testset "euler.eulerb" begin
+    test_n = [
+        2:10...,
+        rand(10:100, 2)...,
+    ]
+    for n = test_n
+        @testset "eulerb($n)" begin
+            en_ref = _eulerb(n)
+            en = Specfun.eulerb(n)
+            @test isapprox(en_ref, en)
+        end
+    end
 end
