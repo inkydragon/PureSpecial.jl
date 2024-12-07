@@ -21,13 +21,13 @@ CurrentModule = PureSpecial.Specfun
 ## 3 Gamma, Beta, and Psi Functions
 
 - [`Specfun.gamma2`](@ref)
-- LGAMA, 50
+- [`Specfun.lgama`](@ref)
 - [`Specfun.cgama`](@ref)
-- BETA(GAMMA), 54
+- [`Specfun.beta`](@ref)
 - [`Specfun.psi`](@ref)
-- CPSI, 59
-- INCOG(GAMMA), 63
-- INCOB(BETA), 66
+- [`Specfun.cpsi`](@ref)
+- [`Specfun.incog`](@ref)
+- [`Specfun.incob`](@ref)
 
 ## 4 Legendre Functions
 

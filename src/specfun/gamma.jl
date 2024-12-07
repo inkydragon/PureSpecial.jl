@@ -10,8 +10,8 @@
 - ✅ psi
 - ✅ cpsi
 
-- INCOG
-- INCOB
+- ✅ incog
+- ✅ incob
 
 - ✅ gam0
 - ✅ gaih
@@ -25,7 +25,7 @@ Ref
     Mathematics of Computation, 22(103), 617-626.
     https://www.jstor.org/stable/2004538
 
-TODO: TThe coefficients are not consistent with those in the paper
+TODO: The coefficients are not consistent with those in the paper
 """
 const _GAM0_G = NTuple{25, Float64}((
 #= 01 =#
@@ -340,16 +340,18 @@ Output:
 - B(p, q)
 
 Routine called:
-gamma for computing Γ(x)
+- [`Specfun.gamma2`](@ref) for computing Γ(x)
 """
 function beta(p::Float64, q::Float64)
     @assert p > 0
     @assert q > 0
+
     gp = gamma2(p)
     gq = gamma2(q)
     ppq = p + q
     gpq = gamma2(ppq)
     bt = gp * gq / gpq
+
     return bt
 end
 
@@ -366,6 +368,9 @@ Output: `(GIN, GIM, GIP, ISFER)`:
 - `GIM` --- Γ(a,x)
 - `GIP` --- P(a,x)
 - `ISFER` --- Error flag
+
+Routine called:
+- [`Specfun.gamma2`](@ref)
 """
 function incog(a::Float64, x::Float64)
     gin, gim, gip, isfer = NaN, NaN, NaN, 0
@@ -421,7 +426,7 @@ Output:
 - `BIX` --- Ix(a,b)
 
 Routine called:
-- beta for computing beta function B(p,q)
+- [`Specfun.beta`](@ref) for computing beta function B(p,q)
 """
 function incob(a::Float64, b::Float64, x::Float64)
     @assert 0 <= x <= 1
