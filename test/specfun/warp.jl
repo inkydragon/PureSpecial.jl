@@ -29,7 +29,21 @@ function warp_unary(sym::Symbol, x::Float64)::Float64
 end
 
 
-# 1. Bernoulli and Euler Numbers
+"""1. Bernoulli and Euler Numbers"""
+#=
+bernoa
+bernob
+=#
+
+function _bernob(n::Int)
+    bn = zeros(Float64, n+1)
+    # SUBROUTINE BERNOB(N,BN)
+    ccall(f77func(:bernob), Cvoid,
+        (Ref{Int32}, Ptr{Float64}),
+        Int32(n), bn)
+    bn
+end
+
 # 2. Orthogonal Polynomials
 
 """3. Gamma, Beta, and Psi Functions"""
