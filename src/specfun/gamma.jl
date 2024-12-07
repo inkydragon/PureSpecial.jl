@@ -440,18 +440,18 @@ function incog(a::Float64, x::Float64)
 end
 
 """
-Compute the incomplete beta function Ix(a,b)
+Compute incomplete beta function `Ix(a,b)`.
 
 Input :
 - `a` --- Parameter
 - `b` --- Parameter
-- `x` --- Argument ( 0 ≤ x ≤ 1 )
+- `x` --- Argument ( `0 ≤ x ≤ 1` )
 
 Output:
-- `BIX` --- Ix(a,b)
+- `BIX` --- `Ix(a,b)`
 
 Routine called:
-- [`Specfun.beta`](@ref) for computing beta function B(p,q)
+- [`Specfun.beta`](@ref) for computing beta function `B(p,q)`
 """
 function incob(a::Float64, b::Float64, x::Float64)
     @assert 0 <= x <= 1
@@ -462,6 +462,8 @@ function incob(a::Float64, b::Float64, x::Float64)
     bt = beta(a, b)
     bix = NaN
     if x <= s0
+        # Use CoSF (3.5.7) when x < (a+1)/(a+b+2)
+        # DLMF 8.17.22:  Continued Fraction
         for k in 1:20
             dk[2*k] = k * (b - k) * x / ((a + 2.0*k - 1.0) * (a + 2.0*k))
         end
@@ -475,6 +477,9 @@ function incob(a::Float64, b::Float64, x::Float64)
         ta = 1.0 / (1.0 + t1)
         bix = x^a * (1.0 - x)^b / (a * bt) * ta
     else
+        # Use CoSF (3.5.9) and CoSF (3.5.2)
+        #   when x > (a+1)/(a+b+2)
+        # DLMF 8.17.22 and 8.17.4
         for k in 1:20
             fk[2*k] = k * (a - k) * (1.0 - x) / ((b + 2.0*k - 1.0) * (b + 2.0*k))
         end
