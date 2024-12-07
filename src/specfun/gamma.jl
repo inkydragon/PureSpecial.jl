@@ -81,7 +81,7 @@ const _GAMMA2_G = NTuple{26, Float64}((
 """
     gamma2(x::Float64)
 
-Compute gamma function Г(x).
+Compute gamma function `Г(x)`.
 
 Input
 - `x`  --- Argument of Г(x)
@@ -96,13 +96,14 @@ function gamma2(x::Float64)
         if x > 0.0
             # When x is positive integer
             #   DLMF 5.4.1:  Г(n+1) = n!
+            # CoSF (3.1.5)
             ga = 1.0
             m1 = trunc(Int64, x) - 1
             for k = 2:m1
                 ga *= k
             end
         else
-            # Inf
+            # Set Г(x) = Inf, when x = -n
             ga = SF_INF300
         end
     else
@@ -111,6 +112,7 @@ function gamma2(x::Float64)
         if abs(x) > 1.0
             # When |x| > 1, DLMF 5.5.1:
             #   Г(z+1) = z*Г(z)
+            # CoSF (3.1.9)
             z = abs(x)
             m = trunc(Int64, z)
             for k = 1:m
@@ -123,6 +125,7 @@ function gamma2(x::Float64)
         end
 
         # Calculate 1/Г(x), DLMF 5.7.1:
+        # CoSF (3.1.15)
         gr = _GAMMA2_G[26]
         @inbounds for k = 25:-1:1
             gr = gr*z + _GAMMA2_G[k]
@@ -131,9 +134,11 @@ function gamma2(x::Float64)
 
         if abs(x) > 1.0
             # When |x| > 1, DLMF 5.5.1:
+            # CoSF (3.1.9)
             ga *= r
             if x < 0.0
-                # When x < 0, DLMF 5.5.2:
+                # When x < 0, DLMF 5.5.3:
+                # CoSF (3.1.10)
                 ga = -pi / (x * ga * sin(pi * x))
             end
         end

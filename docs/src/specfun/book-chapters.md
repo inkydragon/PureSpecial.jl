@@ -20,7 +20,7 @@ CurrentModule = PureSpecial.Specfun
 
 ## 3 Gamma, Beta, and Psi Functions
 
-- [`Specfun.gamma2`](@ref)
+- [`Specfun.gamma2`](@ref) - Compute gamma function `Г(x)`.
 - [`Specfun.lgama`](@ref)
 - [`Specfun.cgama`](@ref)
 - [`Specfun.beta`](@ref)
