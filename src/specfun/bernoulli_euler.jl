@@ -2,10 +2,10 @@
 #   See also: src/specfun/LICENSE.md
 """Bernoulli and Euler Numbers"""
 #=
-BERNOA, 5
-BERNOB, 6
-    EULERA, 8
-    EULERB, 9
+BERNOA
+BERNOB
+EULERA
+EULERB
 =#
 
 function bernoa(n::Int, bn::Vector{Float64})
@@ -35,10 +35,10 @@ end
 Compute Bernoulli number Bn
 
 Input :
-- n --- Serial number, n >= 2
+- `n` --- Serial number, `n >= 2`
 
 Output:
-- BN(n) --- Bn, n = 0..N
+- `BN(n)` --- Bn, n = 0..N
 """
 function bernoa(n::Int)
     bn = zeros(Float64, n+1)
@@ -78,10 +78,10 @@ end
 Compute Bernoulli number Bn
 
 Input :
-- n --- Serial number, n >= 2
+- `n` --- Serial number, `n >= 2`
 
 Output:
-- BN(n) --- Bn, n = 0..N
+- `BN(n)` --- Bn, n = 0..N
 """
 function bernob(n::Int)
     bn = zeros(Float64, n+1)
@@ -110,9 +110,13 @@ function eulera(n::Int, en::Vector{Float64})
 end
 
 """
-Purpose: Compute Euler number En
-Input :  n --- Serial number, n >= 2
-Output:  EN(n) --- En
+Compute Euler number En
+
+Input :
+- `n` --- Serial number, `n >= 2`
+
+Output:
+- `EN(n)` --- En, n = 0..N
 """
 function eulera(n::Int)
     en = zeros(Float64, n+1)
@@ -151,10 +155,10 @@ end
 Compute Euler number En
 
 Input :
-- n --- Serial number, n >= 2
+- `n` --- Serial number, `n >= 2`
 
 Output:
-- EN(n) --- En
+- `EN(n)` --- En, n = 0..N
 """
 function eulerb(n::Int)
     en = zeros(Float64, n+1)

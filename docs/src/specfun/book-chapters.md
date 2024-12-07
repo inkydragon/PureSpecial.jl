@@ -6,10 +6,10 @@ CurrentModule = PureSpecial.Specfun
 
 ## 1 Bernoulli and Euler Numbers
 
-- BERNOA, 5
-- BERNOB, 6
-- EULERA, 8
-- EULERB, 9
+- [`Specfun.bernoa`](@ref)
+- [`Specfun.bernob`](@ref)
+- [`Specfun.eulera`](@ref)
+- [`Specfun.eulerb`](@ref)
 
 ## 2 Orthogonal Polynomials
 
