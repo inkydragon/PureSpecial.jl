@@ -337,13 +337,13 @@ end
 """
     eixz(z::Complex{Float64})
 
-Compute exponential integral Ei(x).
+Compute complex exponential integral `Ei(z)`.
 
 Input
-- `x`: Complex argument of Ei(x)
+- `x`: Complex argument of `Ei(z)`
 
 Output
-- Ei(x)
+- `Ei(z)`
 """
 function eixz(z::Complex{Float64})
     cei = -e1z(-z)

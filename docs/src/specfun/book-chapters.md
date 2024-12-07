@@ -222,3 +222,4 @@ CurrentModule = PureSpecial.Specfun
 - [`Specfun.enxa`](@ref) - Compute exponential integral `En(x)`, using forward recurrence.
 - [`Specfun.enxb`](@ref) - Compute exponential integral `En(x)`.
 - [`Specfun.eix`](@ref) - Compute exponential integral `Ei(x)`.
+- [`Specfun.eixz`](@ref) - Compute complex exponential integral `Ei(z)`.
