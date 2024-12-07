@@ -161,16 +161,16 @@ const _LGAMA_A = NTuple{10, Float64}((
 """
     lgama(kf::Int, x::Float64)
 
-Compute gamma function Γ(x) or ln[Γ(x)]
+Compute gamma function `ln[Γ(x)]` or `Γ(x)`.
 
 Input:
 - `x`  --- Argument of Γ(x) ( x > 0 )
 - `kf` --- Function code
-    - kf=1 for Γ(x);
-    - kf=0 for ln[Γ(x)]
+    - kf=0 for `ln[Γ(x)]`
+    - kf=1 for `Γ(x)`
 
 Output:
-- Γ(x) or ln[Γ(x)]
+- `ln[Γ(x)]` or `Γ(x)`
 """
 function lgama(kf::Int, x::Float64)
     @assert kf in [1, 0]
@@ -179,13 +179,18 @@ function lgama(kf::Int, x::Float64)
     x0 = x
     n = 0
     if x == 1.0 || x == 2.0
+        # Special case
         gl = 0.0
         return ifelse(kf == 1, exp(gl), gl)
     elseif x <= 7.0
+        # When x <= 7, add an integer to x,
+        #   such that x+n > 7
         n = trunc(Int, 7 - x)
         x0 = x + n
     end
 
+    # Calculate ln[Γ(x)] using CoSF (3.1.16)
+    # DLMF 5.11.1: Asymptotic Expansions
     x2 = 1.0 / (x0 * x0)
     xp = 6.283185307179586477
     gl0 = _LGAMA_A[10]
@@ -195,6 +200,8 @@ function lgama(kf::Int, x::Float64)
     gl = gl0 / x0 + 0.5 * log(xp) + (x0 - 0.5) * log(x0) - x0
 
     if x <= 7.0
+        # Calculate ln[Γ(x)] using CoSF (3.1.9)
+        # DLMF 5.5.1: Recurrence Relations
         for k in 1:n
             gl -= log(x0 - 1.0)
             x0 -= 1.0
