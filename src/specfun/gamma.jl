@@ -350,17 +350,17 @@ end
 cgama(f::Float64, kf) = cgama(complex(f), kf)
 
 """
-Compute the beta function B(p, q)
+Compute beta function `B(p, q)`.
 
 Input :
-- p  --- Parameter  ( p > 0 )
-- q  --- Parameter  ( q > 0 )
+- `p`  --- Parameter  ( `p > 0` )
+- `q`  --- Parameter  ( `q > 0` )
 
 Output:
-- B(p, q)
+- `B(p, q)`
 
 Routine called:
-- [`Specfun.gamma2`](@ref) for computing Γ(x)
+- [`Specfun.gamma2`](@ref) for computing `Γ(x)`
 """
 function beta(p::Float64, q::Float64)
     @assert p > 0
@@ -370,6 +370,8 @@ function beta(p::Float64, q::Float64)
     gq = gamma2(q)
     ppq = p + q
     gpq = gamma2(ppq)
+    # Calculate B(p,q) using CoSF (3.2.6)
+    # DLMF 5.12.1:  B(a,b) = Γ(a)*Γ(b)/Γ(a+b)
     bt = gp * gq / gpq
 
     return bt
