@@ -287,13 +287,13 @@ end
 """
     eix(x::Float64)
 
-Compute exponential integral Ei(x).
+Compute exponential integral `Ei(x)`.
 
 Input
-- `x`: Argument of Ei(x)
+- `x`: Argument of `Ei(x)`
 
 Output
-- Ei(x)
+- `Ei(x)`
 """
 function eix(x::Float64)
     EPS = SF_EPS15
@@ -303,6 +303,7 @@ function eix(x::Float64)
         # -Inf
         return -1.0e+300
     elseif x < 0
+        # Use CoSF (19.2.3)
         # DLMF 6.2.6:  Ei(-x) = -E1(x)
         return -e1xb(-x)
     elseif abs(x) <= 40.0
@@ -318,6 +319,7 @@ function eix(x::Float64)
         end
         ei = SF_EULER_GAMMA_28 + log(x) + x * ei
     else # x > 40
+        # Use CoSF (19.2.5)
         # DLMF 6.12.2:  x > 0, x --> Inf, Asymptotic expansion 
         #   (the series is not convergent)
         ei = 1.0
