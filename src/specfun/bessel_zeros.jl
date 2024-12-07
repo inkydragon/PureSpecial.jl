@@ -265,7 +265,7 @@ function jdzo(nt::Int64)
 
     jdzo(nt, zo, n, m, p)
     
-    zo[1:nt], n[1:nt], m[1:nt], p[1:nt]
+    return zo[1:nt], n[1:nt], m[1:nt], p[1:nt]
 end
 
 """
@@ -274,7 +274,7 @@ end
 Helper function used in `msta1`, `msta2`
 """
 function envj(n, x)
-    0.5 * log10(6.28 * n) - n * log10(1.36 * x / n)
+    return 0.5 * log10(6.28 * n) - n * log10(1.36 * x / n)
 end
 
 """
@@ -315,7 +315,7 @@ function msta1(x::Float64, mp::Int)
         f1 = f
     end
 
-    nn
+    return nn
 end
 
 """
@@ -366,7 +366,7 @@ function msta2(x::Float64, n::Int64, mp::Int64)
         f1 = f
     end
 
-    nn + 10
+    return nn + 10
 end
 
 """
@@ -544,7 +544,7 @@ function jynbh(
         by1 = byk
     end
     
-    nm
+    return nm
 end
 
 """
