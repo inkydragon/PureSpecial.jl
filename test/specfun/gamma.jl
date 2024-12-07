@@ -108,8 +108,8 @@ end
         rand(5)...,
     ]
     test_q = Float64[
-        -10:-1...,
-        -rand(5)...,
+        1:5...,
+        rand(5)...,
     ]
     for p in test_p,
         q in test_q

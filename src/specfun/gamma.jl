@@ -344,7 +344,7 @@ gamma for computing Γ(x)
 """
 function beta(p::Float64, q::Float64)
     @assert p > 0
-    @assert q < 0
+    @assert q > 0
     gp = gamma2(p)
     gq = gamma2(q)
     ppq = p + q
