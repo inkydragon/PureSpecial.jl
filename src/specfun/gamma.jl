@@ -249,17 +249,16 @@ gaih(x::Integer) = gaih(float(x))
 """
     cgama(z::Complex{Float64}, kf::Int)
 
-Compute the gamma function Г(z) or ln[Г(z)]
-for a complex argument.
+Compute complex gamma function `ln[Г(z)]` or `Г(z)`.
 
 Input
 - `z`  --- Complex argument
 - `kf` --- Function code
-    - `kf=0` for ln[Г(z)]
-    - `kf=1` for Г(z)
+    - `kf=1` for `Г(z)`
+    - `kf=0` for `ln[Г(z)]`
 
 Output
-- ln[Г(z)] or Г(z)
+- `ln[Г(z)]` or `Г(z)`
 """
 function cgama(z::Complex{Float64}, kf::Int)
     @assert kf in [0, 1] "Only accept `kf=0` or `kf=1`"
@@ -276,6 +275,7 @@ function cgama(z::Complex{Float64}, kf::Int)
     x1 = x
     y1 = y
     if x < 0.0
+        # When Re(z) < 0, let z = -z
         x = -x
         y = -y
         z = -z
@@ -288,10 +288,14 @@ function cgama(z::Complex{Float64}, kf::Int)
     x0 = x
     na = 0
     if x <= 7.0
+        # When x <= 7, add an integer to x,
+        #   such that x+n > 7
         na = trunc(Int64, 7 - x)
         x0 += na
     end
 
+    # Calculate ln[Γ(z+n)] using CoSF (3.1.16)
+    # DLMF 5.11.1: Asymptotic Expansions
     az0 = sqrt(x0*x0 + y*y)
     th = atan(y / x0)
     gr = (x0 - 0.5)*log(az0) - th*y - x0 + 0.5*log(2.0 * pi)
@@ -303,6 +307,8 @@ function cgama(z::Complex{Float64}, kf::Int)
     end
 
     if x <= 7.0
+        # Calculate ln[Γ(z)] using CoSF (3.1.9)
+        # DLMF 5.5.1: Recurrence Relations
         gr1 = 0.0
         gi1 = 0.0
         for j in 0:(na-1)
@@ -314,6 +320,8 @@ function cgama(z::Complex{Float64}, kf::Int)
     end
 
     if x1 < 0.0
+        # Apply CoSF (3.1.10) when Re(z) < 0
+        # DLMF 5.5.3: Reflection Relations
         az0 = sqrt(x*x + y*y)
         th1 = atan(y / x)
         sr = -sin(pi*x) * cosh(pi*y)
@@ -329,7 +337,7 @@ function cgama(z::Complex{Float64}, kf::Int)
     end
 
     if kf == 1
-        # Г(z)
+        # Calculate Г(z)
         # TODO-OPT: return exp(gr) * cis(gi)
         g0 = exp(gr)
         gr = g0 * cos(gi)
