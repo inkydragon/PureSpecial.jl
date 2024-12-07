@@ -409,6 +409,60 @@ function incog(a::Float64, x::Float64)
     return gin, gim, gip, isfer
 end
 
+"""
+Compute the incomplete beta function Ix(a,b)
+
+Input :
+- `a` --- Parameter
+- `b` --- Parameter
+- `x` --- Argument ( 0 ≤ x ≤ 1 )
+
+Output:
+- `BIX` --- Ix(a,b)
+
+Routine called:
+- beta for computing beta function B(p,q)
+"""
+function incob(a::Float64, b::Float64, x::Float64)
+    @assert 0 <= x <= 1
+    dk = zeros(Float64, 51)
+    fk = zeros(Float64, 51)
+
+    s0 = (a + 1.0) / (a + b + 2.0)
+    bt = beta(a, b)
+    bix = NaN
+    if x <= s0
+        for k in 1:20
+            dk[2*k] = k * (b - k) * x / ((a + 2.0*k - 1.0) * (a + 2.0*k))
+        end
+        for k in 0:20
+            dk[2*k + 1] = -(a + k) * (a + b + k) * x / ((a + 2.0*k) * (a + 2.0*k + 1.0))
+        end
+        t1 = 0.0
+        for k in 20:-1:1
+            t1 = dk[k] / (1.0 + t1)
+        end
+        ta = 1.0 / (1.0 + t1)
+        bix = x^a * (1.0 - x)^b / (a * bt) * ta
+    else
+        for k in 1:20
+            fk[2*k] = k * (a - k) * (1.0 - x) / ((b + 2.0*k - 1.0) * (b + 2.0*k))
+        end
+        for k in 0:20
+            fk[2*k + 1] = -(b + k) * (a + b + k) * (1.0 - x) / ((b + 2.0*k) * (b + 2.0*k + 1.0))
+        end
+        t2 = 0.0
+        for k in 20:-1:1
+            t2 = fk[k] / (1.0 + t2)
+        end
+        tb = 1.0 / (1.0 + t2)
+        bix = 1.0 - x^a * (1.0 - x)^b / (b * bt) * tb
+    end
+
+    return bix
+end
+
+
 const _PSI_A = NTuple{8, Float64}((
     -0.8333333333333e-01,       0.83333333333333333e-02,
     -0.39682539682539683e-02,   0.41666666666666667e-02,
