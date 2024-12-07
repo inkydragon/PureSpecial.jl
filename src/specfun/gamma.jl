@@ -565,15 +565,13 @@ end
 """
     cpsi(z::ComplexF64)
 
-Compute the psi function for a complex argument
+Compute complex psi function `Ψ(z)` (Digamma Function).
 
 Input :
-- `x`   --- Real part of z
-- `y`   --- Imaginary part of z
+- `z`
 
-Output: `(PSR, PSI)`
-- `PSR` --- Real part of psi(z)
-- `PSI` --- Imaginary part of psi(z)
+Output:
+- `psi(z)`
 """
 function cpsi(z::ComplexF64)
     psr, psi = NaN, NaN
@@ -586,12 +584,15 @@ function cpsi(z::ComplexF64)
     x1 = x
     y1 = y
     if x < 0.0
+        # When Re(z) < 0, let z = -z
         x = -x
         y = -y
     end
     x0 = x
     n = 0
     if x < 8.0
+        # When x < 8, add an integer to x,
+        #   such that x+n > 8
         n = 8 - trunc(Int, x)
         x0 += n
     end
@@ -603,6 +604,8 @@ function cpsi(z::ComplexF64)
     elseif x0 != 0.0
         th = atan(y / x0)
     end
+
+    # Calculate psi(z+n) using CoSF (3.3.14)
     z2 = x0*x0 + y*y
     z0 = sqrt(z2)
     psr = log(z0) - 0.5 * x0 / z2
@@ -613,6 +616,7 @@ function cpsi(z::ComplexF64)
     end
 
     if x < 8.0
+        # Calculate psi(z) using CoSF (3.3.14)
         rr = 0.0
         ri = 0.0
         for k in 1:n
@@ -624,6 +628,7 @@ function cpsi(z::ComplexF64)
     end
 
     if x1 < 0.0
+        # Apply CoSF (3.3.11) whne Re(z) < 0
         tn = tan(pi * x)
         tm = tanh(pi * y)
         ct2 = tn*tn + tm*tm
