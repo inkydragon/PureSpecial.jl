@@ -26,7 +26,7 @@ CurrentModule = PureSpecial.Specfun
 - [`Specfun.beta`](@ref) - Compute beta function `B(p, q)`.
 - [`Specfun.psi`](@ref) - Compute Psi function `Ψ(x)` (Digamma Function).
 - [`Specfun.cpsi`](@ref) - Compute complex psi function `Ψ(z)` (Digamma Function).
-- [`Specfun.incog`](@ref)
+- [`Specfun.incog`](@ref) - Compute incomplete gamma function `γ(a,x)`, `Γ(a,x)` and `P(a,x)`.
 - [`Specfun.incob`](@ref)
 
 ## 4 Legendre Functions

@@ -378,18 +378,17 @@ function beta(p::Float64, q::Float64)
 end
 
 """
-Compute the incomplete gamma function
-`r(a,x)`, `Γ(a,x)` and `P(a,x)`
+Compute incomplete gamma function `γ(a,x)`, `Γ(a,x)` and `P(a,x)`.
 
 Input :
 - `a`   --- Parameter ( a ≤ 170 )
 - `x`   --- Argument
 
-Output: `(GIN, GIM, GIP, ISFER)`:
-- `GIN` --- r(a,x)
-- `GIM` --- Γ(a,x)
-- `GIP` --- P(a,x)
-- `ISFER` --- Error flag
+Output: `(gin, gim, gip, isfer)`:
+- `gin` --- γ(a,x), incomplete gamma function
+- `gim` --- Γ(a,x), incomplete gamma function
+- `gip` --- P(a,x), normalized incomplete gamma function
+- `isfer` --- Error flag, `isfer > 0` when error occurs
 
 Routine called:
 - [`Specfun.gamma2`](@ref)
@@ -409,6 +408,8 @@ function incog(a::Float64, x::Float64)
         gim = ga
         gip = 0.0
     elseif x <= (1.0 + a)
+        # Use CoSF (3.4.4) when x <= a+1
+        # DLMF 8.7.1:  Series Expansions
         s = 1.0 / a
         r = s
         for k in 1:60
@@ -423,6 +424,8 @@ function incog(a::Float64, x::Float64)
         gip = gin / ga
         gim = ga - gin
     elseif x > (1.0 + a)
+        # Use CoSF (3.4.11) when x > a+1
+        # DLMF 8.9.2:  Continued Fractions
         t0 = 0.0
         for k in 60:-1:1
             t0 = (k - a) / (1.0 + k / (x + t0))
