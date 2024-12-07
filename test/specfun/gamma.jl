@@ -121,6 +121,34 @@ end
     end
 end
 
+
+@testset "incog" begin
+    test_a = Float64[
+        1:5...,
+        rand(5)...,
+        rand(6:170)...,
+        200
+    ]
+    test_x = Float64[
+        0:5...,
+        rand(5)...,
+        rand(6:700)...,
+        800
+    ]
+    for a in test_a,
+        x in test_x
+        @testset "incog(a=$a; x=$x)" begin
+            gin_r, gim_r, gip_r, isfer_r = _incog(a, x)
+            gin, gim, gip, isfer = Specfun.incog(a, x)
+            @test isapprox(isfer_r, isfer)
+            @test isapprox(gin_r, gin; nans=true)
+            @test isapprox(gim_r, gim; nans=true)
+            @test isapprox(gip_r, gip; nans=true)
+        end
+    end
+end
+
+
 @testset "psi" begin
     test_x = Float64[
         # negative int: `(x == trunc(Int, x)) && (x <= 0.0)`

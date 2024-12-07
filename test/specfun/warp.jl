@@ -80,8 +80,8 @@ lgama
 cgama
 beta
 psi (PSI_SPEC)
-    CPSI
-    INCOG
+CPSI
+INCOG
     INCOB
 gam0
 gaih
@@ -122,6 +122,18 @@ function _beta(p::Float64, q::Float64)
         (Ref{Float64}, Ref{Float64}, Ref{Float64}),
         p, q, bt)
     bt[]
+end
+
+function _incog(a::Float64, x::Float64)
+    gin, gim, gip = Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN)
+    isfer = Ref{Int32}(0)
+    # SUBROUTINE INCOG(A,X,  GIN,GIM,GIP,ISFER)
+    ccall(f77func(:incog), Cvoid,
+        (Ref{Float64}, Ref{Float64},
+         Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Int32}),
+        a, x,
+        gin, gim, gip, isfer)
+    gin[], gim[], gip[], isfer[]
 end
 
 # SUBROUTINE PSI_SPEC(X,  PS)
