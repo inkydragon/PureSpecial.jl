@@ -53,6 +53,15 @@ function _bernob(n::Int)
     bn
 end
 
+function _eulera(n::Int)
+    en = zeros(Float64, n+1)
+    # SUBROUTINE EULERA(N,  EN)
+    ccall(f77func(:eulera), Cvoid,
+        (Ref{Int32}, Ptr{Float64}),
+        Int32(n), en)
+    en
+end
+
 function _eulerb(n::Int)
     en = zeros(Float64, n+1)
     # SUBROUTINE EULERB(N,  EN)

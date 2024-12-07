@@ -29,6 +29,20 @@ end
 end
 
 
+@testset "euler.eulera" begin
+    test_n = [
+        2:10...,
+        rand(10:100, 2)...,
+    ]
+    for n = test_n
+        @testset "eulera($n)" begin
+            en_ref = _eulera(n)
+            en = Specfun.eulera(n)
+            @test isapprox(en_ref, en)
+        end
+    end
+end
+
 @testset "euler.eulerb" begin
     test_n = [
         2:10...,
