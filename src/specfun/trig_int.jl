@@ -9,14 +9,14 @@
 """
     cisia(x::Float64)
 
-Compute cosine and sine integrals Ci(x) and Si(x).
+Compute cosine and sine integrals `Ci(x)` and `Si(x)`.
 
 Parameters:
-- `x`: Argument of Ci(x) and Si(x), x ≥ 0
+- `x`: Argument of `Ci(x)` and `Si(x)`, `x ≥ 0`
 
 Returns: `(ci, si)`
-- Ci(x)
-- Si(x)
+- `Ci(x)`
+- `Si(x)`
 """
 function cisia(x::Float64)
     p2 = π / 2
@@ -27,9 +27,13 @@ function cisia(x::Float64)
     ci = 0.0
     si = 0.0
     if x == 0.0
+        # Use CoSF (17.1.6)
+        # Ci(0) = -Inf, Si(0) = 0
         ci = -1.0e300
         si = 0.0
     elseif x <= 16.0
+        # Use CoSF (17.2.1) and CoSF (17.2.2)
+        # DLMF 6.6.6 and 6.6.5:  Power Series
         xr = -0.25 * x2
         ci = el + log(x) + xr
         for k in 2:40
@@ -50,6 +54,8 @@ function cisia(x::Float64)
             end
         end
     elseif x <= 32.0
+        # Use CoSF (17.2.6) and CoSF (17.2.7)
+        #   expanded in a series of the Bessel functions.
         m = trunc(Int, 47.2 + 0.82 * x)
         bj = zeros(Float64, m)
         xa1 = 0.0
@@ -87,6 +93,8 @@ function cisia(x::Float64)
         ci = el + log(x) - x * xss * xg1 + 2 * xcs * xg2 - 2 * xcs^2
         si = x * xcs * xg1 + 2 * xss * xg2 - sin(x)
     else
+        # Use CoSF (17.2.8) and CoSF (17.2.9)
+        # DLMF 6.2.20 and 6.2.19:  asymptotic expansions
         xr = 1.0
         xf = 1.0
         for k in 1:9

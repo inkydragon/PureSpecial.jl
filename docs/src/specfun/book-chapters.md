@@ -204,7 +204,7 @@ CurrentModule = PureSpecial.Specfun
 
 ## 17 Cosine and Sine Integrals
 
-- [`Specfun.cisia`](@ref)
+- [`Specfun.cisia`](@ref) - Compute cosine and sine integrals `Ci(x)` and `Si(x)`.
 - [`Specfun.cisib`](@ref) - Compute cosine and sine integrals `Ci(x)` and `Si(x)`,
   using polynomial and rational approximations.
 
