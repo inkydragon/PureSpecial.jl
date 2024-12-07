@@ -10,8 +10,8 @@
 - ✅ psi
 - ✅ cpsi
 
-- INCOG
-- INCOB
+- ✅ incog
+- ✅ incob
 
 - ✅ gam0
 - ✅ gaih
@@ -25,7 +25,7 @@ Ref
     Mathematics of Computation, 22(103), 617-626.
     https://www.jstor.org/stable/2004538
 
-TODO: TThe coefficients are not consistent with those in the paper
+TODO: The coefficients are not consistent with those in the paper
 """
 const _GAM0_G = NTuple{25, Float64}((
 #= 01 =#
@@ -340,18 +340,133 @@ Output:
 - B(p, q)
 
 Routine called:
-gamma for computing Γ(x)
+- [`Specfun.gamma2`](@ref) for computing Γ(x)
 """
 function beta(p::Float64, q::Float64)
     @assert p > 0
-    @assert q < 0
+    @assert q > 0
+
     gp = gamma2(p)
     gq = gamma2(q)
     ppq = p + q
     gpq = gamma2(ppq)
     bt = gp * gq / gpq
+
     return bt
 end
+
+"""
+Compute the incomplete gamma function
+`r(a,x)`, `Γ(a,x)` and `P(a,x)`
+
+Input :
+- `a`   --- Parameter ( a ≤ 170 )
+- `x`   --- Argument
+
+Output: `(GIN, GIM, GIP, ISFER)`:
+- `GIN` --- r(a,x)
+- `GIM` --- Γ(a,x)
+- `GIP` --- P(a,x)
+- `ISFER` --- Error flag
+
+Routine called:
+- [`Specfun.gamma2`](@ref)
+"""
+function incog(a::Float64, x::Float64)
+    gin, gim, gip, isfer = NaN, NaN, NaN, 0
+
+    xam = -x + a * log(x)
+    if xam > 700.0 || a > 170.0
+        isfer = 6
+        return gin, gim, gip, isfer
+    end
+
+    if x == 0.0
+        gin = 0.0
+        ga = gamma2(a)
+        gim = ga
+        gip = 0.0
+    elseif x <= (1.0 + a)
+        s = 1.0 / a
+        r = s
+        for k in 1:60
+            r = r * x / (a + k)
+            s = s + r
+            if abs(r / s) < SF_EPS15
+                break
+            end
+        end
+        gin = exp(xam) * s
+        ga = gamma2(a)
+        gip = gin / ga
+        gim = ga - gin
+    elseif x > (1.0 + a)
+        t0 = 0.0
+        for k in 60:-1:1
+            t0 = (k - a) / (1.0 + k / (x + t0))
+        end
+        gim = exp(xam) / (x + t0)
+        ga = gamma2(a)
+        gin = ga - gim
+        gip = 1.0 - gim / ga
+    end
+
+    return gin, gim, gip, isfer
+end
+
+"""
+Compute the incomplete beta function Ix(a,b)
+
+Input :
+- `a` --- Parameter
+- `b` --- Parameter
+- `x` --- Argument ( 0 ≤ x ≤ 1 )
+
+Output:
+- `BIX` --- Ix(a,b)
+
+Routine called:
+- [`Specfun.beta`](@ref) for computing beta function B(p,q)
+"""
+function incob(a::Float64, b::Float64, x::Float64)
+    @assert 0 <= x <= 1
+    dk = zeros(Float64, 51)
+    fk = zeros(Float64, 51)
+
+    s0 = (a + 1.0) / (a + b + 2.0)
+    bt = beta(a, b)
+    bix = NaN
+    if x <= s0
+        for k in 1:20
+            dk[2*k] = k * (b - k) * x / ((a + 2.0*k - 1.0) * (a + 2.0*k))
+        end
+        for k in 0:20
+            dk[2*k + 1] = -(a + k) * (a + b + k) * x / ((a + 2.0*k) * (a + 2.0*k + 1.0))
+        end
+        t1 = 0.0
+        for k in 20:-1:1
+            t1 = dk[k] / (1.0 + t1)
+        end
+        ta = 1.0 / (1.0 + t1)
+        bix = x^a * (1.0 - x)^b / (a * bt) * ta
+    else
+        for k in 1:20
+            fk[2*k] = k * (a - k) * (1.0 - x) / ((b + 2.0*k - 1.0) * (b + 2.0*k))
+        end
+        for k in 0:20
+            fk[2*k + 1] = -(b + k) * (a + b + k) * (1.0 - x) / ((b + 2.0*k) * (b + 2.0*k + 1.0))
+        end
+        t2 = 0.0
+        for k in 20:-1:1
+            t2 = fk[k] / (1.0 + t2)
+        end
+        tb = 1.0 / (1.0 + t2)
+        bix = 1.0 - x^a * (1.0 - x)^b / (b * bt) * tb
+    end
+
+    return bix
+end
+
 
 const _PSI_A = NTuple{8, Float64}((
     -0.8333333333333e-01,       0.83333333333333333e-02,

@@ -29,7 +29,48 @@ function warp_unary(sym::Symbol, x::Float64)::Float64
 end
 
 
-# 1. Bernoulli and Euler Numbers
+"""1. Bernoulli and Euler Numbers"""
+#=
+bernoa
+bernob
+=#
+
+function _bernoa(n::Int)
+    bn = zeros(Float64, n+1)
+    # SUBROUTINE BERNOA(N,  BN)
+    ccall(f77func(:bernoa), Cvoid,
+        (Ref{Int32}, Ptr{Float64}),
+        Int32(n), bn)
+    bn
+end
+
+function _bernob(n::Int)
+    bn = zeros(Float64, n+1)
+    # SUBROUTINE BERNOB(N,  BN)
+    ccall(f77func(:bernob), Cvoid,
+        (Ref{Int32}, Ptr{Float64}),
+        Int32(n), bn)
+    bn
+end
+
+function _eulera(n::Int)
+    en = zeros(Float64, n+1)
+    # SUBROUTINE EULERA(N,  EN)
+    ccall(f77func(:eulera), Cvoid,
+        (Ref{Int32}, Ptr{Float64}),
+        Int32(n), en)
+    en
+end
+
+function _eulerb(n::Int)
+    en = zeros(Float64, n+1)
+    # SUBROUTINE EULERB(N,  EN)
+    ccall(f77func(:eulerb), Cvoid,
+        (Ref{Int32}, Ptr{Float64}),
+        Int32(n), en)
+    en
+end
+
 # 2. Orthogonal Polynomials
 
 """3. Gamma, Beta, and Psi Functions"""
@@ -39,8 +80,8 @@ lgama
 cgama
 beta
 psi (PSI_SPEC)
-    CPSI
-    INCOG
+CPSI
+INCOG
     INCOB
 gam0
 gaih
@@ -81,6 +122,27 @@ function _beta(p::Float64, q::Float64)
         (Ref{Float64}, Ref{Float64}, Ref{Float64}),
         p, q, bt)
     bt[]
+end
+
+function _incog(a::Float64, x::Float64)
+    gin, gim, gip = Ref{Float64}(NaN), Ref{Float64}(NaN), Ref{Float64}(NaN)
+    isfer = Ref{Int32}(0)
+    # SUBROUTINE INCOG(A,X,  GIN,GIM,GIP,ISFER)
+    ccall(f77func(:incog), Cvoid,
+        (Ref{Float64}, Ref{Float64},
+         Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Int32}),
+        a, x,
+        gin, gim, gip, isfer)
+    gin[], gim[], gip[], isfer[]
+end
+
+function _incob(a::Float64, b::Float64, x::Float64)
+    bix = Ref{Float64}(NaN)
+    # SUBROUTINE INCOB(A,B,X,  BIX)
+    ccall(f77func(:incob), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        a, b, x, bix)
+    bix[]
 end
 
 # SUBROUTINE PSI_SPEC(X,  PS)

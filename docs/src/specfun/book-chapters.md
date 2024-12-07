@@ -6,10 +6,10 @@ CurrentModule = PureSpecial.Specfun
 
 ## 1 Bernoulli and Euler Numbers
 
-- BERNOA, 5
-- BERNOB, 6
-- EULERA, 8
-- EULERB, 9
+- [`Specfun.bernoa`](@ref)
+- [`Specfun.bernob`](@ref)
+- [`Specfun.eulera`](@ref)
+- [`Specfun.eulerb`](@ref)
 
 ## 2 Orthogonal Polynomials
 
@@ -21,13 +21,13 @@ CurrentModule = PureSpecial.Specfun
 ## 3 Gamma, Beta, and Psi Functions
 
 - [`Specfun.gamma2`](@ref)
-- LGAMA, 50
+- [`Specfun.lgama`](@ref)
 - [`Specfun.cgama`](@ref)
-- BETA(GAMMA), 54
+- [`Specfun.beta`](@ref)
 - [`Specfun.psi`](@ref)
-- CPSI, 59
-- INCOG(GAMMA), 63
-- INCOB(BETA), 66
+- [`Specfun.cpsi`](@ref)
+- [`Specfun.incog`](@ref)
+- [`Specfun.incob`](@ref)
 
 ## 4 Legendre Functions
 

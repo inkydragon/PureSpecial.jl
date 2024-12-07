@@ -5,7 +5,7 @@ using PureSpecial.Specfun
 include("warp.jl")
 
 ## 1~4
-# 1. Bernoulli and Euler Numbers
+include("bernoulli_euler.jl")
 # 2. Orthogonal Polynomials
 include("gamma.jl")
 include("legendre.jl")
