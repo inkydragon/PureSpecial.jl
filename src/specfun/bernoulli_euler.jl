@@ -88,3 +88,45 @@ function bernob(n::Int)
     bernob(n, bn)
     return bn
 end
+
+function eulerb(n::Int, en::Vector{Float64})
+    @assert (n+1) >= 3
+    @assert length(en) >= (n+1)
+
+    en[1] = 1.0
+    en[3] = -1.0
+
+    hpi = 2.0 / pi
+    r1 = -4.0 * hpi^3
+    for m in 4:2:n
+        r1 = -r1 * (m - 1) * m * hpi * hpi
+        r2 = 1.0
+        isgn = 1.0
+        for k in 3:2:1000
+            isgn = -isgn
+            s = (1.0 / k)^(m + 1)
+            r2 += isgn * s
+            if s < SF_EPS15
+                break
+            end
+        end
+
+        en[m+1] = r1 * r2
+    end
+
+    return en
+end
+
+"""
+Compute Euler number En
+
+Input :
+- n --- Serial number
+
+Output:
+- EN(n) --- En
+"""
+function eulerb(n::Int)
+    en = zeros(Float64, n+1)
+    return eulerb(n, en)
+end
