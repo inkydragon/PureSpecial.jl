@@ -210,11 +210,11 @@ end
 """
     enxb(n::Int, x::Float64)
 
-Compute exponential integral En(x).
+Compute exponential integral `En(x)`.
 
 Parameters:
-- `n`: Order of En(x), n >= 1
-- `x`: Argument of En(x), ( x >= 0 )
+- `n`: Order of En(x), `n >= 1`
+- `x`: Argument of En(x), ( `x >= 0` )
 
 Returns:
 - `[ En(x) for n in 0:n ] :: Vector{Float64}`
@@ -225,6 +225,7 @@ function enxb(n::Int, x::Float64)::Vector{Float64}
     en = zeros(Float64, n + 1)
 
     if x == 0.0
+        # Use CoSF (19.1.6)
         en[1] = 1.0e300
         en[2] = 1.0e300
         for k in 2:n
@@ -232,6 +233,7 @@ function enxb(n::Int, x::Float64)::Vector{Float64}
         end
         return en
     elseif x <= 1.0
+        # Use CoSF (19.2.2)
         en[1] = exp(-x) / x
         s0 = 0.0
         for l in 1:n
@@ -266,6 +268,7 @@ function enxb(n::Int, x::Float64)::Vector{Float64}
             en[l+1] = ens - s
         end
     else
+        # Use CoSF (19.2.7)
         en[1] = exp(-x) / x
         m = 15 + trunc(Int, 100.0 / x)
         for l in 1:n
