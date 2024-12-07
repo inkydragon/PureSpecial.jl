@@ -175,17 +175,19 @@ end
 """
     enxa(n::Int, x::Float64)
 
-Compute exponential integral En(x).
+Compute exponential integral `En(x)`,
+using forward recurrence.
+- `0 < x <= 20`:   `|eps(x)| <= 1e-8`
 
 Parameters:
-- `n` : Order of En(x), n >= 1
-- `x` : Argument of En(x), ( 0 < x <= 20 )
+- `n` : Order of En(x), `n >= 1`
+- `x` : Argument of En(x), ( `0 < x <= 20` )
 
 Returns:
 - `[ En(x) for n in 0:n ] :: Vector{Float64}`
 
 Routine called:
-- [`Specfun.e1xb`](@ref) for computing E1(x)
+- [`Specfun.e1xb`](@ref) for computing `E1(x)`
 """
 function enxa(n::Int, x::Float64)::Vector{Float64}
     @assert (n + 1) >= 2

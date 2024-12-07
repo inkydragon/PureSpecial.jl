@@ -219,6 +219,6 @@ CurrentModule = PureSpecial.Specfun
 - [`Specfun.e1xa`](@ref) - Compute exponential integral `E1(x)`, using rational approximation.
 - [`Specfun.e1xb`](@ref) - Compute exponential integral `E1(x)`.
 - [`Specfun.e1z`](@ref) - Compute complex exponential integral `E1(z)`.
-- [`Specfun.enxa`](@ref)
+- [`Specfun.enxa`](@ref) - Compute exponential integral `En(x)`, using forward recurrence.
 - [`Specfun.enxb`](@ref)
 - [`Specfun.eix`](@ref)
