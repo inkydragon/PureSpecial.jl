@@ -1,5 +1,19 @@
 # SPDX-License-Identifier: MIT
 
+@testset "bernoulli.bernoa" begin
+    test_n = [
+        2:10...,
+        rand(10:100, 2)...,
+    ]
+    for n = test_n
+        @testset "bernoa($n)" begin
+            bn_ref = _bernoa(n)
+            bn = Specfun.bernoa(n)
+            @test isapprox(bn_ref, bn)
+        end
+    end
+end
+
 @testset "bernoulli.bernob" begin
     test_n = [
         2:10...,

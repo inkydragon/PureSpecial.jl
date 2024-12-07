@@ -35,9 +35,18 @@ bernoa
 bernob
 =#
 
+function _bernoa(n::Int)
+    bn = zeros(Float64, n+1)
+    # SUBROUTINE BERNOA(N,  BN)
+    ccall(f77func(:bernoa), Cvoid,
+        (Ref{Int32}, Ptr{Float64}),
+        Int32(n), bn)
+    bn
+end
+
 function _bernob(n::Int)
     bn = zeros(Float64, n+1)
-    # SUBROUTINE BERNOB(N,BN)
+    # SUBROUTINE BERNOB(N,  BN)
     ccall(f77func(:bernob), Cvoid,
         (Ref{Int32}, Ptr{Float64}),
         Int32(n), bn)
