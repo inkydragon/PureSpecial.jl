@@ -498,13 +498,13 @@ const _PSI_A = NTuple{8, Float64}((
 )) # _PSI_A
 
 """
-Compute Psi function (Digamma Function).
+Compute Psi function `Ψ(x)` (Digamma Function).
 
 Input:
-- `x`  --- Argument of psi(x)
+- `x`  --- Argument of `psi(x)`
 
 Output:
-- psi(x)
+- `psi(x)`
 """
 function psi(x::T) where {T<:AbstractFloat}
     _EL = SF_EULER_GAMMA
@@ -518,12 +518,14 @@ function psi(x::T) where {T<:AbstractFloat}
     xa = abs(x)
     s = 0.0
     if xa == trunc(Int, xa)
+        # Use CoSF (3.3.7) for |x| = n
         n = trunc(Int, xa)
         for k in 1:(n-1)
             s += 1.0 / k
         end
         ps = -_EL + s
     elseif (xa + 0.5) == trunc(Int, xa + 0.5)
+        # Use CoSF (3.3.6) for |x| = n+1/2
         n = trunc(Int, xa - 0.5)
         for k in 1:n
             s += 1.0 / (2.0 * k - 1.0)
@@ -531,17 +533,25 @@ function psi(x::T) where {T<:AbstractFloat}
         ps = -_EL + 2.0 * s - _2LOG2
     else
         if xa < 10.0
+            # When |x| < 10, add an integer to |x|,
+            #   such that |x| > 10
             n = 10 - trunc(Int, xa)
             for k in 0:(n-1)
+                # Caculate the summation in CoSF (3.3.8)
                 s += 1.0 / (xa + k)
             end
             xa += n
         end
+
+        # Calculate psi(|x|+n) using CoSF (3.3.14)
+        #   Asymptotic Expansions, with 8 terms
         a = _PSI_A
         x2 = 1.0 / (xa * xa)
         ps = log(xa) - 0.5 / xa
         ps += x2 *
             (((((((a[8]*x2+a[7])*x2+a[6])*x2+a[5])*x2+a[4])*x2+a[3])*x2+a[2])*x2+a[1])
+        # Calaculate psi(|x|) using CoSF (3.3.8)
+        #   psi(x) = psi(|x|+n) - sum
         ps -= s
     end
 
