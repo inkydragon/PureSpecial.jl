@@ -353,6 +353,62 @@ function beta(p::Float64, q::Float64)
     return bt
 end
 
+"""
+Compute the incomplete gamma function
+`r(a,x)`, `Γ(a,x)` and `P(a,x)`
+
+Input :
+- `a`   --- Parameter ( a ≤ 170 )
+- `x`   --- Argument
+
+Output: `(GIN, GIM, GIP, ISFER)`:
+- `GIN` --- r(a,x)
+- `GIM` --- Γ(a,x)
+- `GIP` --- P(a,x)
+- `ISFER` --- Error flag
+"""
+function incog(a::Float64, x::Float64)
+    gin, gim, gip, isfer = NaN, NaN, NaN, 0
+
+    xam = -x + a * log(x)
+    if xam > 700.0 || a > 170.0
+        isfer = 6
+        return gin, gim, gip, isfer
+    end
+
+    if x == 0.0
+        gin = 0.0
+        ga = gamma2(a)
+        gim = ga
+        gip = 0.0
+    elseif x <= (1.0 + a)
+        s = 1.0 / a
+        r = s
+        for k in 1:60
+            r = r * x / (a + k)
+            s = s + r
+            if abs(r / s) < SF_EPS15
+                break
+            end
+        end
+        gin = exp(xam) * s
+        ga = gamma2(a)
+        gip = gin / ga
+        gim = ga - gin
+    elseif x > (1.0 + a)
+        t0 = 0.0
+        for k in 60:-1:1
+            t0 = (k - a) / (1.0 + k / (x + t0))
+        end
+        gim = exp(xam) / (x + t0)
+        ga = gamma2(a)
+        gin = ga - gim
+        gip = 1.0 - gim / ga
+    end
+
+    return gin, gim, gip, isfer
+end
+
 const _PSI_A = NTuple{8, Float64}((
     -0.8333333333333e-01,       0.83333333333333333e-02,
     -0.39682539682539683e-02,   0.41666666666666667e-02,
