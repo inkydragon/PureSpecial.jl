@@ -14,17 +14,17 @@
 """
     e1xa(x::Float64)
 
-Compute exponential integral E1(x).
+Compute exponential integral `E1(x)`,
+using rational approximation:
 
-Using rational approximation:
 - `0 < x <= 1`:   `|eps(x)| <= 2e10-7`
 - `1 < x`:        `|eps(x)| <= 2e10-8`
 
 Input:
-- `x`: Argument of E1(x), ( x > 0 )
+- `x`: Argument of E1(x), ( `x > 0` )
 
 Output:
-- E1(x)
+- `E1(x)`
 """
 function e1xa(x::Float64)
     if x == 0.0
@@ -48,13 +48,13 @@ end
 """
     e1xb(x::Float64)
 
-Compute exponential integral E1(x).
+Compute exponential integral `E1(x)`.
 
 Input
-- `x`: Argument of E1(x), ( x > 0 )
+- `x`: Argument of E1(x), ( `x > 0` )
 
 Output
-- E1(x)
+- `E1(x)`
 """
 function e1xb(x::Float64)
     @assert x >= 0
@@ -65,6 +65,8 @@ function e1xb(x::Float64)
         # Inf
         e1 = SF_INF300
     elseif x <= 1.0
+        # Use CoSF (19.2.1)
+        # DLMF 6.6.2:  Power Series
         e1 = 1.0
         r = 1.0
         for k = 1:25
@@ -76,6 +78,8 @@ function e1xb(x::Float64)
         end
         e1 = -SF_EULER_GAMMA_28 - log(x) + x*e1
     else
+        # Use CoSF (19.2.7)
+        # DLMF 6.9.1:  Continued Fraction
         m = 20 + trunc(Int64, 80.0 / x)
         t0 = 0.0
         for k = m:-1:1
@@ -92,13 +96,13 @@ end
 """
     e1z(z::Complex{Float64})
 
-Compute complex exponential integral E1(z).
+Compute complex exponential integral `E1(z)`.
 
 Input
-- `z`: Argument of E1(z)
+- `z`: Argument of `E1(z)`
 
 Output
-- E1(z)
+- `E1(z)`
 """
 function e1z(z::Complex{Float64})
     @assert isapprox(Base.MathConstants.eulergamma, SF_EULER_GAMMA_28)
@@ -114,6 +118,7 @@ function e1z(z::Complex{Float64})
     x = real(z)
     xt = -2.0 * abs(imag(z))
     if (a0 < 5.0) || ((x < xt) && (a0 < 40.0))
+        # Use CoSF (19.2.1)
         # DLMF 6.6.2:  Power series
         ce1 = complex(1.0)
         cr = complex(1.0)
@@ -133,6 +138,7 @@ function e1z(z::Complex{Float64})
             ce1 = -SF_EULER_GAMMA_28 - log(z) + z * ce1
         end
     else
+        # Use CoSF (19.2.7)
         # DLMF 6.9.1:  Continued Fraction
         #
         #                       1     1     1     2     2     3     3
