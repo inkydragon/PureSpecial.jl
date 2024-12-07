@@ -148,6 +148,29 @@ end
     end
 end
 
+@testset "incob" begin
+    test_a = Float64[
+        1:5...,
+        rand(5)...,
+    ]
+    test_b = Float64[
+        1:5...,
+        rand(5)...,
+    ]
+    test_x = Float64[
+        rand(10)...,
+    ]
+    for a in test_a,
+        b in test_b,
+        x in test_x
+        @testset "incob(a=$a; b=$b; x=$x)" begin
+            bix_r = _incob(a, b, x)
+            bix = Specfun.incob(a, b, x)
+            @test isapprox(bix_r, bix; nans=true)
+        end
+    end
+end
+
 
 @testset "psi" begin
     test_x = Float64[

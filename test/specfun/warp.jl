@@ -136,6 +136,15 @@ function _incog(a::Float64, x::Float64)
     gin[], gim[], gip[], isfer[]
 end
 
+function _incob(a::Float64, b::Float64, x::Float64)
+    bix = Ref{Float64}(NaN)
+    # SUBROUTINE INCOB(A,B,X,  BIX)
+    ccall(f77func(:incob), Cvoid,
+        (Ref{Float64}, Ref{Float64}, Ref{Float64}, Ref{Float64}),
+        a, b, x, bix)
+    bix[]
+end
+
 # SUBROUTINE PSI_SPEC(X,  PS)
 _psi(x::Float64) = warp_unary(:psi_spec, x)
 
