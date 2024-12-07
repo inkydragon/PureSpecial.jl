@@ -89,6 +89,36 @@ function bernob(n::Int)
     return bn
 end
 
+function eulera(n::Int, en::Vector{Float64})
+    en[1] = 1.0
+
+    half_n = trunc(Int, n / 2)
+    for m in 1:half_n
+        s = 1.0
+        for k in 1:(m-1)
+            r = 1.0
+            for j in 1:(2*k)
+                r = r * (2.0*m - 2.0*k + j) / j
+            end
+            s += r * en[2*k + 1]
+        end
+
+        en[2*m + 1] = -s
+    end
+
+    return en
+end
+
+"""
+Purpose: Compute Euler number En
+Input :  n --- Serial number, n >= 2
+Output:  EN(n) --- En
+"""
+function eulera(n::Int)
+    en = zeros(Float64, n+1)
+    return eulera(n, en)
+end
+
 function eulerb(n::Int, en::Vector{Float64})
     @assert (n+1) >= 3
     @assert length(en) >= (n+1)
@@ -121,7 +151,7 @@ end
 Compute Euler number En
 
 Input :
-- n --- Serial number
+- n --- Serial number, n >= 2
 
 Output:
 - EN(n) --- En
