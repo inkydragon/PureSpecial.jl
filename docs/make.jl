@@ -15,6 +15,7 @@ pages = Any[
         "specfun/book-index.md",
         "specfun/autodocs.md",
     ],
+    "cephes/index.md",
     "faddeeva/index.md",
     "impls.md",
     "scipy.special.md",
