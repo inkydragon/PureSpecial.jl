@@ -25,11 +25,12 @@ Release 2.2: July, 1992
 
 ## Double Precision
 
+
+### Arithmetic and Algebraic
 ```
-Function                        Name      Accuracy
---------                        ----    DEC     IEEE
-                                        ----    ----
-                Arithmetic and Algebraic
+                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
 Square root                     sqrt    2e-17   2e-16
 Long integer square root        lsqrt   1       1
 Cube root                       cbrt    2e-17   2e-16
@@ -62,8 +63,13 @@ Power series manipulations (polmisc.c):
   Arctangent                      polatn
   Sine                            polsin
 Reversion of power series       revers
+```
 
-                Exponential and Trigonometric
+### Exponential and Trigonometric
+```
+                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
 Arc cosine                      acos    3e-17   3e-16
 Arc hyperbolic cosine           acosh   4e-17   5e-16
 Arc hyperbolic sine             asinh   5e-17   4e-16
@@ -88,15 +94,25 @@ Sine                            sin     3e-17   2e-16
 Sine of arg in degrees          sindg   4e-17   2e-16
 Tangent                         tan     4e-17   3e-16
 Tangent of arg in degrees       tandg   3e-17   3e-16
+```
 
-                Exponential integral
+### Exponential integral
+```
+                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
 Exponential integral            expn    2e-16   2e-15
 Hyperbolic cosine integral      shichi  9e-17   8e-16
 Hyperbolic sine integral        shichi  9e-17   7e-16
 Cosine integral                 sici    8e-17A  7e-16
 Sine integral                   sici    4e-17A  4e-16
+```
 
-                Gamma
+### Gamma
+```
+                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
 Beta                            beta    8e-15   8e-14
 Factorial                       fac     2e-17   2e-15
 Gamma                           gamma   1e-16   1e-15
@@ -108,15 +124,25 @@ Complemented gamma integral     igamc   3e-15   1e-12
 Inverse gamma integral          igami   9e-16   1e-14
 Psi (digamma) function          psi     2e-16   1e-15
 Reciprocal Gamma                rgamma  1e-16   1e-15
+```
 
-                Error function
+### Error function
+```
+                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
 Error function                  erf     5e-17   4e-16
 Complemented error function     erfc    5e-16   6e-14
 Dawson's integral               dawsn   7e-16   7e-16
 Fresnel integral (C)            fresnl  2e-16   2e-15
 Fresnel integral (S)            fresnl  2e-16   2e-15
+```
 
-                Bessel
+### Bessel
+```
+                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
 Airy (Ai)                       airy    6e-16A  2e-15A
 Airy (Ai')                      airy    6e-16A  5e-15A
 Airy (Bi)                       airy    6e-16A  4e-15A
@@ -139,15 +165,25 @@ Exponentially scaled k0         k0e     1e-16   1e-15
 Mod. Bessel, 3rd kind, order 1  k1      9e-17   1e-15
 Exponentially scaled k1         k1e     9e-17   8e-16
 Mod. Bessel, 3rd kind, order n  kn      1e-9    2e-8
+```
 
-                Hypergeometric
+### Hypergeometric
+```
+                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
 Confluent hypergeometric        hyperg  1e-15   2e-14
 Gauss hypergeometric function   hyp2f1  4e-11   9e-8
 2F0                             hyp2f0f  see hyperg.c
 1F2                             onef2f   see struve.c
 3F0                             threef0f see struve.c
+```
 
-                Elliptic
+### Elliptic
+```
+                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
 Complete elliptic integral (E)   ellpe  3e-17   2e-16
 Incomplete elliptic integral (E) ellie  2e-16   2e-15
 Complete elliptic integral (K)   ellpk  4e-17   3e-16
@@ -156,8 +192,13 @@ Jacobian elliptic function (sn)  ellpj  5e-16A  4e-15A
 Jacobian elliptic function (cn)  ellpj          4e-15A
 Jacobian elliptic function (dn)  ellpj          1e-12A
 Jacobian elliptic function (phi) ellpj          9e-16
+```
 
-                Probability
+### Probability
+```
+                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
 Binomial distribution           bdtr    4e-14   4e-13
 Complemented binomial           bdtrc   4e-14   4e-13
 Inverse binomial                bdtri   3e-13   8e-13
@@ -177,14 +218,24 @@ Poisson distribution            pdtr    3e-15   2e-14
 Complemented Poisson            pdtrc   5e-15   3e-14
 Inverse Poisson distribution    pdtri   3e-15   5e-14
 Student's t distribution        stdtr   2e-15   2e-14
+```
 
-                Miscellaneous
+### Miscellaneous
+```
+                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
 Dilogarithm                     spence  3e-16   4e-15
 Riemann Zeta function           zetac   1e-16   1e-15
 Two argument zeta function      zeta
 Struve function                 struve
+```
 
-                Matrix
+### Matrix
+```
+                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
 Fast Fourier transform          fftr
 Simultaneous linear equations   simq
 Simultaneous linear equations   gels (symmetric coefficient matrix)
@@ -194,21 +245,36 @@ Matrix times vector             mvmpy
 Matrix transpose                mtransp
 Eigenvectors (symmetric matrix) eigens
 Levenberg-Marquardt nonlinear equations  lmdif
+```
 
-                Numerical Integration
+### Numerical Integration
+```
+                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
 Simpson's rule                  simpsn
 Runge-Kutta                     runge - see de118
 Adams-Bashforth                 adams - see de118
+```
 
-                Complex Arithmetic
+### Complex Arithmetic
+```
+                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
 Complex addition                cadd    1e-17   1e-16
 Subtraction                     csub    1e-17   1e-16
 Multiplication                  cmul    2e-17   2e-16
 Division                        cdiv    5e-17   4e-16
 Absolute value                  cabs    3e-17   3e-16
 Square root                     csqrt   3e-17   3e-16
+```
 
-        Complex Exponential and Trigonometric
+### Complex Exponential and Trigonometric
+```
+                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
 Exponential                     cexp    4e-17   3e-16
 Logarithm                       clog    9e-17   5e-16A
 Cosine                          ccos    5e-17   4e-16
