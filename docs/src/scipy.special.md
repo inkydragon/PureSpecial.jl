@@ -96,9 +96,38 @@
 
 > Skip!
 
-## Gamma functions
 
-> Use `cephes`
+## Gamma functions
+> Use `cephes`, `boost::math`
+
+### Gamma function
+- `gamma(z)`:           `cephes::Gamma(x)`, `xsf::gamma(z)`
+- `gammaln(x)`:         xsf::gammaln  -> `cephes::lgam(x)`
+- `loggamma(z)`:        xsf::loggamma -> `cephes::lgam(x)`
+- `gammasgn(x)`:        `cephes::gammasgn(x)`
+- `gammainc(a, x)`:     `cephes::igam(a, x)`
+- `gammaincinv(a, y)`:  `cephes::igami(a, p)`
+- `gammaincc(a, x)`:    `cephes::igamc(a, x)`
+- `gammainccinv(a, y)`: `cephes::igamci(a, p)`
+- `rgamma(z)`:          `cephes::rgamma(z)`
+- `digamma(z)`:         `cephes::psi(z)`
+- `psi(z)`:             `cephes::psi(z)`
+- `poch(z, m)`:         `cephes::poch(x, m)`
+
+In Python:
+- `polygamma(n, x)`:    in python, `psi, gamma, zeta`
+- `multigammaln(a, d)`: in python, `gammaln`
+
+### Beta function
+- `beta(a, b)`:     `cephes::beta(a, b)`    
+- `betaln(a, b)`:   `cephes::lbeta(a, b)`
+
+Boost::math:
+- `betainc(a, b, x)`:     `boost::math::ibeta(a, b, x)`
+- `betaincinv(a, b, y)`:  `boost::math::ibeta_inv(a, b, p)`
+- `betaincc(a, b, x)`:    `boost::math::ibetac(a, b, x)`
+- `betainccinv(a, b, y)`: `boost::math::ibetac_inv(a, b, p)`
+
 
 ## Error function
 
