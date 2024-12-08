@@ -1,7 +1,7 @@
 # scipy.special
 
 > ref: [scipy.special ## SciPy Manual](https://docs.scipy.org/doc/scipy/reference/special.html)  
-> based commit: *2b84173*
+> based commit: *846ecd4648* (2024-12-08)
 
 - `cephes.h`: 100
 - `specfun_wrappers.h`: 49
@@ -129,29 +129,30 @@ Boost::math:
 - `betainccinv(a, b, y)`: `boost::math::ibetac_inv(a, b, p)`
 
 
-## Error function
+## Error functions
+> Use: faddeeva; cephes; boost::math; specfun
 
-> faddeeva,cephes,boost_special
+- `erf(z)`:   `xsf::cephes::erf(x)`;  `Faddeeva::erf(z)`
+- `erfc(z)`:  `xsf::cephes::erfc(x)`; `Faddeeva::erfc(z)`
+- `erfcx(z)`: `Faddeeva::erfcx(x)`;   `Faddeeva::erfcx(z)`
+- `erfi(z)`:  `Faddeeva::erfi(x)`;    `Faddeeva::erfi(z)`
+- `erfinv(y)`:  `boost::math::erf_inv(x)`
+- `erfcinv(y)`: `xsf::cephes::erfcinv(y)`
 
-- [ ] `erf(z)`: faddeeva_erf -> Faddeeva::erf; cephes_erf
-- [ ] `erfc(x)`: faddeeva_erfc_complex -> Faddeeva::erfc; cephes_erfc
-- [ ] `erfcx(x)`: faddeeva_erfcx,faddeeva_erfcx_complex -> Faddeeva::erfcx
-- [ ] `erfi(z)`: faddeeva_erfi,faddeeva_erfi_complex -> Faddeeva::erfi
-- [ ] `erfinv(y)`: 
-- [ ] `erfcinv(y)`: 
+special:
+- `wofz(z)`:        `Faddeeva::w(z)`
+- `dawsn(z)`:       `Faddeeva::Dawson(x)`; `Faddeeva::Dawson(z)`
+- `fresnel(z)`:     `cephes::fresnl(x)`; `detail::cfs(z), detail::cfc(z)` (specfun_cfs,specfun_cfc)
+- `modfresnelp(x)`: xsf::modified_fresnel_plus  -> `detail::ffk(0)` (specfun_ffk)
+- `modfresnelm(x)`: xsf::modified_fresnel_minus -> `detail::ffk(1)` (specfun_ffk)
+- `voigt_profile(x, sigma, gamma)`: faddeeva_voigt_profile -> `Faddeeva::w(z)`
 
-- [ ] `wofz(z)`: 
-- [ ] `dawsn(x)`: faddeeva_dawsn,faddeeva_dawsn_complex -> Faddeeva::Dawson
-- [ ] `fresnel(z)`: cephes_fresnl; cfresnl_wrap -> specfun_cfs,specfun_cfc
-- [ ] `fresnel_zeros(nt)`: 
-- [ ] `modfresnelp(x)`: modified_fresnel_plus_wrap -> specfun_ffk
-- [ ] `modfresnelm(x)`: modified_fresnel_minus_wrap -> specfun_ffk
-- [ ] `voigt_profile(x, sigma, gamma)`: faddeeva_voigt_profile -> Faddeeva::w
+zeros:
+- `erf_zeros(nt)`:      _specfun.cerzo -> `xsf::specfun::cerzo`
+- `fresnel_zeros(nt)`:  _specfun.fcszo(k, nt) -> `xsf::fcszo`
+- `fresnelc_zeros(nt)`: _specfun.fcszo(k, nt) -> `xsf::fcszo`
+- `fresnels_zeros(nt)`: _specfun.fcszo(k, nt) -> `xsf::fcszo`
 
-- [ ] `erf_zeros`: _specfun.cerzo -> specfun_cerzo
-- [ ] `fresnel_zeros`: _specfun.fcszo -> specfun_fcszo
-  - `fresnelc_zeros`
-  - `fresnels_zeros`
 
 ## Legendre functions
 
