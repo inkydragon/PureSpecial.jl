@@ -1,5 +1,16 @@
 # Gamma Function Index
 
+## Factorial Functions
+
+| Function              | Description               |
+|:----------------------|:--------------------------|
+| [`PureSpecial.factorial`](@ref)   | factorial function    |
+| [`factorial2`](@ref)  | double factorial function |
+| [`factorialk`](@ref)  | multifactorial function   |
+| [`PureSpecial.binomial`](@ref)    | binomial coefficient  |
+
+## Gamma Functions
+
 | Function              | Description               |
 |:----------------------|:--------------------------|
 | [`gamma`](@ref)       | gamma function            |
