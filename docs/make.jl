@@ -6,20 +6,23 @@ DocMeta.setdocmeta!(PureSpecial, :DocTestSetup, :(using PureSpecial); recursive=
 
 pages = Any[
     "Home" => "index.md",
-    "Docs" => Any[
-        "ref/struve.md"
-    ],
-    "specfun.f" => Any[
-        "specfun/index.md",
-        "specfun/book-chapters.md",
-        "specfun/book-index.md",
-        "specfun/autodocs.md",
-    ],
-    "cephes/index.md",
-    "faddeeva/index.md",
-    "impls.md",
-    "scipy.special.md",
     "special-functions.md",
+    "Reference" => Any[
+        "reference/struve.md"
+    ],
+
+    "Dev doc" => Any[
+        "impls.md",
+        "scipy.special.md",
+        "specfun.f" => Any[
+            "specfun/index.md",
+            "specfun/book-chapters.md",
+            "specfun/book-index.md",
+            "specfun/autodocs.md",
+        ],
+        "cephes/index.md",
+        "faddeeva/index.md",
+    ],
 ]
 
 makedocs(;
