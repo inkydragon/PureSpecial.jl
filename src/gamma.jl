@@ -9,7 +9,9 @@
 ## Beta Function
 """
 
-export gamma
+# Gamma Function
+export gamma, loggamma, logabsgamma, digamma, trigamma, polygamma
+
 
 """
     gamma(z)
@@ -38,3 +40,40 @@ See also: `factorial`, `loggamma`.
 gamma(x::Float64) = Specfun.gamma2(x)
 gamma(z::ComplexF64) = Specfun.cgama(x, 1)
 gamma(i::Integer) = gamma(float(i))
+
+"""
+    loggamma(z)
+
+Compute the principal branch of the logarithm of the gamma function
+`log(gamma(z))`.
+"""
+function loggamma end
+
+"""
+    logabsgamma(z)
+
+Compute the logarithm of the absolute value of the gamma function
+`log(abs(gamma(z)))`
+"""
+function logabsgamma end
+
+"""
+    digamma(z)
+
+Compute the digamma function (psi function).
+"""
+function digamma end
+
+"""
+    trigamma(z)
+
+Compute the trigamma function.
+"""
+function trigamma end
+
+"""
+    polygamma(n, x)
+
+Compute the polygamma function.
+"""
+function polygamma end
