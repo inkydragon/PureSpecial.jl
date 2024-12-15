@@ -9,8 +9,40 @@
 ## Beta Function
 """
 
+# Factorial Function
+public factorial, binomial  # Base.factorial, Base.binomial
+export factorial2, factorialk
 # Gamma Function
 export gamma, loggamma, logabsgamma, digamma, trigamma, polygamma
+
+
+"""
+    factorial(n)
+
+Compute the factorial function `n!`.
+"""
+function factorial end
+
+"""
+    factorial2(n)
+
+Compute the double factorial function `n!!`.
+"""
+function factorial2 end
+
+"""
+    factorialk(n, k)
+
+Compute the multifactorial function of `n` of order `k`, `n(!!...!)`.
+"""
+function factorialk end
+
+"""
+    binomial(n, k)
+
+Compute the binomial coefficient, `C(n, k)`.
+"""
+function binomial end
 
 
 """
