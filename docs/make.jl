@@ -4,12 +4,21 @@ using Documenter
 DocMeta.setdocmeta!(PureSpecial, :DocTestSetup, :(using PureSpecial); recursive=true)
 
 
+reference_pages = Any[
+    "Gamma Functions" => Any[
+        "reference/gamma/gamma.md"
+    ],
+
+    # Struve Functions
+    "Struve Functions" => Any[
+        "reference/struve.md"
+    ],
+] # reference_pages
+
 pages = Any[
     "Home" => "index.md",
     "special-functions.md",
-    "Reference" => Any[
-        "reference/struve.md"
-    ],
+    "Reference" => reference_pages,
 
     "Dev doc" => Any[
         "impls.md",
