@@ -9,10 +9,10 @@ reference_pages = Any[
         "reference/gamma/gamma.md"
     ],
 
-    # Struve Functions
     "Struve Functions" => Any[
-        "reference/struve.md"
+        "reference/struve.md",
     ],
+    "reference/autodocs.md",
 ] # reference_pages
 
 pages = Any[
