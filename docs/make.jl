@@ -6,6 +6,7 @@ DocMeta.setdocmeta!(PureSpecial, :DocTestSetup, :(using PureSpecial); recursive=
 
 reference_pages = Any[
     "Gamma Functions" => Any[
+        "reference/gamma/index.md"
         "reference/gamma/gamma.md"
     ],
 
