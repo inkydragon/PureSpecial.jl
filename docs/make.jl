@@ -41,8 +41,8 @@ makedocs(;
     authors="Chengyu HAN <cyhan.dev@outlook.com> and contributors",
     sitename="PureSpecial.jl",
     format=Documenter.HTML(;
-        repolink="https://inkydragon.github.io/PureSpecial.jl",
-        canonical="https://inkydragon.github.io/PureSpecial.jl",
+        # canonical="https://inkydragon.github.io/PureSpecial.jl",
+        canonical="https://cyhan.dev/PureSpecial.jl",
         edit_link="main",
         assets=String[],
     ),
