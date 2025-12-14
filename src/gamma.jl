@@ -10,7 +10,7 @@
 """
 
 # Factorial Function
-public factorial, binomial  # Base.factorial, Base.binomial
+export factorial, binomial  # Base.factorial, Base.binomial
 export factorial2, factorialk
 # Gamma Function
 export gamma, loggamma, logabsgamma, digamma, trigamma, polygamma
