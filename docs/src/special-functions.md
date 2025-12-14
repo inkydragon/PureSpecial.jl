@@ -30,17 +30,17 @@ SpecialFunctions.jl consists of the following sub-packages:
 [DLMF: Chapter 5 Gamma Function](https://dlmf.nist.gov/5)
 [DLMF: Chapter 8 Incomplete Gamma and Related Functions](https://dlmf.nist.gov/8)
 
-- Factorial Function:  factorial, Binomial,
-- Gamma Function:  gamma, InvGamma, LogGamma, ...;
-- Incomplete Gamma Function:  incomplete gamma
-- Beta Function:  beta
-- Pochhammer Function:  poch
+- Factorial Function:  `n!`, `n!!`, FactorialK(n, k), Binomial(n, m)
+- Gamma Function:  `Γ(z)`, InvGamma, `ln Γ(z)`, `ln |Γ(z)|`; `ψ(z)`, `ψ⁽ⁿ⁾(z)` (PolyGamma)
+- Incomplete Gamma Function:  `γ(a, z)`, `Γ(a, z)`; `P(a, z)`, `Q(a, z)`, Inverse ...,
+- Beta Function:  `B(a, b)`, `ln B(a, b)`, `ln |B(a, b)|`; `Bₓ(a, b)`, `Iₓ(a, b)`, `betaincinv(a, b, y)`
+- Pochhammer Function:  `poch(z, n),`
 
 ## ExponentialIntegrals.jl
 
 [DLMF: Chapter 6 Exponential, Logarithmic, Sine, and Cosine Integrals](https://dlmf.nist.gov/6)
 
-- Exponential Integral:  expint, ...; LogIntegral
+- Exponential Integral:  `E₁(z)`, `Eν(z)`, `Ei(x)`; `Li(x)`
 - Trigonometric Integral:  Si, Ci, Shi, Chi
 
 ## ErrorFunctions.jl
