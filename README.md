@@ -4,11 +4,14 @@
 [![Build Status](https://github.com/inkydragon/PureSpecial.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/inkydragon/PureSpecial.jl/actions/workflows/CI.yml)
 [![Coverage](https://codecov.io/gh/inkydragon/PureSpecial.jl/graph/badge.svg?token=krUDB5Fepa)](https://codecov.io/gh/inkydragon/PureSpecial.jl)
 
-> Rewriting scipy's fortran dependencies in julia.  
-> Currently focusing on `scipy.special`
+> Rewriting [scipy/xsf](https://github.com/scipy/xsf) in julia.  
 
 
-## Test
+## Dev
+
+### Test
+
+> You need a fortran compiler to run the test.
 
 Activate test project:
 
