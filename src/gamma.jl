@@ -10,7 +10,7 @@
 """
 
 # Factorial Function
-export factorial, binomial  # Base.factorial, Base.binomial
+# export factorial, binomial  # Base.factorial, Base.binomial
 export factorial2, factorialk
 # Gamma Function
 export gamma, loggamma, logabsgamma, digamma, trigamma, polygamma
@@ -21,7 +21,7 @@ export gamma, loggamma, logabsgamma, digamma, trigamma, polygamma
 
 Compute the factorial function `n!`.
 """
-function factorial end
+# function factorial end
 
 """
     factorial2(n)
@@ -42,7 +42,7 @@ function factorialk end
 
 Compute the binomial coefficient, `C(n, k)`.
 """
-function binomial end
+# function binomial end
 
 
 """

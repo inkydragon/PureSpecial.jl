@@ -4,10 +4,10 @@
 
 | Function              | Description               |
 |:----------------------|:--------------------------|
-| [`PureSpecial.factorial`](@ref)   | factorial function    |
+| `Base.factorial`      | factorial function    |
 | [`factorial2`](@ref)  | double factorial function |
 | [`factorialk`](@ref)  | multifactorial function   |
-| [`PureSpecial.binomial`](@ref)    | binomial coefficient  |
+| `Base.binomial`       | binomial coefficient  |
 
 ## Gamma Functions
 
