@@ -52,6 +52,8 @@ jobs:
       - uses: julia-actions/julia-runtest@v1
       - uses: julia-actions/julia-processcoverage@v1
       - uses: codecov/codecov-action@v5
+        # reduce upload case, limit 250 uploads/30days
+        if: matrix.os == 'ubuntu-latest' && matrix.version == 'lts'
         with:
           files: lcov.info
   docs:
