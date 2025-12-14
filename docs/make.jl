@@ -10,9 +10,10 @@ reference_pages = Any[
         "reference/gamma/gamma.md"
     ],
 
-    "Struve Functions" => Any[
-        "reference/struve.md",
-    ],
+    # TODO: plot is slow
+    # "Struve Functions" => Any[
+    #     "reference/struve.md",
+    # ],
     "reference/autodocs.md",
 ] # reference_pages
 

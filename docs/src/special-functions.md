@@ -1,414 +1,262 @@
-# Special Functions
+# Special Function Packages
 
-- [DLMF: NIST Digital Library of Mathematical Functions](https://dlmf.nist.gov/)
-- [Special Functions - Wolfram MathWorld](https://mathworld.wolfram.com/topics/SpecialFunctions.html)
+SpecialFunctions.jl consists of the following sub-packages:
 
+- [ ] GammaFunctions.jl
+- [ ] ExponentialIntegrals.jl
+- [ ] ErrorFunctions.jl
+- [ ] AiryFunctions.jl
+- [x] JuliaMath/Bessels.jl
+- (not impl) StruveFunctions.jl
+- (not impl) ParabolicCylinders.jl
+- [x] JuliaMath/HypergeometricFunctions.jl
+- (not impl) LegendreFunctions.jl
+- (not impl) QFunctions.jl
+- (not impl) OrthogonalPolynomials.jl
+- [ ] EllipticFunctions.jl
+- (not impl) Bernoulli and Euler Polynomials:
+  Maybe move to other package?
+- [ ] ZetaFunctions.jl
+- [x] JuliaMath/Combinatorics.jl
+- (not impl) NumberTheoryFunctions.jl
+- (not impl) MathieuFunctions.jl
+- (not impl) SpheroidalWaves.jl
+- (not impl) HeunFunctions.jl
+- (not impl) CoulombFunctions.jl
 
-## Gamma Functions
 
-> - [DLMF: Chapter 5 Gamma Function](https://dlmf.nist.gov/5)
-> - [#Gamma Functions - Wolfram MathWorld](https://mathworld.wolfram.com/topics/GammaFunctions.html)
+## GammaFunctions.jl
 
-### Factorial Function
+[DLMF: Chapter 5 Gamma Function](https://dlmf.nist.gov/5)
+[DLMF: Chapter 8 Incomplete Gamma and Related Functions](https://dlmf.nist.gov/8)
 
-- `factorial(n::UInt)`:     `n!`, The factorial of non-negative integer n
-- `factorial2(n::UInt)`:    `n!!`, Double factorial
-- `factorialk(n::UInt, k::UInt)`: `n(!!...!)`, Multifactorial of n of order k > 0
-- `binom(x::Real, y::Real)`:    `C(n, k)`, binomial coefficient
+- Factorial Function:  `n!`, `n!!`, FactorialK(n, k), Binomial(n, m)
+- Gamma Function:  `Γ(z)`, InvGamma, `ln Γ(z)`, `ln |Γ(z)|`; `ψ(z)`, `ψ⁽ⁿ⁾(z)` (PolyGamma)
+- Incomplete Gamma Function:  `γ(a, z)`, `Γ(a, z)`; `P(a, z)`, `Q(a, z)`, Inverse ...,
+- Beta Function:  `B(a, b)`, `ln B(a, b)`, `ln |B(a, b)|`; `Bₓ(a, b)`, `Iₓ(a, b)`, `betaincinv(a, b, y)`
+- Pochhammer Function:  `poch(z, n)`
 
-### Gamma Function
+## ExponentialIntegrals.jl
 
-> - [DLMF: §5.2 Gamma Function](https://dlmf.nist.gov/5.2)
-> - [DLMF: §5.15 Polygamma Functions](https://dlmf.nist.gov/5.15)
-> - [Gamma Function - Wolfram MathWorld](https://mathworld.wolfram.com/GammaFunction.html)
-> - [#Polygamma Functions - Wolfram MathWorld](https://mathworld.wolfram.com/topics/PolygammaFunctions.html)
+[DLMF: Chapter 6 Exponential, Logarithmic, Sine, and Cosine Integrals](https://dlmf.nist.gov/6)
 
-- `Γ(z)`, `≡ gamma(z::Complex)`:        gamma function
-- `ln Γ(z)`, `≡ loggamma(z::Complex)`:  log gamma function
-- `ln |Γ(z)|`, `≡ logabsgamma(z::Complex)`:     log abs gamma function
-- `ψ(z)`, `≡ psi(z::Complex)`, `≡ digamma(z)`:  psi function
-- `ψ'(z)`, `≡ trigamma(z::Complex)`:    trigamma function
-- `polygamma(n::UInt, z::Complex)`:     polygamma functions
+- Exponential Integral:  `E₁(z)`, `Eν(z)`, `Ei(x)`; `Li(x)`
+- Trigonometric Integral:  Si, Ci, Shi, Chi
 
-### Incomplete Gamma Function
+## ErrorFunctions.jl
 
-> - [DLMF: §8.2 Incomplete Gamma and Related Functions](https://dlmf.nist.gov/8.2)
-> - [Incomplete Gamma Function - Wolfram MathWorld](https://mathworld.wolfram.com/IncompleteGammaFunction.html)
+[DLMF: Chapter 7 Error Functions, Dawson’s and Fresnel Integrals](https://dlmf.nist.gov/7)
 
-- `γ(a, z)`:    (lower) incomplete gamma function
-- `Γ(a, z)`:    (upper/complementary) incomplete gamma function
-- `γ*(a, z)`:   Tricomi’s incomplete gamma function
-- `P(a, z)`:    Normalized lower incomplete gamma function
-- `Q(a, z)`:    Normalized upper incomplete gamma function
+- Error Function:     erf, ...; erf_inv, ...; faddeeva;
+- Dawson Integral:    dawson
+- Fresnel Integral:   C(z), S(z), ...
 
-### Pochhammer Function
+See also:
 
-> - [DLMF: §5.2 Pochhammer’s Symbol](https://dlmf.nist.gov/5.2#iii)
-> - [Pochhammer Symbol - Wolfram MathWorld](https://mathworld.wolfram.com/PochhammerSymbol.html)
+- [kiranshila/FresnelIntegrals.jl](https://github.com/kiranshila/FresnelIntegrals.jl),
+- [MartinMikkelsen/FewSpecialFunctions.jl](https://github.com/MartinMikkelsen/FewSpecialFunctions.jl)
+  for Fresnel Integrals (`FresnelC`, `FresnelS`)
 
-- `poch(z, n)`, `(z)_n = Γ(z+n)/Γ(z)`, Pochhammer’s symbol (or shifted factorial)
-- `poch1(z, n)`, `≡ (poch(z, n) - 1)/z`
+## AiryFunctions.jl
 
-### Beta Function
+[DLMF: Chapter 9 Airy and Related Functions](https://dlmf.nist.gov/9)
 
-> - [DLMF: §5.12 Beta Function](https://dlmf.nist.gov/5.12)
-> - [Beta Function - Wolfram MathWorld](https://mathworld.wolfram.com/BetaFunction.html)
+- Airy Function:  Ai, Bi, Ai', Bi'
+- Zeros of Airy Function:  Ai_zeros, Bi_zeros
+- Integral of Airy Function:  Ai_int, Bi_int
+- Scorer Function:  Gi, Hi, Gi', Hi'
 
-- `beta(a, b)`:             Beta function
-- `logbeta(a, b)`:          log beta function
-- `logabsbeta(a, b)`:       log abs beta function
-- `beta(a, b, z)`:          incomplete beta function
-- `I(a, b, z)`, `betainc(a, b, z)`: regularized incomplete beta function
-- `betaincinv(a, b, y)`:    Inverse of the regularized incomplete beta function
+## Bessels.jl
 
+[DLMF: Chapter 10 Bessel Functions](https://dlmf.nist.gov/10)
 
-## Exponential and Trigonometric Integrals
+Use [JuliaMath/Bessels.jl: Bessel functions for real arguments and orders](https://github.com/JuliaMath/Bessels.jl/)
 
-> - [DLMF: Chapter 6 Exponential, Logarithmic, Sine, and Cosine Integrals](https://dlmf.nist.gov/6)
-> - [Named Integrals - Wolfram MathWorld](https://mathworld.wolfram.com/topics/NamedIntegrals.html)
+- Bessel Function:  Jν(x), Yν(x)
+- Modified Bessel Function:  Iν​(x), Kν​(x)
+- Hankel Function:  Hkν​(z), H1v(z) , H2v(z)
+- Spherical Bessel Function:  jν(x), yν(x), iν(x), kν(x)
+- Kelvin Function:  kelvin(x), kelvin_zeros(nt); ber(x), bei(x), ker(x), kei(x)
 
-### Exponential Integral
+## StruveFunctions.jl
 
-> - [DLMF: §6.2 Exponential and Logarithmic Integrals](https://dlmf.nist.gov/6.2)
-> - [DLMF: §8.19 Generalized Exponential Integral](https://dlmf.nist.gov/8.19)
+[DLMF: Chapter 11 Struve and Related Functions](https://dlmf.nist.gov/11)
 
-- `E₁(z)`, `expint(z::Complex)`: (principal value of) exponential integral
-- `Eν(z)`, `expint(ν::Complex, z::Complex)`: generalized exponential integral
-- `eᶻEν(z)`, `expintx(ν::Complex, z::Complex)`: scaled (generalized) exponential integral
-- `Ei(x)`, `expinti(x::Real)`: exponential integral
-- `Li(x)`, `logint(x::Real)`, `{x>1}`: logarithmic integral
+- Struve Function:  Hν(z), Lν(z); integral of ...
+- Lommel Function:  sμν(z), Sμν(z)
+- Anger and Weber Function:  Jν(z), Eν(z), Aν(z)
 
-### Trigonometric Integral
+See also:
 
-- `Si(z)`, `sinint(z)`: sine integral function
-- `Ci(z)`, `cosint(z)`: cosine integral function
-- `Shi(z)`, `sinhint(z)`: hyperbolic sine integral function
-- `Chi(z)`, `coshint(z)`: hyperbolic cosine integral function
+- (Obsolete? last update 2022) [gwater/Struve.jl](https://github.com/gwater/Struve.jl)
 
+## ParabolicCylinders.jl
 
-## Error Functions
+[DLMF: Chapter 12 Parabolic Cylinder Functions](https://dlmf.nist.gov/12)
 
-> - [DLMF: Chapter 7 Error Functions, Dawson’s and Fresnel Integrals](https://dlmf.nist.gov/7)
-> - [Error and Exponential Integral Functions — Wolfram Language Documentation](https://reference.wolfram.com/language/guide/ErrorAndExponentialIntegralFunctions.html)
+- Dν(z), V(a, z), U(a, z)
+- DLMF 12.14:  W(a, z)
 
-### Error Function
+See also:
 
-> - [DLMF: §7.2 Error Functions](https://dlmf.nist.gov/7.2#i)
-> - [DLMF: §7.17 Inverse Error Functions](https://dlmf.nist.gov/7.17)
-> - [Erf - Wolfram MathWorld](https://mathworld.wolfram.com/topics/Erf.html)
+- [MartinMikkelsen/FewSpecialFunctions.jl](https://github.com/MartinMikkelsen/FewSpecialFunctions.jl)
 
-- `erf(z)`:         error function
-- `erf(z0, z1)`:    generalized error function `erf(z1) - erf(z0)`
-- `erfc(z)`:        complementary error function
-- `erfcx(z)`:       Scaled complementary error function
-- `ω(z)`, `faddeeva(z)`: Faddeeva function
-- `erfi(z)`:        Imaginary error function
-- `erfinv(z)`:      inverse error function
-- `erfcinv(z)`:     inverse complementary error function
+## HypergeometricFunctions.jl
 
-### Dawson Integral
+[DLMF: Chapter 13 Confluent Hypergeometric Functions](https://dlmf.nist.gov/13)
+[DLMF: Chapter 15 Hypergeometric Function](https://dlmf.nist.gov/15)
+[DLMF: Chapter 16 Generalized Hypergeometric Functions and Meijer 𝐺-Function](https://dlmf.nist.gov/16)
 
-> - [DLMF: §7.2 Dawson’s Integral](https://dlmf.nist.gov/7.2#ii)
-> - [Dawson's Integral - Wolfram MathWorld](https://mathworld.wolfram.com/DawsonsIntegral.html)
+Use [JuliaMath/HypergeometricFunctions.jl: A Julia package for calculating hypergeometric functions](https://github.com/JuliaMath/HypergeometricFunctions.jl)
 
-- `dawson(z)`: Dawson integral
+- Hypergeometric Function:  ₂F₁(a,b,c,x)
+- Confluent Hypergeometric Function:  ₀F₁(a,z), ₁F₁(a,b,z), U(a,b,x), M(a,b,x)
+- Kummer Functions:  `₁F₁(a,b,z)`; `M(a,b,x)` (Olver’s confluent hypergeometric function); `U(a,b,z)`
+- Whittaker Functions:  Mκμ(z), Wκμ(z)
+- Generalized Hypergeometric Function:  pFq(A, B, z); MeijerG
 
-### Fresnel Integral
+## LegendreFunctions.jl
 
-> - [DLMF: §7.2 Fresnel Integrals](https://dlmf.nist.gov/7.2#iii)
-> - [Fresnel Integrals - Wolfram MathWorld](https://mathworld.wolfram.com/FresnelIntegrals.html)
+[DLMF: Chapter 14 Legendre and Related Functions](https://dlmf.nist.gov/14)
 
-- `C(z)`: Fresnel integral C(z)
-- `S(z)`: Fresnel integral S(z)
-- `f(z)`: Fresnel auxiliary function f(z)
-- `g(z)`: Fresnel auxiliary function g(z)
+- Legendre functions:  Pn(z), Qn(z)
+- Associated Legendre Function:  Pmn(z), Qmn(z)
 
+See also:
 
-## Airy Functions
+- [jishnub/LegendrePolynomials.jl](https://github.com/jishnub/LegendrePolynomials.jl)
+- [jmert/AssociatedLegendrePolynomials.jl](https://github.com/jmert/AssociatedLegendrePolynomials.jl)
 
-> - [DLMF: §9.2 Airy’s Equation](https://dlmf.nist.gov/9.2#i)
-> - [Airy Functions - Wolfram MathWorld](https://mathworld.wolfram.com/AiryFunctions.html)
+## QFunctions.jl
 
-- `Ai(z)`, `airyai(z)`:         Airy Ai function
-- `Ai'(z)`, `airyaiprime(z)`:   derivative of Airy Ai function
-- `Bi(z)`, `airybi(z)`:         Airy Bi function
-- `Bi'(z)`, `airybiprime(z)`:   derivative of Airy Bi function
-- `airyaix(z)`:         scaled Airy Ai function
-- `airyaiprimex(z)`:    scaled derivative of Airy Ai function
-- `airybix(z)`:         scaled Airy Bi function
-- `airybiprimex(z)`:    scaled derivative of Airy Bi function
+[DLMF: Chapter 17 𝑞-Hypergeometric and Related Functions](https://dlmf.nist.gov/17)
 
-### Zeros of Airy Function
+- TODO
 
-> - [DLMF: §9.9 Zeros ‣ Airy Functions](https://dlmf.nist.gov/9.9)
+## OrthogonalPolynomials.jl
 
-- `ai_zeros(nt)`:   Compute nt zeros and values of the Airy function Ai and its derivative
-- `bi_zeros(nt)`:   Compute nt zeros and values of the Airy function Bi and its derivative
+[DLMF: Chapter 18 Orthogonal Polynomials](https://dlmf.nist.gov/18)
 
-### Integral of Airy Function
+- Jacobi polynomials
+- Gegenbauer polynomials (Ultraspherical)
+- Chebyshev polynomials
+- Legendre polynomials
+- Laguerre polynomials
+- Hermite polynomials
+- Bessel polynomials
+- classical discrete orthogonal polynomials
+  - Hahn
+  - Krawtchouk
+  - Meixner
+  - Charlier
+- Other Orthogonal Polynomials
 
-> - [DLMF: §9.10 Integrals ‣ Airy Functions](https://dlmf.nist.gov/9.10)
+See also:
 
-- `airyaiint(z)`:   Integral of Airy Ai function
-- `airybiint(z)`:   Integral of Airy Bi function
+- [jverzani/SpecialPolynomials.jl](https://jverzani.github.io/SpecialPolynomials.jl/dev/#Implemented-polynomial-types)
+- [JuliaApproximation/ClassicalOrthogonalPolynomials.jl](https://juliaapproximation.github.io/ClassicalOrthogonalPolynomials.jl/stable/)
+- [sciml/PolyChaos.jl](https://docs.sciml.ai/PolyChaos/stable/functions/)
 
-### Scorer Function
+## EllipticFunctions.jl
 
-> - [DLMF: §9.12 Scorer Functions](https://dlmf.nist.gov/9.12)
+[DLMF: Chapter 19 Elliptic Integrals](https://dlmf.nist.gov/19)
+[DLMF: Chapter 20 Theta Functions](https://dlmf.nist.gov/20)
+[DLMF: Chapter 22 Jacobian Elliptic Functions](https://dlmf.nist.gov/22)
+[DLMF: Chapter 23 Weierstrass Elliptic and Modular Functions](https://dlmf.nist.gov/23)
 
-- `Gi(z)`:  Scorer function Gi(z)
-- `Gi'(z)`: derivative of the Scorer function Gi(z)
-- `Hi(z)`:  Scorer function Hi(z)
-- `Hi'(z)`: derivative of the Scorer function Hi(z)
+- Legendre Integral:  K(m), E(m), Π(u, m); F(Φ, m), E(Φ, m), Π(Φ, u, m)
+- Symmetric Integral:  RF(x, y, z), RG(x, y, z), RJ(x, y, z, p), RD(x, y, z), RC(x, y)
+- Theta Functions:  θ(n, z, q)
+- Jacobian Elliptic Functions:  sn(z, k), cn(z, k), dn(z, k)
+- Weierstrass Elliptic Functions:  WeierstrassP(z), WeierstrassZeta(z), WeierstrassSigma(x)
 
+See also:
 
-## Bessel Functions
+- [EllipticFunctions.jl documentation · EllipticFunctions](https://stla.github.io/EllipticFunctions.jl/)
+- [JacobiElliptic API · JacobiElliptic.jl](https://dominic-chang.com/JacobiElliptic.jl/stable/api/) for Jacobian Elliptic Functions
+- (Obsolete, last update 2020) [nolta/Elliptic.jl: Elliptic integral and Jacobi elliptic special functions](https://github.com/nolta/Elliptic.jl)
 
-> - [DLMF: Chapter 10 Bessel Functions](https://dlmf.nist.gov/10)
-> - [Bessel Functions - Wolfram MathWorld](https://mathworld.wolfram.com/topics/BesselFunctions.html)
+## Bernoulli and Euler Polynomials
 
-### Hankel Function
+[DLMF: Chapter 24 Bernoulli and Euler Polynomials](https://dlmf.nist.gov/24)
 
-> - [DLMF: §10.2 Bessel Functions of the Third Kind (Hankel Functions)](https://dlmf.nist.gov/10.2#Px3)
+- Bernoulli Numbers and Polynomials:  B(n), Bn(x)
+- Euler Numbers and Polynomials:  En, En(x)
 
-### Modified Bessel Function
+## ZetaFunctions.jl
 
-> - [DLMF: §10.25 Modified Bessel Functions](https://dlmf.nist.gov/10.25)
+[DLMF: Chapter 25 Zeta and Related Functions](https://dlmf.nist.gov/25)
 
-### Spherical Bessel Function
+- Riemann Zeta Function: ζ(s), ζ(s, a)
+- Dilogarithm:  `Li₂(z)` (dilogarithm), `Liₛ(z)` (polylogarithm)
+- Lerch’s Transcendent:  Φ(z, s, a)
+- Dirichlet L-function:  `L(s, χ)`; `η(s)` (Dirichlet eta function)
 
-> - [DLMF: §10.47 Spherical Bessel Functions](https://dlmf.nist.gov/10.47)
+See also:
 
-### Kelvin Function
+- Polylogarithm
+  - [Expander/PolyLog.jl: Implementation of polylogarithms in Julia](https://github.com/Expander/PolyLog.jl)
+  - [mroughan/Polylogarithms.jl: Polylogarithm function and related special functions and sequences.](https://github.com/mroughan/Polylogarithms.jl)
 
-> - [DLMF: §10.61 Kelvin Functions](https://dlmf.nist.gov/10.61)
-> - [Kelvin Functions - Wolfram MathWorld](https://mathworld.wolfram.com/KelvinFunctions.html)
+## Combinatorial Analysis
 
-- `kelvin(x)`:          Kelvin Function
-- `kelvin_zeros(nt)`
-- `ber(x), bei(x)`:     Kelvin Function of the First Kind
-- `ker(x), kei(x)`:     Kelvin Function of the Second Kind
-- `berp(x), beip(x)`:   Derivative of the Kelvin Function of the First Kind
-- `kerp(x), keip(x)`:   Derivative of the Kelvin Function of the Second Kind
+[DLMF: Chapter 26 Combinatorial Analysis](https://dlmf.nist.gov/26)
 
+Use [JuliaMath/Combinatorics.jl: A combinatorics library for Julia](https://github.com/JuliaMath/Combinatorics.jl)
 
-## Struve Functions
+## NumberTheoryFunctions.jl
 
-> - [DLMF: Chapter 11 Struve and Related Functions](https://dlmf.nist.gov/11)
-> - [Struve Function - Wolfram MathWorld](https://mathworld.wolfram.com/StruveFunction.html)
+[DLMF: Chapter 27 Functions of Number Theory](https://dlmf.nist.gov/27)
 
-- `Hν(z)`, `StruveH`:   Struve function
-- `Lν(z)`, `StruveL`:   Modified Struve function
-- `∫Hν(z)`:     Integrals of Struve function
-- `∫Lν(z)`:     Integrals of Modified Struve function
+- TODO
 
-### Lommel Function
+## MathieuFunctions.jl
 
-> - [DLMF: §11.9 Lommel Functions](https://dlmf.nist.gov/11.9)
+[DLMF: Chapter 28 Mathieu Functions and Hill’s Equation](https://dlmf.nist.gov/28)
 
-- `sμν(z)`, `LommelS1(μ, ν, z)`:    Lommel function `s`
-- `Sμν(z)`, `LommelS2(μ, ν, z)`:    Lommel function `S`
-- `tₘₙ(z)`, `LommelT1(m, n, z)`:    Modified Lommel Function `t`
-- `Tₘₙ(z)`, `LommelT2(m, n, z)`:    Modified Lommel Function `T`
+- Mathieu Functions:  cem(a, q, z), sem(a, q, z), cem‘(a, q, z), sem’(b, q, z)
+- Characteristic Value of Mathieu function:  mathieu_a(n, q), mathieu_b(n, q), mathieu_exp(a, q)
 
-### Anger and Weber Function
+See also:
 
-> - [DLMF: §11.10 Anger–Weber Functions](https://dlmf.nist.gov/11.10)
+- [BBN-Q/MathieuFunctions.jl: Julia package for Mathieu Functions](https://github.com/BBN-Q/MathieuFunctions.jl)
+- (Obsolete, last update 2020) [Integer Order Characteristic Values · Mathieu.jl](https://jebej.github.io/Mathieu.jl/dev/api/values.html)
 
-- `Jν(z)`, `AngerJ(ν, z)`:  Anger Function
-- `Eν(z)`, `WeberE(ν, z):   Weber Function
-- `Aν(z)`, `AngerWeberA(ν, z)`:     associated Anger-Weber function
-- `∫Jν(z)`:     Integrals of Anger Function
-- `∫Eν(z)`:     Integrals of Weber Function
+## SpheroidalWaves.jl
 
+[DLMF: Chapter 30 Spheroidal Wave Functions](https://dlmf.nist.gov/30)
 
-## Parabolic Cylinder Functions
+- Angular Spheroidal Wave:  PSmn(z, γ), QSmn(z, γ), PS'mn(z, γ), QS'mn(z, γ)
+- Radial Spheroidal Wave Function:  S1mn(z, γ), S2mn(z, γ), S1'mn(z, γ), S2'mn(z, γ)
+- Eigenvalues:  λmn(γ)
 
-> - [DLMF: §12.2 Parabolic Cylinder Functions](https://dlmf.nist.gov/12.2)
-> - [DLMF: §12.14 The Function 𝑊(𝑎,𝑥) ‣ Parabolic Cylinder Functions](https://dlmf.nist.gov/12.14)
-> - [Parabolic Cylinder Functions - Wolfram MathWorld](https://mathworld.wolfram.com/topics/ParabolicCylinderFunctions.html)
+## HeunFunctions.jl
 
-- `Dn(z)`, `pbdv(v, x)`:    Parabolic cylinder function, in Whittaker’s notation Dn
-- `V(a, x)`, `pbvv(v, x)`:  Parabolic cylinder function V
-- `U(a, z)`:                Parabolic cylinder function U
-- `W(a, x)`, `pbwa(v, x)`:  Parabolic cylinder function W
+[DLMF: Chapter 29 Lamé Functions](https://dlmf.nist.gov/29)
+[DLMF: Chapter 31 Heun Functions](https://dlmf.nist.gov/31)
+[Heun and Related Functions—Wolfram Documentation](https://reference.wolfram.com/language/guide/HeunAndRelatedFunctions.html)
 
+- Lamé Functions:
+- Heun Functions:
 
-## Hypergeometric Functions
+## CoulombFunctions.jl
 
-> - [DLMF: Chapter 15 Hypergeometric Function](https://dlmf.nist.gov/15)
-> - [Hypergeometric Function - Wolfram MathWorld](https://mathworld.wolfram.com/HypergeometricFunction.html)
+[DLMF: Chapter 33 Coulomb Functions](https://dlmf.nist.gov/33)
 
-- `₂F₁(a,b,c,x)`, `hyp2f1(a,b,c,x)`:    Gauss hypergeometric function 2F1
+- F_L(η,ρ), G_L(η,ρ), H⁺L(η,ρ), H⁻L(η,ρ)
+- `σL(η)` (Coulomb phase shift)
 
-### Confluent Hypergeometric Function
+See also:
 
-> - [DLMF: Chapter 13 Confluent Hypergeometric Functions](https://dlmf.nist.gov/13)
-> - [DLMF: §13.14 Whittaker Functions](https://dlmf.nist.gov/13.14)
-> - [Confluent Hypergeometric Functions - Wolfram MathWorld](https://mathworld.wolfram.com/topics/ConfluentHypergeometricFunctions.html)
+- [Coulomb Functions · CoulombFunctions.jl](https://www.tipota.org/CoulombFunctions.jl/dev/coulomb_functions/)
 
-- `₀F₁(a,z)`, `hyp0F1(a,z)`:        hypergeometric function 0F1
-- `₁F₁(a,b,z)`, `hyp1f1(a,b,z)`:    Kummer confluent hypergeometric function 1F1
-- `U(a,b,x)`, `hyperu(a,b,x)`:      confluent hypergeometric function U
-- `M(a,b,x)`:                       Olver’s confluent hypergeometric function
-- `Mκμ(z)`, `WhittakerM(k,m,z)`:    Whittaker confluent hypergeometric function M
-- `Wκμ(z)`, `WhittakerW(k,m,z)`:    Whittaker confluent hypergeometric function W
 
-### Generalized Hypergeometric Function
+## References
 
-> - [DLMF: Chapter 16 Generalized Hypergeometric Functions and Meijer 𝐺-Function](https://dlmf.nist.gov/16)
-> - [Generalized Hypergeometric Functions - Wolfram MathWorld](https://mathworld.wolfram.com/topics/GeneralizedHypergeometricFunctions.html)
-
-- `pFq(A, B, z)`, `Hyper(as, bs, z)`:       Generalized Hypergeometric Function
-- `Gmnpq(A, B, z)`, `MeijerG(as, bs, z)`:   Meijer G-Function
-
-
-## Legendre Functions
-
-> - [DLMF: §14.2 Legendre and Related Functions](https://dlmf.nist.gov/14.2)
-> - [DLMF: §14.30 Spherical and Spheroidal Harmonics](https://dlmf.nist.gov/14.30)
-
-- `Pn(z)`, `LegendreP(n, z)`:       Legendre functions of the first kind
-- `Qn(z)`, `LegendreQ(n, z)`:       Legendre functions of the second kind
-- `Pmn(z)`, `LegendreP(n, m, z)`:   associated Legendre functions of the first kind
-- `Qmn(z)`, `LegendreQ(n, m, z)`:   associated Legendre functions of the second kind
-- `Yml(θ, ϕ)`:  spherical harmonic
-
-
-## Elliptic Integrals
-
-> - [DLMF: Chapter 19 Elliptic Integrals](https://dlmf.nist.gov/19)
-> - [Elliptic Integrals - Wolfram MathWorld](https://mathworld.wolfram.com/topics/EllipticIntegrals.html)
-
-### Legendre Integral
-
-> - [Legendre’s Integrals - DLMF](https://dlmf.nist.gov/19.2.8)
-
-- `F(Φ, m)`,    (Legendre’s) incomplete elliptic integral of the first kind
-- `E(Φ, m)`,    (Legendre’s) incomplete elliptic integral of the second kind
-- `Π(Φ, u, m)`, (Legendre’s) incomplete elliptic integral of the third kind
-- `K(m)`,       `≡ F(π/2, m)`: `{m in (-Inf,1]}`, (Legendre’s) complete elliptic integral of the first kind
-- `E(m)`,       `≡ E(π/2, m)`: `{m in (-Inf,1]}`, (Legendre’s) complete elliptic integral of the second kind
-- `Π(u, m)`,    `≡ Π(π/2, u, m)`:   (Legendre’s) complete elliptic integral of the third kind
-
-### Symmetric Integral
-
-> - [Symmetric Integrals - DLMF](https://dlmf.nist.gov/19.16)
-> - [Carlson Elliptic Integrals - MathWorld](https://mathworld.wolfram.com/CarlsonEllipticIntegrals.html)
-
-- `RF(x, y, z)`,    symmetric elliptic integral of first kind
-- `RG(x, y, z)`,    symmetric elliptic integral of second kind
-- `RJ(x, y, z, p)`, symmetric elliptic integral of third kind
-- `RD(x, y, z)`,    `≡ RJ(x, y, z, z)`, elliptic integral symmetric in only two variables
-- `RC(x, y)`,       `≡ RF(x, y, y)`,    Carlson’s combination of inverse circular and inverse hyperbolic functions
-
-
-## Elliptic Functions
-
-### Theta Function
-
-> - [DLMF: §20.2 Theta Functions](https://dlmf.nist.gov/20.2)
-> - [Theta Functions - Wolfram MathWorld](https://mathworld.wolfram.com/topics/ThetaFunctions.html)
-
-- `jtheta(n, z, q)`:    (Jacobi) Theta function
-
-### Jacobi Elliptic Function
-
-> - [DLMF: §22.2 Jacobian Elliptic Functions](https://dlmf.nist.gov/22.2)
-> - [Jacobi Elliptic Functions - Wolfram MathWorld](https://mathworld.wolfram.com/JacobiEllipticFunctions.html)
-
-- `sn(z, k)`, Jacobi Elliptic Function sn
-- `cn(z, k)`, Jacobi Elliptic Function cn
-- `dn(z, k)`, Jacobi Elliptic Function dn
-
-### Weierstrass Elliptic Function
-
-> - [DLMF: §23.2 Weierstrass Elliptic Functions Functions](https://dlmf.nist.gov/23.2)
-> - [Weierstrass Elliptic Function - Wolfram MathWorld](https://mathworld.wolfram.com/WeierstrassEllipticFunction.html)
-> - [Weierstrass Zeta Function - Wolfram MathWorld](https://mathworld.wolfram.com/WeierstrassZetaFunction.html)
-> - [Weierstrass Sigma Function - Wolfram MathWorld](https://mathworld.wolfram.com/WeierstrassSigmaFunction.html)
-
-- `WeierstrassP(z)`,        Weierstrass ℘ function
-- `WeierstrassZeta(z)`,     Weierstrass zeta function
-- `WeierstrassSigma(x)`,    Weierstrass sigma function
-
-
-## Zeta Functions
-
-> - [DLMF: §25.2 Riemann Zeta Function](https://dlmf.nist.gov/25.2)
-> - [DLMF: §25.11 Hurwitz Zeta Function](https://dlmf.nist.gov/25.11)
-> - [Riemann Zeta Function - Wolfram MathWorld](https://mathworld.wolfram.com/RiemannZetaFunction.html)
-> - [Hurwitz Zeta Function - Wolfram MathWorld](https://mathworld.wolfram.com/HurwitzZetaFunction.html)
-
-- `ζ(s)`, `zeta(s)`: Riemann zeta function
-- `ζ(s, a)`, `zeta(s, a)`: generalized Riemann zeta function, Hurwitz zeta function
-
-### Dilogarithm
-
-> - [DLMF: §25.12 Polylogarithms](https://dlmf.nist.gov/25.12)
-> - [Spence's Function - Wolfram MathWorld](https://mathworld.wolfram.com/SpencesFunction.html)
-> - [Lerch Transcendent - Wolfram MathWorld](https://mathworld.wolfram.com/LerchTranscendent.html)
-
-- `Li₂(z)`, `spence(z)`: Spence’s function, also known as the dilogarithm.
-- `Liₛ(z)`, `PolyLog(n, z)`: polylogarithm
-- `Φ(z, s, a)`, `LerchPhi(z, s, a)`: Lerch transcendent
-
-### Dirichlet L-function
-
-> - [DLMF: §25.15 Dirichlet 𝐿-functions](https://dlmf.nist.gov/25.15)
-> - [Dirichlet L-Series - Wolfram MathWorld](https://mathworld.wolfram.com/DirichletL-Series.html)
-> - [Dirichlet Eta Function - Wolfram MathWorld](https://mathworld.wolfram.com/DirichletEtaFunction.html)
-
-- `L(s, χ)`, `dirichlet(s, chi)`: Dirichlet L-function
-- `η(s)`, `eta(s)`, `dirichlet(s, [-1,1])`: Dirichlet eta function
-
-
-## Mathieu Functions
-
-> - [DLMF: §28.2 Mathieu Functions of Integer Order ‣ Eigenfunctions](https://dlmf.nist.gov/28.2#vi)
-> - [Mathieu Function - Wolfram MathWorld](https://mathworld.wolfram.com/MathieuFunction.html)
-
-- `cem(a, q, z)`, `MathieuC(a, q, z)`:  even, periodic Mathieu functions with characteristic value a and parameter q
-- `sem(b, q, z)`, `MathieuS(b, q, z)`:  odd, periodic Mathieu functions with characteristic value b and parameter q
-- `cemp(a, q, z)`, `MathieuCPrime(a, q, z)`:    z derivatives of even Mathieu functions
-- `semp(b, q, z)`, `MathieuSPrime(b, q, z)`:    z derivatives of odd Mathieu functions
-
-### Characteristic Value of Mathieu function
-
-> - [DLMF: §28.2 Mathieu Functions of Integer Order ‣ Eigenvalues](https://dlmf.nist.gov/28.2#v)
-
-- `mathieu_a(n, q)`, `MathieuCharacteristicA(n, q)`,  eigenvalues of even Mathieu functions
-- `mathieu_b(n, q)`, `MathieuCharacteristicB(n, q)`,  eigenvalues of odd Mathieu functions
-- `mathieu_exp(a ,q)`, `MathieuCharacteristicExponent(a ,q)`: characteristic exponent r for Mathieu functions
-
-
-## Spheroidal Wave Functions
-
-> - [DLMF: Chapter 30 Spheroidal Wave Functions](https://dlmf.nist.gov/30)
-> - [Prolate Spheroidal Coordinates - Wolfram MathWorld](https://mathworld.wolfram.com/ProlateSpheroidalCoordinates.html)
-> - [Oblate Spheroidal Coordinates - Wolfram MathWorld](https://mathworld.wolfram.com/OblateSpheroidalCoordinates.html)
-
-### Spheroidal Wave Function
-
-> - [DLMF: §30.11 Radial Spheroidal Wave Functions](https://dlmf.nist.gov/30.11)
-> - [DLMF: §30.4 Functions of the First Kind](https://dlmf.nist.gov/30.4)
-> - [DLMF: §30.5 Functions of the Second Kind](https://dlmf.nist.gov/30.5)
-
-γ² > 0 corresponds to a prolate spheroidal geometry,
-while γ² <= 0 corresponds to an oblate spheroidal geometry.
-
-- `S1mn(z, γ)`, `SpheroidalS1(n, m, γ, z)`: Radial Spheroidal Wave Function S1
-- `S2mn(z, γ)`, `SpheroidalS2(n, m, γ, z)`: Radial Spheroidal Wave Function S2
-- `PSmn(z, γ)`, `SpheroidalPS(n, m, γ, z)`: Angular Spheroidal Wave Function PS
-- `QSmn(z, γ)`, `SpheroidalQS(n, m, γ, z)`: Angular Spheroidal Wave Function QS
-
-### Spheroidal Eigenvalue
-
-> - [DLMF: §30.3 Eigenvalues ‣ Chapter 30 Spheroidal Wave Functions](https://dlmf.nist.gov/30.3)
-
-- `λmn(γ)`, `SpheroidalEigenvalue(n, m, γ)`: Spheroidal Eigenvalue of degree `n` and order `m`
-
-
-## Miscellaneous Functions
-
-> TODO
+- Special Functions implementation survey:  [Special Functions impl](https://gist.github.com/inkydragon/4f45468ef1a6e8498ff6ff9175175638)
+    Investigated the implementation of special functions in `Mathematica`, the `Julia` ecosystem, and `scipy` (`xsf`).
+- [DLMF: Software Index](https://dlmf.nist.gov/software/)
+- [Special Functions — Wolfram Documentation](https://reference.wolfram.com/language/guide/SpecialFunctions.html)
+- [Special Functions -- from Wolfram MathWorld](https://mathworld.wolfram.com/topics/SpecialFunctions.html)
+- [SageMath Functions](https://doc.sagemath.org/html/en/reference/functions/index.html)
+- [Special Functions — GSL 2.8 documentation](https://www.gnu.org/software/gsl/doc/html/specfunc.html)
