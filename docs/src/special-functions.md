@@ -34,7 +34,7 @@ SpecialFunctions.jl consists of the following sub-packages:
 - Gamma Function:  `Γ(z)`, InvGamma, `ln Γ(z)`, `ln |Γ(z)|`; `ψ(z)`, `ψ⁽ⁿ⁾(z)` (PolyGamma)
 - Incomplete Gamma Function:  `γ(a, z)`, `Γ(a, z)`; `P(a, z)`, `Q(a, z)`, Inverse ...,
 - Beta Function:  `B(a, b)`, `ln B(a, b)`, `ln |B(a, b)|`; `Bₓ(a, b)`, `Iₓ(a, b)`, `betaincinv(a, b, y)`
-- Pochhammer Function:  `poch(z, n),`
+- Pochhammer Function:  `poch(z, n)`
 
 ## ExponentialIntegrals.jl
 
@@ -253,7 +253,7 @@ See also:
 
 ## References
 
-- Special Functions implementaion survey:  [Special Functions impl](https://gist.github.com/inkydragon/4f45468ef1a6e8498ff6ff9175175638)
+- Special Functions implementation survey:  [Special Functions impl](https://gist.github.com/inkydragon/4f45468ef1a6e8498ff6ff9175175638)
     Investigated the implementation of special functions in `Mathematica`, the `Julia` ecosystem, and `scipy` (`xsf`).
 - [DLMF: Software Index](https://dlmf.nist.gov/software/)
 - [Special Functions — Wolfram Documentation](https://reference.wolfram.com/language/guide/SpecialFunctions.html)
