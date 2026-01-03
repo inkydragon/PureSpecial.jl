@@ -9,6 +9,7 @@ reference_pages = Any[
         "reference/gamma/index.md"
         "reference/gamma/gamma.md"
     ],
+    "reference/exp-integral/index.md",
 
     # TODO: plot is slow
     # "Struve Functions" => Any[
@@ -47,11 +48,13 @@ makedocs(;
         edit_link="main",
         assets=String[],
     ),
-    pages=pages,
+    warnonly=true,
     checkdocs=:exports,
+    pages=pages,
 )
 
 deploydocs(;
     repo="github.com/inkydragon/PureSpecial.jl",
     devbranch="main",
+    push_preview=true,
 )
