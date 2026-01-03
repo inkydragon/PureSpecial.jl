@@ -8,12 +8,12 @@ using PureSpecial.Specfun
 
 plot
 ```@example
-using Plots
+# using Plots
 using PureSpecial.Specfun: itsh0
 
 x = collect(0:1000) / 1000;
-plot(x, itsh0.(x))
-title!("integral of Struve function H0(t)")
+# plot(x, itsh0.(x))
+# title!("integral of Struve function H0(t)")
 ```
 
 ## Lommel Function
