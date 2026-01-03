@@ -1,23 +1,29 @@
 # Exponential Integrals
 
-[DLMF: Chapter 6 Exponential, Logarithmic, Sine, and Cosine Integrals](https://dlmf.nist.gov/6)
+```@docs
+PureSpecial.ExponentialIntegralsDoc
+```
 
 ## Exponential Integral
 
-        E₁(z)
-        Eν(z)
-        eᶻEν(z)
-        Ei(x)
-        Li(x), {x>1}
+```@docs
+PureSpecial.expint1
+PureSpecial.expint
+PureSpecial.expintx
+PureSpecial.expinti
+```
+
+### Logarithmic integral
+
+```@docs
+PureSpecial.logint
+```
 
 ## Trigonometric Integral
 
-        Si(z)
-        Ci(z)
-        Shi(z)
-        Chi(z)
-
-```@autodocs
-Modules = [PureSpecial]
-Pages   = ["exp_int.jl"]
+```@docs
+PureSpecial.sinint
+PureSpecial.cosint
+PureSpecial.sinhint
+PureSpecial.coshint
 ```
