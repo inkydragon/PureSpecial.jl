@@ -16,3 +16,8 @@
         Ci(z)
         Shi(z)
         Chi(z)
+
+```@autodocs
+Modules = [PureSpecial]
+Pages   = ["exp_int.jl"]
+```

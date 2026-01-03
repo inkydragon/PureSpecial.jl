@@ -19,3 +19,9 @@
 | [`digamma`](@ref)     | digamma function          |
 | [`trigamma`](@ref)    | trigamma function         |
 | [`polygamma`](@ref)   | polygamma function        |
+
+
+```@autodocs
+Modules = [PureSpecial]
+Pages   = ["gamma.jl"]
+```
