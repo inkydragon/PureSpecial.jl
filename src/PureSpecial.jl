@@ -21,6 +21,16 @@
 """
 module PureSpecial
 
+# APIs
+include("api/AbstractSpecialFunctions.jl")
+import .AbstractSpecialFunctions
+
+"""
+For internal use only.
+"""
+const ASF = AbstractSpecialFunctions
+
+
 # Submod
 include("specfun/Specfun.jl")
 import .Specfun

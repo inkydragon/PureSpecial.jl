@@ -1,7 +1,7 @@
 # Exponential Integrals
 
 ```@docs
-PureSpecial.ExponentialIntegralsDoc
+PureSpecial.ASF.ExponentialIntegralsDoc
 ```
 
 ## Exponential Integral
