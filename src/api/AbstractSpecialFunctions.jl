@@ -29,6 +29,7 @@ This package provides abstract interfaces for Special Functions.
 """
 module AbstractSpecialFunctions
 
+include("gamma.jl")
 include("exp_int.jl")
 
 end # AbstractSpecialFunctions

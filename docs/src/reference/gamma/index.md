@@ -1,6 +1,10 @@
-# Gamma Function Index
+# Gamma Functions
 
-## Factorial Functions
+```@docs
+PureSpecial.ASF.GammaFunctionsDoc
+```
+
+## Factorial Function
 
 | Function              | Description               |
 |:----------------------|:--------------------------|
@@ -9,7 +13,23 @@
 | [`factorialk`](@ref)  | multifactorial function   |
 | `Base.binomial`       | binomial coefficient  |
 
-## Gamma Functions
+```@docs
+PureSpecial.ASF.factorial
+PureSpecial.ASF.doublefactorial
+PureSpecial.ASF.multifactorial
+PureSpecial.ASF.superfactorial
+PureSpecial.ASF.hyperfactorial
+```
+
+### Binomial Coefficient
+
+```@docs
+PureSpecial.ASF.binomial
+PureSpecial.ASF.multinomial
+```
+
+
+## Gamma Function
 
 | Function              | Description               |
 |:----------------------|:--------------------------|
@@ -20,6 +40,13 @@
 | [`trigamma`](@ref)    | trigamma function         |
 | [`polygamma`](@ref)   | polygamma function        |
 
+## Incomplete Gamma Function
+
+## Pochhammer Function
+
+## Beta Function
+
+## Autodoc
 
 ```@autodocs
 Modules = [PureSpecial]
