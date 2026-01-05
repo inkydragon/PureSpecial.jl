@@ -31,5 +31,6 @@ module AbstractSpecialFunctions
 
 include("gamma.jl")
 include("exp_int.jl")
+include("error.jl")
 
 end # AbstractSpecialFunctions

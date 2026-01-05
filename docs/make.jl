@@ -10,6 +10,7 @@ reference_pages = Any[
         "reference/gamma/gamma.md"
     ],
     "reference/exp-integral/index.md",
+    "reference/error/index.md",
 
     # TODO: plot is slow
     # "Struve Functions" => Any[
