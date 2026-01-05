@@ -52,6 +52,10 @@ PureSpecial.ASF.polygamma
 
 ## Beta Function
 
+```@docs
+PureSpecial.ASF.beta
+```
+
 ## Autodoc
 
 ```@autodocs

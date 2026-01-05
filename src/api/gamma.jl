@@ -14,8 +14,11 @@
 ## Incomplete Gamma Function
 ## Pochhammer Function
 ## Beta Function
+- beta
 
 # Reference
+- [DLMF: Chapter 5 Gamma Function](https://dlmf.nist.gov/5)
+- [Gamma Functions -- from Wolfram MathWorld](https://mathworld.wolfram.com/topics/GammaFunctions.html)
 """
 const GammaFunctionsDoc = nothing
 
@@ -141,3 +144,15 @@ Also known as:  `psi_n(n, z)`.
 - [Polygamma Function -- from Wolfram MathWorld](https://mathworld.wolfram.com/PolygammaFunction.html)
 """
 function polygamma end
+
+"""
+    beta(a::Real, b::Real)
+    beta(a::Complex, b::Complex)
+
+Beta function, `B(a, b)`.
+
+# Reference
+- [DLMF: §5.12.1 beta function](https://dlmf.nist.gov/5.12#E1)
+- [Beta Function -- from Wolfram MathWorld](https://mathworld.wolfram.com/BetaFunction.html)
+"""
+function beta end
