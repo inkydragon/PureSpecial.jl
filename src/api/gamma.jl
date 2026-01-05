@@ -9,6 +9,8 @@
 - binomial, multinomial
 
 ## Gamma Function
+- gamma, digamma, polygamma
+
 ## Incomplete Gamma Function
 ## Pochhammer Function
 ## Beta Function
@@ -99,3 +101,43 @@ Multinomial coefficient, `C(n₁, n₂, ..., nₖ)`.
 - [Multinomial Coefficient -- from Wolfram MathWorld](https://mathworld.wolfram.com/MultinomialCoefficient.html)
 """
 function multinomial end
+
+"""
+    gamma(x::Real)
+    gamma(z::Complex)
+
+Gamma function, `Γ(z)`.
+
+# Reference
+- [DLMF: §5.2.1 gamma function](https://dlmf.nist.gov/5.2#E1)
+- [Gamma Function -- from Wolfram MathWorld](https://mathworld.wolfram.com/GammaFunction.html)
+"""
+function gamma end
+
+"""
+    digamma(x::Real)
+    digamma(z::Complex)
+
+Digamma function, `Ψ(z)`.
+
+Also known as:  `psi(z)`.
+
+# Reference
+- [DLMF: §5.2.2 psi (or digamma) function](https://dlmf.nist.gov/5.2#E2)
+- [Digamma Function -- from Wolfram MathWorld](https://mathworld.wolfram.com/DigammaFunction.html)
+"""
+function digamma end
+
+"""
+    polygamma(n::Integer, x::Real)
+    polygamma(n::Integer, z::Complex)
+    
+Polygamma function, `Ψ⁽ⁿ⁾(z)`.
+
+Also known as:  `psi_n(n, z)`.
+
+# Reference
+- [DLMF: §5.15.2 polygamma functions](https://dlmf.nist.gov/5.15#E2)
+- [Polygamma Function -- from Wolfram MathWorld](https://mathworld.wolfram.com/PolygammaFunction.html)
+"""
+function polygamma end

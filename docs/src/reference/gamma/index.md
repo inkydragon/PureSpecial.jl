@@ -40,6 +40,12 @@ PureSpecial.ASF.multinomial
 | [`trigamma`](@ref)    | trigamma function         |
 | [`polygamma`](@ref)   | polygamma function        |
 
+```@docs
+PureSpecial.ASF.gamma
+PureSpecial.ASF.digamma
+PureSpecial.ASF.polygamma
+```
+
 ## Incomplete Gamma Function
 
 ## Pochhammer Function
