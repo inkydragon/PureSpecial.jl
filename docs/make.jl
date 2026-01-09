@@ -9,6 +9,8 @@ reference_pages = Any[
         "reference/gamma/index.md"
         "reference/gamma/gamma.md"
     ],
+    "reference/exp-integral/index.md",
+    "reference/error/index.md",
 
     # TODO: plot is slow
     # "Struve Functions" => Any[
@@ -21,6 +23,12 @@ pages = Any[
     "Home" => "index.md",
     "special-functions.md",
     "Reference" => reference_pages,
+    "AbstractSpecialFunctions" => Any[
+        "api/index.md",
+        "api/gamma.md",
+        "api/exp-int.md",
+        "api/error.md",
+    ],
 
     "Dev doc" => Any[
         "impls.md",
@@ -37,7 +45,7 @@ pages = Any[
 ]
 
 makedocs(;
-    modules=[PureSpecial, PureSpecial.Specfun],
+    modules=[PureSpecial, PureSpecial.Specfun, PureSpecial.AbstractSpecialFunctions],
     repo=Remotes.GitHub("inkydragon", "PureSpecial.jl"),
     authors="Chengyu HAN <cyhan.dev@outlook.com> and contributors",
     sitename="PureSpecial.jl",
@@ -47,11 +55,13 @@ makedocs(;
         edit_link="main",
         assets=String[],
     ),
-    pages=pages,
+    warnonly=true,
     checkdocs=:exports,
+    pages=pages,
 )
 
 deploydocs(;
     repo="github.com/inkydragon/PureSpecial.jl",
     devbranch="main",
+    push_preview=true,
 )

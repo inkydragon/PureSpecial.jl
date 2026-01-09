@@ -9,6 +9,16 @@
 
 ## Dev
 
+### Build docs
+
+```sh
+# The following command will init docs project in the `docs/` directory.
+#   You only need to run this line once.
+julia --project=docs -e "using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate();"
+julia --project=docs docs/make.jl
+# html files located in `docs/build/`
+```
+
 ### Test
 
 > You need a fortran compiler to run the test.

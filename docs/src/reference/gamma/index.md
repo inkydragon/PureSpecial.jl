@@ -1,6 +1,6 @@
-# Gamma Function Index
+# Gamma Functions
 
-## Factorial Functions
+## Factorial Function
 
 | Function              | Description               |
 |:----------------------|:--------------------------|
@@ -9,7 +9,16 @@
 | [`factorialk`](@ref)  | multifactorial function   |
 | `Base.binomial`       | binomial coefficient  |
 
-## Gamma Functions
+```@docs
+```
+
+### Binomial Coefficient
+
+```@docs
+```
+
+
+## Gamma Function
 
 | Function              | Description               |
 |:----------------------|:--------------------------|
@@ -19,3 +28,22 @@
 | [`digamma`](@ref)     | digamma function          |
 | [`trigamma`](@ref)    | trigamma function         |
 | [`polygamma`](@ref)   | polygamma function        |
+
+```@docs
+```
+
+## Incomplete Gamma Function
+
+## Pochhammer Function
+
+## Beta Function
+
+```@docs
+```
+
+## Autodoc
+
+```@autodocs
+Modules = [PureSpecial]
+Pages   = ["gamma.jl"]
+```
