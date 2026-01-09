@@ -9,12 +9,14 @@
 - binomial, multinomial
 
 ## Gamma Function
-- gamma, digamma, polygamma
+- [`gamma(z)`](@ref), [`digamma(z)`](@ref), [`polygamma(n,z)`](@ref)
 
 ## Incomplete Gamma Function
+
 ## Pochhammer Function
+
 ## Beta Function
-- beta
+- [`beta(a,b)`](@ref)
 
 # Reference
 - [DLMF: Chapter 5 Gamma Function](https://dlmf.nist.gov/5)
