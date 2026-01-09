@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Cephes · PureSpecial.jl</title><meta name="title" content="Cephes · PureSpecial.jl"/><meta property="og:title" content="Cephes · PureSpecial.jl"/><meta property="twitter:title" content="Cephes · PureSpecial.jl"/><meta name="description" content="Documentation for PureSpecial.jl."/><meta property="og:description" content="Documentation for PureSpecial.jl."/><meta property="twitter:description" content="Documentation for PureSpecial.jl."/><meta property="og:url" content="https://cyhan.dev/PureSpecial.jl/cephes/"/><meta property="twitter:url" content="https://cyhan.dev/PureSpecial.jl/cephes/"/><link rel="canonical" href="https://cyhan.dev/PureSpecial.jl/cephes/"/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">PureSpecial.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li><a class="tocitem" href="../special-functions/">Special Function Packages</a></li><li><span class="tocitem">Reference</span><ul><li><input class="collapse-toggle" id="menuitem-3-1" type="checkbox"/><label class="tocitem" for="menuitem-3-1"><span class="docs-label">Gamma Functions</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../reference/gamma/">Gamma Functions</a></li><li><a class="tocitem" href="../reference/gamma/gamma/"><code>gamma</code></a></li></ul></li><li><a class="tocitem" href="../reference/exp-integral/">Exponential Integrals</a></li><li><a class="tocitem" href="../reference/error/">Error Functions</a></li><li><a class="tocitem" href="../reference/autodocs/">Autogen Docs</a></li></ul></li><li><span class="tocitem">AbstractSpecialFunctions</span><ul><li><a class="tocitem" href="../api/">AbstractSpecialFunctions</a></li><li><a class="tocitem" href="../api/gamma/">Gamma Functions</a></li><li><a class="tocitem" href="../api/exp-int/">Exponential Integrals</a></li><li><a class="tocitem" href="../api/error/">Error Functions</a></li></ul></li><li><span class="tocitem">Dev doc</span><ul><li><a class="tocitem" href="../impls/">Implementations</a></li><li><a class="tocitem" href="../scipy.special/">scipy.special</a></li><li><input class="collapse-toggle" id="menuitem-5-3" type="checkbox"/><label class="tocitem" for="menuitem-5-3"><span class="docs-label">specfun.f</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../specfun/">Specfun</a></li><li><a class="tocitem" href="../specfun/book-chapters/">Functions by Chapter</a></li><li><a class="tocitem" href="../specfun/book-index/">Function Index in CoSF</a></li><li><a class="tocitem" href="../specfun/autodocs/">AutoGen Docs</a></li></ul></li><li class="is-active"><a class="tocitem" href>Cephes</a><ul class="internal"><li><a class="tocitem" href="#Double-Precision"><span>Double Precision</span></a></li></ul></li><li><a class="tocitem" href="../faddeeva/">Faddeeva</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Dev doc</a></li><li class="is-active"><a href>Cephes</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Cephes</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/inkydragon/PureSpecial.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/inkydragon/PureSpecial.jl/blob/main/docs/src/cephes/index.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Cephes"><a class="docs-heading-anchor" href="#Cephes">Cephes</a><a id="Cephes-1"></a><a class="docs-heading-anchor-permalink" href="#Cephes" title="Permalink"></a></h1><blockquote><p>CEPHES MATHEMATICAL FUNCTION LIBRARY</p></blockquote><p>This computer software library is a collection of more than 400 high quality mathematical routines for scientific and engineering applications.   All are written entirely in C language.  Many of the functions are supplied in six different arithmetic precisions: 32 bit single (24-bit significand), 64 bit IEEE double (53-bit), 64 bit DEC (56-bit), 80 or 96 bit IEEE long double (64-bit), and extended precision formats having 144-bit and 336-bit significands.  The extended precision arithmetic is included with the function library.</p><pre><code class="nohighlight hljs">Copyright 1984 - 1992 by Stephen L. Moshier
+
+Release 1.0: July, 1984
+Release 1.1: March, 1985
+Release 1.2: May, 1986
+Release 2.0: April, 1987
+Release 2.1: March, 1989
+Release 2.2: July, 1992</code></pre><h2 id="Double-Precision"><a class="docs-heading-anchor" href="#Double-Precision">Double Precision</a><a id="Double-Precision-1"></a><a class="docs-heading-anchor-permalink" href="#Double-Precision" title="Permalink"></a></h2><h3 id="Arithmetic-and-Algebraic"><a class="docs-heading-anchor" href="#Arithmetic-and-Algebraic">Arithmetic and Algebraic</a><a id="Arithmetic-and-Algebraic-1"></a><a class="docs-heading-anchor-permalink" href="#Arithmetic-and-Algebraic" title="Permalink"></a></h3><pre><code class="nohighlight hljs">                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
+Square root                     sqrt    2e-17   2e-16
+Long integer square root        lsqrt   1       1
+Cube root                       cbrt    2e-17   2e-16
+Evaluate polynomial             polevl
+Evaluate Chebyshev series       chbevl
+Round to nearest integer value  round
+Truncate upward to integer      ceil
+Truncate downward to integer    floor
+Extract exponent                frexp
+Add integer to exponent         ldexp
+Absolute value                  fabs
+Rational arithmetic             euclid
+Roots of a polynomial           polrt
+Reversion of power series       revers
+IEEE 854 arithmetic             ieee
+Polynomial arithmetic (polyn.c):
+  Add polynomials                 poladd
+  Subtract polynomials            polsub
+  Multiply polynomials            polmul
+  Divide polynomials              poldiv
+  Substitute polynomial variable  polsbt
+  Evaluate polynomial             poleva
+  Set all coefficients to zero    polclr
+  Copy coefficients               polmov
+  Display coefficients            polprt
+ Note, polyr.c contains routines corresponding to
+ the above for polynomials with rational coefficients.
+Power series manipulations (polmisc.c):
+  Square root of a polynomial     polsqt
+  Arctangent                      polatn
+  Sine                            polsin
+Reversion of power series       revers</code></pre><h3 id="Exponential-and-Trigonometric"><a class="docs-heading-anchor" href="#Exponential-and-Trigonometric">Exponential and Trigonometric</a><a id="Exponential-and-Trigonometric-1"></a><a class="docs-heading-anchor-permalink" href="#Exponential-and-Trigonometric" title="Permalink"></a></h3><pre><code class="nohighlight hljs">                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
+Arc cosine                      acos    3e-17   3e-16
+Arc hyperbolic cosine           acosh   4e-17   5e-16
+Arc hyperbolic sine             asinh   5e-17   4e-16
+Arc hyperbolic tangent          atanh   3e-17   2e-16
+Arcsine                         asin    6e-17   5e-16
+Arctangent                      atan    4e-17   3e-16
+Quadrant correct arctangent     atan2   4e-17   4e-16
+Cosine                          cos     3e-17   2e-16
+Cosine of arg in degrees        cosdg   4e-17   2e-16
+Exponential, base e             exp     3e-17   2e-16
+Exponential, base 2             exp2    2e-17   2e-16
+Exponential, base 10            exp10   3e-17   2e-16
+Hyperbolic cosine               cosh    3e-17   3e-16
+Hyperbolic sine                 sinh    4e-17   3e-16
+Hyperbolic tangent              tanh    3e-17   3e-16
+Logarithm, base e               log     2e-17   2e-16
+Logarithm, base 2               log2            2e-16
+Logarithm, base 10              log10   3e-17   2e-16
+Power                           pow     1e-15   2e-14
+Integer Power                   powi		9e-14
+Sine                            sin     3e-17   2e-16
+Sine of arg in degrees          sindg   4e-17   2e-16
+Tangent                         tan     4e-17   3e-16
+Tangent of arg in degrees       tandg   3e-17   3e-16</code></pre><h3 id="Exponential-integral"><a class="docs-heading-anchor" href="#Exponential-integral">Exponential integral</a><a id="Exponential-integral-1"></a><a class="docs-heading-anchor-permalink" href="#Exponential-integral" title="Permalink"></a></h3><pre><code class="nohighlight hljs">                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
+Exponential integral            expn    2e-16   2e-15
+Hyperbolic cosine integral      shichi  9e-17   8e-16
+Hyperbolic sine integral        shichi  9e-17   7e-16
+Cosine integral                 sici    8e-17A  7e-16
+Sine integral                   sici    4e-17A  4e-16</code></pre><h3 id="Gamma"><a class="docs-heading-anchor" href="#Gamma">Gamma</a><a id="Gamma-1"></a><a class="docs-heading-anchor-permalink" href="#Gamma" title="Permalink"></a></h3><pre><code class="nohighlight hljs">                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
+Beta                            beta    8e-15   8e-14
+Factorial                       fac     2e-17   2e-15
+Gamma                           gamma   1e-16   1e-15
+Logarithm of gamma function     lgam    5e-17   5e-16
+Incomplete beta integral        incbet  4e-14   4e-13
+Inverse beta integral           incbi   3e-13   8e-13
+Incomplete gamma integral       igam    5e-15   4e-14
+Complemented gamma integral     igamc   3e-15   1e-12
+Inverse gamma integral          igami   9e-16   1e-14
+Psi (digamma) function          psi     2e-16   1e-15
+Reciprocal Gamma                rgamma  1e-16   1e-15</code></pre><h3 id="Error-function"><a class="docs-heading-anchor" href="#Error-function">Error function</a><a id="Error-function-1"></a><a class="docs-heading-anchor-permalink" href="#Error-function" title="Permalink"></a></h3><pre><code class="nohighlight hljs">                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
+Error function                  erf     5e-17   4e-16
+Complemented error function     erfc    5e-16   6e-14
+Dawson&#39;s integral               dawsn   7e-16   7e-16
+Fresnel integral (C)            fresnl  2e-16   2e-15
+Fresnel integral (S)            fresnl  2e-16   2e-15</code></pre><h3 id="Bessel"><a class="docs-heading-anchor" href="#Bessel">Bessel</a><a id="Bessel-1"></a><a class="docs-heading-anchor-permalink" href="#Bessel" title="Permalink"></a></h3><pre><code class="nohighlight hljs">                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
+Airy (Ai)                       airy    6e-16A  2e-15A
+Airy (Ai&#39;)                      airy    6e-16A  5e-15A
+Airy (Bi)                       airy    6e-16A  4e-15A
+Airy (Bi&#39;)                      airy    6e-16A  5e-15A
+Bessel, order 0                 j0      4e-17A  4e-16A
+Bessel, order 1                 j1      4e-17A  3e-16A
+Bessel, order n                 jn      7e-17A  2e-15A
+Bessel, noninteger order        jv              5e-15A
+Bessel, second kind, order 0    y0      7e-17A  1e-15A
+Bessel, second kind, order 1    y1      9e-17A  1e-15A
+Bessel, second kind, order n    yn      3e-16A  3e-15A
+Bessel, noninteger order        yv      see struve.c
+Modified Bessel, order 0        i0      8e-17   6e-16
+Exponentially scaled i0         i0e     8e-17   5e-16
+Modified Bessel, order 1        i1      1e-16   2e-15
+Exponentially scaled i1         i1e     1e-16   2e-15
+Modified Bessel, nonint. order  iv      3e-15   2e-14
+Mod. Bessel, 3rd kind, order 0  k0      1e-16   1e-15
+Exponentially scaled k0         k0e     1e-16   1e-15
+Mod. Bessel, 3rd kind, order 1  k1      9e-17   1e-15
+Exponentially scaled k1         k1e     9e-17   8e-16
+Mod. Bessel, 3rd kind, order n  kn      1e-9    2e-8</code></pre><h3 id="Hypergeometric"><a class="docs-heading-anchor" href="#Hypergeometric">Hypergeometric</a><a id="Hypergeometric-1"></a><a class="docs-heading-anchor-permalink" href="#Hypergeometric" title="Permalink"></a></h3><pre><code class="nohighlight hljs">                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
+Confluent hypergeometric        hyperg  1e-15   2e-14
+Gauss hypergeometric function   hyp2f1  4e-11   9e-8
+2F0                             hyp2f0f  see hyperg.c
+1F2                             onef2f   see struve.c
+3F0                             threef0f see struve.c</code></pre><h3 id="Elliptic"><a class="docs-heading-anchor" href="#Elliptic">Elliptic</a><a id="Elliptic-1"></a><a class="docs-heading-anchor-permalink" href="#Elliptic" title="Permalink"></a></h3><pre><code class="nohighlight hljs">                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
+Complete elliptic integral (E)   ellpe  3e-17   2e-16
+Incomplete elliptic integral (E) ellie  2e-16   2e-15
+Complete elliptic integral (K)   ellpk  4e-17   3e-16
+Incomplete elliptic integral (K) ellik  9e-17   6e-16
+Jacobian elliptic function (sn)  ellpj  5e-16A  4e-15A
+Jacobian elliptic function (cn)  ellpj          4e-15A
+Jacobian elliptic function (dn)  ellpj          1e-12A
+Jacobian elliptic function (phi) ellpj          9e-16</code></pre><h3 id="Probability"><a class="docs-heading-anchor" href="#Probability">Probability</a><a id="Probability-1"></a><a class="docs-heading-anchor-permalink" href="#Probability" title="Permalink"></a></h3><pre><code class="nohighlight hljs">                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
+Binomial distribution           bdtr    4e-14   4e-13
+Complemented binomial           bdtrc   4e-14   4e-13
+Inverse binomial                bdtri   3e-13   8e-13
+Chi square distribution         chdtr   5e-15   3e-14
+Complemented Chi square         chdtrc  3e-15   2e-14
+Inverse Chi square              chdtri  9e-16   6e-15
+F distribution                  fdtr    4e-14   4e-13
+Complemented F                  fdtrc   4e-14   4e-13
+Inverse F distribution          fdtri   3e-13   8e-13
+Gamma distribution              gdtr    5e-15   3e-14
+Complemented gamma              gdtrc   3e-15   2e-14
+Negative binomial distribution  nbdtr   4e-14   4e-13
+Complemented negative binomial  nbdtrc  4e-14   4e-13
+Normal distribution             ndtr    2e-15   3e-14
+Inverse normal distribution     ndtri   1e-16   7e-16
+Poisson distribution            pdtr    3e-15   2e-14
+Complemented Poisson            pdtrc   5e-15   3e-14
+Inverse Poisson distribution    pdtri   3e-15   5e-14
+Student&#39;s t distribution        stdtr   2e-15   2e-14</code></pre><h3 id="Miscellaneous"><a class="docs-heading-anchor" href="#Miscellaneous">Miscellaneous</a><a id="Miscellaneous-1"></a><a class="docs-heading-anchor-permalink" href="#Miscellaneous" title="Permalink"></a></h3><pre><code class="nohighlight hljs">                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
+Dilogarithm                     spence  3e-16   4e-15
+Riemann Zeta function           zetac   1e-16   1e-15
+Two argument zeta function      zeta
+Struve function                 struve</code></pre><h3 id="Matrix"><a class="docs-heading-anchor" href="#Matrix">Matrix</a><a id="Matrix-1"></a><a class="docs-heading-anchor-permalink" href="#Matrix" title="Permalink"></a></h3><pre><code class="nohighlight hljs">                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
+Fast Fourier transform          fftr
+Simultaneous linear equations   simq
+Simultaneous linear equations   gels (symmetric coefficient matrix)
+Matrix inversion                minv
+Matrix multiply                 mmmpy
+Matrix times vector             mvmpy
+Matrix transpose                mtransp
+Eigenvectors (symmetric matrix) eigens
+Levenberg-Marquardt nonlinear equations  lmdif</code></pre><h3 id="Numerical-Integration"><a class="docs-heading-anchor" href="#Numerical-Integration">Numerical Integration</a><a id="Numerical-Integration-1"></a><a class="docs-heading-anchor-permalink" href="#Numerical-Integration" title="Permalink"></a></h3><pre><code class="nohighlight hljs">                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
+Simpson&#39;s rule                  simpsn
+Runge-Kutta                     runge - see de118
+Adams-Bashforth                 adams - see de118</code></pre><h3 id="Complex-Arithmetic"><a class="docs-heading-anchor" href="#Complex-Arithmetic">Complex Arithmetic</a><a id="Complex-Arithmetic-1"></a><a class="docs-heading-anchor-permalink" href="#Complex-Arithmetic" title="Permalink"></a></h3><pre><code class="nohighlight hljs">                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
+Complex addition                cadd    1e-17   1e-16
+Subtraction                     csub    1e-17   1e-16
+Multiplication                  cmul    2e-17   2e-16
+Division                        cdiv    5e-17   4e-16
+Absolute value                  cabs    3e-17   3e-16
+Square root                     csqrt   3e-17   3e-16</code></pre><h3 id="Complex-Exponential-and-Trigonometric"><a class="docs-heading-anchor" href="#Complex-Exponential-and-Trigonometric">Complex Exponential and Trigonometric</a><a id="Complex-Exponential-and-Trigonometric-1"></a><a class="docs-heading-anchor-permalink" href="#Complex-Exponential-and-Trigonometric" title="Permalink"></a></h3><pre><code class="nohighlight hljs">                                          Accuracy
+Function                        Name    DEC     IEEE
+--------                        ----    ----    ----
+Exponential                     cexp    4e-17   3e-16
+Logarithm                       clog    9e-17   5e-16A
+Cosine                          ccos    5e-17   4e-16
+Arc cosine                      cacos   2e-15   2e-14
+Sine                            csin    5e-17   4e-16
+Arc sine                        casin   2e-15   2e-14
+Tangent                         ctan    7e-17   7e-16
+Arc tangent                     catan   1e-16   2e-15
+Cotangent                       ccot    7e-17   9e-16</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../specfun/autodocs/">« AutoGen Docs</a><a class="docs-footer-nextpage" href="../faddeeva/">Faddeeva »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Friday 9 January 2026 17:13">Friday 9 January 2026</span>. Using Julia version 1.12.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
