@@ -4,18 +4,18 @@
 
 ## Exponential Integral
 
-- [`expint1`](@ref)
-- [`expint`](@ref), [`expintx`](@ref)
-- [`expinti`](@ref)
+- [`expint1(z)`](@ref)
+- [`expint(ν, z)`](@ref), [`expintx(ν, z)`](@ref)
+- [`expinti(z)`](@ref)
 
 ### Logarithmic integral
 
-- [`logint`](@ref)
+- [`logint(z)`](@ref)
 
 ## Trigonometric Integral
 
-- [`sinint`](@ref), [`cosint`](@ref)
-- [`sinhint`](@ref), [`coshint`](@ref)
+- [`sinint(z)`](@ref), [`cosint(z)`](@ref)
+- [`sinhint(z)`](@ref), [`coshint(z)`](@ref)
 
 # Reference
 
