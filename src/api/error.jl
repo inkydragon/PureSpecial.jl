@@ -11,10 +11,11 @@
 
 ## Fresnel Integral
 - [`fresnelc(z)`](@ref), [`fresnels(z)`](@ref)
-- fresnelf, fresnelg
+- [`fresnelf(z)`](@ref), [`fresnelg(z)`](@ref)
+- `ℱ(z)`, `G(z)`
 
 ## Voigt Function
-- voigtu, voigtv
+- [`voigtu(x,t)`](@ref), [`voigtv(x,t)`](@ref)
 
 # Reference
 - [DLMF: Chapter 7 Error Functions, Dawson’s and Fresnel Integrals](https://dlmf.nist.gov/7)
@@ -78,3 +79,32 @@ Fresnel integral, `S(z)`.
 """
 function fresnels end
 
+"""
+    fresnelf(x::Real)
+    fresnelf(z::Complex)
+
+Auxiliary function for Fresnel integrals, `f(z)`.
+"""
+function fresnelf end
+
+"""
+    fresnelg(x::Real)
+    fresnelg(z::Complex)
+
+Auxiliary function for Fresnel integrals, `g(z)`.
+"""
+function fresnelg end
+
+"""
+    voigtu(x::Real, t::Real)
+
+Voigt function, `U(x,t)`.
+"""
+function voigtu end
+
+"""
+    voigtv(x::Real, t::Real)
+
+Voigt function, `V(x,t)`.
+"""
+function voigtv end

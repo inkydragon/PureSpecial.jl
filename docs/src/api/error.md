@@ -23,4 +23,12 @@ dawson
 ```@docs
 fresnelc
 fresnels
+fresnelf
+fresnelg
+```
+
+## Voigt Function
+```@docs
+voigtu
+voigtv
 ```
