@@ -4,13 +4,13 @@
 
 ## Error Function
 - [`erf`](@ref), [`erfc`](@ref), [`erfi`](@ref)
-- `faddeeva`
+- [`faddeeva(z)`](@ref)
 
 ## Dawson Integral
-- [`dawson`](@ref)
+- [`dawson(z)`](@ref)
 
 ## Fresnel Integral
-- [`fresnelc`](@ref), [`fresnels`](@ref)
+- [`fresnelc(z)`](@ref), [`fresnels(z)`](@ref)
 - fresnelf, fresnelg
 
 ## Voigt Function
