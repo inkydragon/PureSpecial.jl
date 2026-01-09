@@ -1,9 +1,5 @@
 # Error Functions
 
-```@docs
-PureSpecial.ASF.ErrorFunctionsDoc
-```
-
 ## Error Function
 
 ```@docs

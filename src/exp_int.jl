@@ -6,6 +6,3 @@
 
 ## Trigonometric Integral
 """
-
-import .ASF: expint1, expint, expintx, expinti, logint
-import .ASF: sinint, cosint, sinhint, coshint

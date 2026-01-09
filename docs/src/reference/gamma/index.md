@@ -1,9 +1,5 @@
 # Gamma Functions
 
-```@docs
-PureSpecial.ASF.GammaFunctionsDoc
-```
-
 ## Factorial Function
 
 | Function              | Description               |
@@ -14,18 +10,11 @@ PureSpecial.ASF.GammaFunctionsDoc
 | `Base.binomial`       | binomial coefficient  |
 
 ```@docs
-PureSpecial.ASF.factorial
-PureSpecial.ASF.doublefactorial
-PureSpecial.ASF.multifactorial
-PureSpecial.ASF.superfactorial
-PureSpecial.ASF.hyperfactorial
 ```
 
 ### Binomial Coefficient
 
 ```@docs
-PureSpecial.ASF.binomial
-PureSpecial.ASF.multinomial
 ```
 
 
@@ -41,9 +30,6 @@ PureSpecial.ASF.multinomial
 | [`polygamma`](@ref)   | polygamma function        |
 
 ```@docs
-PureSpecial.ASF.gamma
-PureSpecial.ASF.digamma
-PureSpecial.ASF.polygamma
 ```
 
 ## Incomplete Gamma Function
@@ -53,7 +39,6 @@ PureSpecial.ASF.polygamma
 ## Beta Function
 
 ```@docs
-PureSpecial.ASF.beta
 ```
 
 ## Autodoc

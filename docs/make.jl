@@ -23,6 +23,12 @@ pages = Any[
     "Home" => "index.md",
     "special-functions.md",
     "Reference" => reference_pages,
+    "AbstractSpecialFunctions" => Any[
+        "api/index.md",
+        "api/gamma.md",
+        "api/exp-int.md",
+        "api/error.md",
+    ],
 
     "Dev doc" => Any[
         "impls.md",
@@ -39,7 +45,7 @@ pages = Any[
 ]
 
 makedocs(;
-    modules=[PureSpecial, PureSpecial.Specfun],
+    modules=[PureSpecial, PureSpecial.Specfun, PureSpecial.AbstractSpecialFunctions],
     repo=Remotes.GitHub("inkydragon", "PureSpecial.jl"),
     authors="Chengyu HAN <cyhan.dev@outlook.com> and contributors",
     sitename="PureSpecial.jl",
